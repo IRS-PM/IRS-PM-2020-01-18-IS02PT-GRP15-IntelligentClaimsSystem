@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+  # EVENT DISPATCHER SERVICE
+  eventdispatcher:
+    build: ./eventDispatcher
+    volumes:
+      - eventdispatcher_data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  # DATABASE
+  db:
+    build: ./db
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: claims_management_system
+      MYSQL_USER: claims
+      MYSQL_PASSWORD: claims123
+  # CLAIM REPOSITORY SERVICE
+  claimrepository:
+    build: ./claimRepository
+    ports:
+      - "8081:8081"
+    restart: always
+    links: 
+      - "db"
+      - "eventdispatcher"
+    environment: 
+      HTTP_PORT: 8081
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: claims_management_system
+      DB_USER: claims
+      DB_PASS: claims123
+      EVENT_DISPATCHER_HOST: amqp://eventdispatcher
+      WAIT_TO_START: 0
+  # CLAIM CLASSIFICATION SERVICE
+  claimclassification:
+    build: ./claimClassification
+    ports:
+      - "5000:5000"
+    restart: always
+    # links: 
+    #   - "claimrepository"
+    #   - "eventdispatcher"
+    environment: 
+      CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+      EVENT_DISPATCHER_HOST: eventdispatcher
+volumes:
+  eventdispatcher_data: {}
+  db_data: {}  
