@@ -16,4 +16,4 @@ RUN cp -Rf /tmp/* /app
 RUN cd /app
 
 # run
-CMD npx sequelize-cli db:migrate --config=migrationConfig/config.js && npm run start
+CMD npx sequelize-cli db:migrate --config=migrationConfig/config.js && npx sequelize-cli db:seed --config=migrationConfig/config.js --seed 20200426162236-healthPoliciesSeeder.js && npm run start

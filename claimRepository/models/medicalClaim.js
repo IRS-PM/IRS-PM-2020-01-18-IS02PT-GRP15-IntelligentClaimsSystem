@@ -28,7 +28,9 @@ MedicalClaim.init({
   OtherDiagnosis: { type: Sequelize.STRING },
   RiderTypeID: { type: Sequelize.INTEGER.UNSIGNED },
   PanelTypeID: { type: Sequelize.INTEGER.UNSIGNED },
-  TotalExp: { type: Sequelize.FLOAT(10, 2) }
+  TotalExp: { type: Sequelize.FLOAT(10, 2) },
+  Officer: { type: Sequelize.STRING },
+  ClassificationStatus: { type: Sequelize.ENUM(['pending', 'approved', 'rejected', 'humanIntervention']), defaultValue: 'pending' }
 }, {
   sequelize: db,
   modelName: 'MedicalClaim',

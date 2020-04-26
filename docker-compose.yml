@@ -39,18 +39,18 @@ services:
       DB_PASS: claims123
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       WAIT_TO_START: 0
-  # CLAIM CLASSIFICATION SERVICE
-  claimclassification:
-    build: ./claimClassification
-    ports:
-      - "5000:5000"
-    restart: always
-    # links: 
-    #   - "claimrepository"
-    #   - "eventdispatcher"
-    environment: 
-      CLAIM_REPOSITORY_HOST: http://claimrepository:8081
-      EVENT_DISPATCHER_HOST: eventdispatcher
+  # # CLAIM CLASSIFICATION SERVICE
+  # claimclassification:
+  #   build: ./claimClassification
+  #   ports:
+  #     - "5000:5000"
+  #   restart: always
+  #   links: 
+  #     - "claimrepository"
+  #     - "eventdispatcher"
+  #   environment: 
+  #     CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+  #     EVENT_DISPATCHER_HOST: eventdispatcher
 volumes:
   eventdispatcher_data: {}
   db_data: {}  
