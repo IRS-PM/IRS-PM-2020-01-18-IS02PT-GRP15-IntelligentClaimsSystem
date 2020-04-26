@@ -39,18 +39,51 @@ services:
       DB_PASS: claims123
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       WAIT_TO_START: 0
-  # CLAIM CLASSIFICATION SERVICE
-  claimclassification:
-    build: ./claimClassification
+  
+  # CLAIM SUBMISSION SERVER
+  claimsubmissionserver:
+    build: ./claimSubmission/server
     ports:
       - "5000:5000"
     restart: always
-    # links: 
-    #   - "claimrepository"
-    #   - "eventdispatcher"
+    links: 
+      - "claimrepository"
     environment: 
+      HOST: 0.0.0.0
+      PORT: 5000
+      DIALOG_FLOW_PROJECT_ID: francisclaimbot-bpoito
+      DIALOG_FLOW_PRIVATE_KEY_ID: 3751e3a1a4e3e31153ce5b1b8fa5fd20a3359ef9
+      DIALOG_FLOW_PRIVATE_KEY: -----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDI8u0/dTF/tsuK\n1HJ4zoMufFFTQegFIynHhw8oiOFMKMWiFlra2xAnfk6/WDpsZJNqZGaiTwWHm/r+\nA3T2geyHCR3X9evnXwIjuMzIbFzpjdzw1HjaPYEfnp15YLpTF3MbiKbawKvTVIeb\nECUMzFtxJQxCMIPhRojypg7cxeTJjRe4ksAdn87TcDHs2zxJymmg4TILCiZdsvDV\nE2GQ4+GEaSZjZHy6iWO8hvdlLF2EIR0ZEmSZuXtvWrD/paA73EFWlgU/4oKeNrng\nLboNjpnlZfYjwkmErHtmQO/aKrlGRWfz0mx3iIsz8VqwWlybXgdT7cMoUiWVRqjJ\nsVrC+C6VAgMBAAECggEAHDNEn95aoyGBi2BIwkhk+NNBzHfYJPnBerqq92rM3Ksa\nH9GYUCoO/c6IJD/a+cGG6JbiH7lhksg33zRCp/d6vJvxwBAchOdR6GEeUqrWbSus\noRrdl5mrCHIc3QmkjFWi9e8QT2xbkLhGTDi7TQJUJjA8pKtPTqrfPCzusq/jmB8r\nmlrcJURh/De8loBDJ0jk1AmGs0gUYMXSBsVXwNYnCjMcye/8evXrklN8orgkx0lH\n01n6IJSaIYWmMpebQS1yCN+mejFjmfVk/gjmYE2wxa1DQ8KivfNGCVK5WrNn+aWE\nmxMYg5uWn2eXimGho3yr6GGD6wLyrFWM7Lylet0MXwKBgQDtyjJ8xwsMO/tdhzLA\nLxSOrFMY6xp01rI0upiF2YsuSksVfcTJdCZtUrFKbDUFXZ/HejcyYrm2IJTiWp1M\nQa+ADAuemDV3uN/D6PpUtaT005scDNbwyGKHalEAD9UHqIJiL0o9HAML5P2ubtys\nKH6e7N9UL/W3MZobZCcx/hhMIwKBgQDYVnlbIPAzAPUccfS5aKtXBVt6lXlqOBTZ\n1TxNyENnx9joDrf70qS/tiHqdnvDXeiQwZhBH5MSDI417E8CVu2iUPS8+YEY7JOq\nOF+9LLYgGQYXICr3ocRDePtabVKXCY5tMt9KhLpTYYCXjV48S8jA2uIYBMF/lCRR\nUko/3ezJ5wKBgQCREHI+dvtBanJNu4X1goNLCsvi/sJ0Fuo+irszpORoyAAIS2K6\n93Xd6b2oxlyOOnCYM/HqdhoPhs7tTBR8CfJz7mVESl0L/afdD4twFCRfC5yrvxV9\nbPHW5MAnhoESm/V2ypzCrQ0au4cbXByZllaww5b2+A8xxDvci/vxXq8Z+wKBgQDW\nAQTfbr/t1F6kGt5Zov8LgFMz+jU3K+8EZXnX/+kd+oXJWPYLeB5dPxBh3X8kjfsH\nZ1rz4QYdbqonEXI/ADrmvGq9nZtlSnHwiv+6JUasjdSGf93BRRbfIAiVNVvj6SIp\nR4+3KYEgBm2sfb3gq58Vl/DcjafUSnl6sIqejywztQKBgQCbpwf1ij8sd2qprz6s\nP+mIkEwNHUAIwaBxjh2jnaxO0lfHkZyCQtcakSOOZMn+TbxaJm8MOoQ8pHkifKX6\n3+/fKuE2FUJjrNCnHyqN0kNTjnLdgbz+56MubC6A0FXbfsxJ0iUZ44k8iawXMFv5\nde++YTnHvqZOFhIMdw0cRk6cxQ==\n-----END PRIVATE KEY-----\n
+      DIALOG_FLOW_CLIENT_EMAIL: dialogflow-lyucnh@francisclaimbot-bpoito.iam.gserviceaccount.com
+      DIALOG_FLOW_CLIENT_ID: 106862120669201456514
+      GOOGLE_APPLICATION_CREDENTIALS: private_key.json
       CLAIM_REPOSITORY_HOST: http://claimrepository:8081
       EVENT_DISPATCHER_HOST: eventdispatcher
+
+  # CLAIM SUBMISSION FRONTEND
+  claimsubmissionfrontend:
+    build: ./claimSubmission/frontend
+    ports:
+      - "5001:80"
+    restart: always
+    links: 
+      - "claimsubmissionserver"
+    environment: 
+      API_HOST: http://127.0.0.1:5000
+      DIALOGFLOW_AGENT_ID: ce617fac-032a-442b-8976-36b110b58133
+      
+  # CLAIM CLASSIFICATION SERVICE
+  # claimclassification:
+  #   build: ./claimClassification
+  #   ports:
+  #     - "5000:5000"
+  #   restart: always
+  #   # links: 
+  #   #   - "claimrepository"
+  #   #   - "eventdispatcher"
+  #   environment: 
+  #     CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+  #     EVENT_DISPATCHER_HOST: eventdispatcher
 volumes:
   eventdispatcher_data: {}
   db_data: {}  

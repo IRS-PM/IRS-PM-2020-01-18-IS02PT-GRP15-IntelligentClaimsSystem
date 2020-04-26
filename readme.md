@@ -10,6 +10,12 @@ Run the following command:
 docker-compose up --build
 ```
 
+## CHATBOT
+Chatbot can be accessed here
+```
+http://127.0.0.1:8082
+```
+
 ## SHUTTING DOWN
 Run the following command:
 ```
