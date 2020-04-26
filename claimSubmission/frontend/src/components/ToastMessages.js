@@ -25,7 +25,12 @@ export function ToastMessages() {
         <>
             {toastMessages.map((message, index) => (
                 <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose} key={index}>
-                    <SnackbarContent message={message} />
+                    <SnackbarContent 
+                        style={{
+                            backgroundColor:'rgb(220, 0, 78)'
+                        }} 
+                        message={message} 
+                    />
                 </Snackbar>
             ))}
         </>

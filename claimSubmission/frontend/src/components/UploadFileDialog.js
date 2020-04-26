@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, makeStyles, Box, Button, Typography, IconButton, Tooltip } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent, DialogActions, makeStyles, Box, Button, Typography, IconButton, Tooltip, CircularProgress } from '@material-ui/core'
 import { FileDropZone, image } from 'mui-dropzone'
 import { InsertDriveFileOutlined as FileIcon, CloseOutlined } from '@material-ui/icons';
 import { uploadFile } from '../httpActions/uploadFile';
@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
                 marginRight: 0
             }
         }
+    },
+    loading: {
+        marginLeft: theme.spacing(1)
     }
 }))
 
@@ -43,6 +46,7 @@ export function UploadFileDialog({
 
     const cssClasses = useStyles({})
     const [file, setFile] = React.useState(null)
+    const [isLoading, setIsLoading] = React.useState(false)
     const { dispatch } = React.useContext(store)
 
     React.useEffect(() => {
@@ -70,10 +74,17 @@ export function UploadFileDialog({
     const handleSubmit = async () => {
         if (!file) return
         try {
+            setIsLoading(true)
             const { data } = await uploadFile(uploadFileType, file)
             handleUploadComplete(data)
         } catch (e) {
+            dispatch({
+                type: ACTION_TYPES.ADD_TOAST_MESSAGE,
+                payload: 'Error uploading file'
+            })
             console.error(e)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -112,9 +123,12 @@ export function UploadFileDialog({
                 <Button 
                     color="primary" 
                     variant="contained" 
-                    disabled={!file}
+                    disabled={!file || isLoading}
                     onClick={handleSubmit}
-                >Submit</Button>
+                >
+                    Submit 
+                    {isLoading && <CircularProgress color="" size={10} className={cssClasses.loading} />} 
+                </Button>
             </DialogActions>
         </Dialog>
     )
