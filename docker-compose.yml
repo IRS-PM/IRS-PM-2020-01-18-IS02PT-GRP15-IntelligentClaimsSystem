@@ -77,9 +77,9 @@ services:
   #   ports:
   #     - "5000:5000"
   #   restart: always
-  #   # links: 
-  #   #   - "claimrepository"
-  #   #   - "eventdispatcher"
+  #   links: 
+  #     - "claimrepository"
+  #     - "eventdispatcher"
   #   environment: 
   #     CLAIM_REPOSITORY_HOST: http://claimrepository:8081
   #     EVENT_DISPATCHER_HOST: eventdispatcher

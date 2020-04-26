@@ -20,6 +20,7 @@ const init = async () => {
 
     // start http server
     const app = express()
+    app.use(express.json())
 
     app.use('/medicalclaim', medicalClaimRoutes)
     app.use('/healthpolicy', healthPolicyRoutes)
