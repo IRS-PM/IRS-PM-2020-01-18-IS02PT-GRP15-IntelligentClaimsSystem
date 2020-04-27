@@ -5,7 +5,7 @@ from config import HOST, PORT, DIALOGFLOW_PROJECT_ID
 from uuid import uuid4
 import os
 import dialogflow
-
+from util import *
 app = Flask(__name__)
 CORS(app)
 
@@ -38,6 +38,24 @@ def uploadFile():
 		"originalFileName": file.filename,
 		"fulfillmentMessages": dfResponse.query_result.fulfillment_text
 	}))
+
+@app.route("/claim/intenthandler", methods = ["POST"])
+def main():
+	req = request.get_json(silent=True, force=True)
+	print(req)
+	intent_name = req["queryResult"]["intent"]["displayName"]
+
+	if intent_name == "SubmitClaimIntent":
+		param = req["queryResult"]["parameters"]
+		resp_text = submitClaimIntentHandler(param)
+	else:
+		resp_text = "Unable to find a matching intent. Try again."
+
+	resp = {
+		"fulfillmentText": resp_text
+	}
+
+	return make_response(jsonify(resp), 200)
 
 if __name__ == '__main__':
    app.run(debug=True, host=HOST, port=PORT)
