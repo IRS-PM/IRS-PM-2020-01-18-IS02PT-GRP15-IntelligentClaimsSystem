@@ -10,8 +10,8 @@ def post(url, payload=None):
 	return (resp.status_code, resp.json())
 
 def submitClaimIntentHandler(param):
-	url = f"{CLAIM_REPOSITORY_HOST}/MedicalClaim/"
-	#url = "http://127.0.0.1:8081/MedicalClaim/"
+	url = "%s/MedicalClaim/" % CLAIM_REPOSITORY_HOST
+	#url = "http://127.0.0.1:8081/MedicalClaim"
 	payload = json.dumps({
 		"PolicyNo" : param["policyno"],
 		"DateOcc" : param["dateocc"],
