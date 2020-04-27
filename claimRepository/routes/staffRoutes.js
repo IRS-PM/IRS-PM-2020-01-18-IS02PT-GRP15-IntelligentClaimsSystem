@@ -1,23 +1,23 @@
 const express = require('express')
-const { HealthPolicy, ProductPlan, PolicyBenefit } = require('../models')
+const { Staff, LeaveSchedule, ClaimStaff, MedicalClaim } = require('../models')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
   const { offset=0, limit=50 } = req.query
   try {
-    const policies = await HealthPolicy.findAll({
+    const entries = await Staff.findAll({
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+      include: [LeaveSchedule, {
+        model: ClaimStaff,
+        include: MedicalClaim
+      }]
     })
     return res.json({
-      total: await HealthPolicy.count(),
+      total: await Staff.count(),
       offset: offset,
       limit: limit,
-      data: policies
+      data: entries
     })
   } catch (e) {
     console.error(e)
@@ -26,21 +26,21 @@ router.get('/', async (req, res) => {
   }  
 })
 
-router.get('/:policyNo', async (req, res) => {
-  const { policyNo } = req.params
+router.get('/:id', async (req, res) => {
+  const { id } = req.params
   try {
-    const policy = await HealthPolicy.findByPk(policyNo, {
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+    const entry = await Staff.findByPk(id, {
+      include: [LeaveSchedule, {
+        model: ClaimStaff,
+        include: MedicalClaim
+      }]
     })
-    if (!policy) {
+    if (!entry) {
       res.status(404)
       return res.send('Not found')
     }
 
-    return res.json(policy)
+    return res.json(entry)
   } catch (e) {
     console.error(e)
     res.status(500)

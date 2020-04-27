@@ -2,6 +2,45 @@
 
 ## Endpoints
 
+### Staff
+Get all
+```
+Method: get
+Endpoint: /staff?offset=0&limit=100
+```
+
+Get one
+```
+Method: get
+Endpoint: /staff/:id
+```
+
+### Product Plans
+Get all
+```
+Method: get
+Endpoint: /productplan?offset=0&limit=100
+```
+
+Get one
+```
+Method: get
+Endpoint: /productplan/:productCode
+```
+
+### Medical Panels
+Get all
+```
+Method: get
+Endpoint: /medicalpanel?offset=0&limit=100
+```
+
+Get one
+```
+Method: get
+Endpoint: /medicalpanel/:panelID
+```
+
 ### Health Policies
 Get all
 ```
@@ -12,7 +51,7 @@ Endpoint: /healthpolicy?offset=0&limit=100
 Get one
 ```
 Method: get
-Endpoint: /healthpolicy/:policyno
+Endpoint: /healthpolicy/:policyNo
 ```
 
 ### Medical claims
@@ -32,13 +71,16 @@ Endpoint: /medicalclaim/classificationstatus/:status?offset=0&limit=100
 Get one
 ```
 Method: get
-Endpoint: /medicalclaim/:claimno
+Endpoint: /medicalclaim/:claimNo
 ```
 
 Create
 ```
 Method: post
 Endpoint: /medicalclaim
+Headers: {
+    Content-Type: application/json
+}
 Body: {
     "PolicyNo": "xxx",
     ...
@@ -48,11 +90,20 @@ Body: {
 Update
 ```
 Method: patch
-Endpoint: /medicalclaim/:claimno
+Endpoint: /medicalclaim/:claimNo
+Headers: {
+    Content-Type: application/json
+}
 Body: {
     "PolicyNo": "xxx",
     ...
 }
+```
+
+Assign a staff to claim
+```
+Method: put
+Endpoint: /assign/:claimNo/to/:staffID
 ```
 
 

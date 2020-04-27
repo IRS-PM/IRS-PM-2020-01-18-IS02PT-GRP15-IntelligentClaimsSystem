@@ -7,19 +7,19 @@
 ## RUN
 Run the following command:
 ```
-docker-compose up --build
+docker-compose -p icms up --build
 ```
 
 ## CHATBOT
 Chatbot can be accessed here
 ```
-http://127.0.0.1:8082
+http://127.0.0.1:5001
 ```
 
 ## SHUTTING DOWN
 Run the following command:
 ```
-docker-compose down
+docker-compose -p icms down
 ```
 
 ## BUILDING SERVICE IMAGES

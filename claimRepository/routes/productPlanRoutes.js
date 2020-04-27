@@ -1,23 +1,20 @@
 const express = require('express')
-const { HealthPolicy, ProductPlan, PolicyBenefit } = require('../models')
+const { ProductPlan, PolicyBenefit } = require('../models')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
   const { offset=0, limit=50 } = req.query
   try {
-    const policies = await HealthPolicy.findAll({
+    const entries = await ProductPlan.findAll({
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+      include: PolicyBenefit
     })
     return res.json({
-      total: await HealthPolicy.count(),
+      total: await ProductPlan.count(),
       offset: offset,
       limit: limit,
-      data: policies
+      data: entries
     })
   } catch (e) {
     console.error(e)
@@ -26,21 +23,16 @@ router.get('/', async (req, res) => {
   }  
 })
 
-router.get('/:policyNo', async (req, res) => {
-  const { policyNo } = req.params
+router.get('/:productCode', async (req, res) => {
+  const { productCode } = req.params
   try {
-    const policy = await HealthPolicy.findByPk(policyNo, {
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
-    })
-    if (!policy) {
+    const entry = await ProductPlan.findByPk(productCode, {include: PolicyBenefit})
+    if (!entry) {
       res.status(404)
       return res.send('Not found')
     }
 
-    return res.json(policy)
+    return res.json(entry)
   } catch (e) {
     console.error(e)
     res.status(500)

@@ -21,7 +21,7 @@ services:
       MYSQL_DATABASE: claims_management_system
       MYSQL_USER: claims
       MYSQL_PASSWORD: claims123
-  # CLAIM REPOSITORY SERVICE
+  # OBJECT REPOSITORY SERVICE
   claimrepository:
     build: ./claimRepository
     ports:
