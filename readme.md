@@ -16,6 +16,12 @@ Chatbot can be accessed here
 http://127.0.0.1:5001
 ```
 
+## CLAIM REPOSITORY
+Claim repository can be accessed here
+```
+http://127.0.0.1:8081
+```
+
 ## SHUTTING DOWN
 Run the following command:
 ```
