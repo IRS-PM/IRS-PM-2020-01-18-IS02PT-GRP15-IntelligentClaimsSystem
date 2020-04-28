@@ -24,6 +24,15 @@ HealthPolicy.belongsTo(ProductPlan, {
   foreignKey: 'ProductCode'
 })
 
+ProductPlan.hasMany(HealthPolicy, {
+  foreignKey: 'RiderPrdtCode',
+  as: 'Riders'
+})
+HealthPolicy.belongsTo(ProductPlan, {
+  foreignKey: 'RiderPrdtCode',
+  as: 'RiderPlan'
+})
+
 Staff.hasMany(LeaveSchedule, {
   foreignKey: 'StaffID'
 })
@@ -43,6 +52,20 @@ MedicalClaim.hasOne(ClaimStaff, {
 })
 ClaimStaff.belongsTo(MedicalClaim, {
   foreignKey: 'ClaimNo'
+})
+
+MedicalClaim.hasMany(ClaimItem, {
+  foreignKey: 'ClaimNo'
+})
+ClaimItem.belongsTo(MedicalClaim, {
+  foreignKey: 'ClaimNo'
+})
+
+ClaimItem.belongsTo(PolicyBenefit, {
+  foreignKey: 'BenefitCode'
+})
+PolicyBenefit.hasOne(ClaimItem, {
+  foreignKey: 'BenefitCode'
 })
 
 MedicalClaim.belongsTo(HealthPolicy, {

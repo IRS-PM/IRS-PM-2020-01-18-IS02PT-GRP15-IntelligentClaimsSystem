@@ -2,16 +2,21 @@ const express = require('express')
 const { HealthPolicy, ProductPlan, PolicyBenefit } = require('../models')
 const router = express.Router()
 
+const modelIncludeList = [{
+  model: ProductPlan,
+  include: PolicyBenefit
+}, {
+  association: 'RiderPlan',
+  include: PolicyBenefit
+}]
+
 router.get('/', async (req, res) => {
   const { offset=0, limit=50 } = req.query
   try {
     const policies = await HealthPolicy.findAll({
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+      include: modelIncludeList
     })
     return res.json({
       total: await HealthPolicy.count(),
@@ -30,10 +35,7 @@ router.get('/:policyNo', async (req, res) => {
   const { policyNo } = req.params
   try {
     const policy = await HealthPolicy.findByPk(policyNo, {
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+      include: modelIncludeList
     })
     if (!policy) {
       res.status(404)
@@ -53,10 +55,7 @@ router.get('/byinsuredid/:insuredId', async (req, res) => {
   try {
     const policy = await HealthPolicy.findOne({
       InsuredID: insuredId,
-      include: {
-        model: ProductPlan,
-        include: PolicyBenefit
-      }
+      include: modelIncludeList
     })
     if (!policy) {
       res.status(404)

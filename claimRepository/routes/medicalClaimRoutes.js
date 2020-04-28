@@ -1,8 +1,16 @@
 const express = require('express')
-const { MedicalClaim, HealthPolicy, ClaimStaff, Staff } = require('../models')
+const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, PolicyBenefit } = require('../models')
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
 const router = express.Router()
+
+const modelIncludes = [HealthPolicy, {
+  model: ClaimItem,
+  include: PolicyBenefit
+}, {
+  model: ClaimStaff,
+  include: Staff
+}]
 
 router.get(['/', '/classificationstatus/:classificationStatus'], async (req, res) => {
   try {
@@ -16,10 +24,7 @@ router.get(['/', '/classificationstatus/:classificationStatus'], async (req, res
       where: whereClause,
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: [HealthPolicy, {
-        model: ClaimStaff,
-        include: Staff
-      }]
+      include: modelIncludes
     })
     return res.json({
       total: await MedicalClaim.count({
@@ -40,10 +45,7 @@ router.get('/:claimNo', async (req, res) => {
   try {
     const { claimNo } = req.params
     const claim = await MedicalClaim.findByPk(claimNo, {
-      include: [HealthPolicy, {
-        model: ClaimStaff,
-        include: Staff
-      }]
+      include: modelIncludes
     })
 
     if (!claim) {
@@ -163,10 +165,7 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
   try {
     const { claimNo, staffID } = req.params
     const claim = await MedicalClaim.findByPk(claimNo, {
-      include: [HealthPolicy, {
-        model: ClaimStaff,
-        include: Staff
-      }]
+      include: modelIncludes
     })
 
     if (!claim) {

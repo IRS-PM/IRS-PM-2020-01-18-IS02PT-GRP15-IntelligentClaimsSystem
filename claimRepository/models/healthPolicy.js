@@ -39,6 +39,17 @@ HealthPolicy.init({
   ReinstatementDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('ReinstatementDate')) } },
   RiderEntryDate: { type: Sequelize.DATE },
   RiderEntryDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('RiderEntryDate')) } },
+  Rider: { type: Sequelize.ENUM('Y', 'N'), allowNull: false, defaultValue: 'N' },
+  RiderPrdtCode: { 
+    type: Sequelize.STRING, 
+    references: {
+      modelName: 'ProductPlan',
+      key: 'ProductCode'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    defaultValue: null
+  },
   RiderCommencementDate: { type: Sequelize.DATE },
   RiderCommencementDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('RiderCommencementDate')) } },
   RiderReinstatementDate: { type: Sequelize.DATE },

@@ -6,7 +6,7 @@ class MedicalClaim extends Sequelize.Model {}
 
 MedicalClaim.init({
   ClaimNo: { type: Sequelize.INTEGER.UNSIGNED, primaryKey: true, autoIncrement: true },
-  MainClaimNo: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true, references: { modelName: 'MedicalClaim', key: 'ClaimNo' }, onUpdate: 'CASCADE', onDelete: 'CASCADE' },
+  MainClaimNo: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true },
   ClaimType: { type: Sequelize.STRING },
   PolicyNo: { type: Sequelize.STRING, references: { modelName: 'HealthPolicy', key: 'PolicyNo' } },
   DateOcc: { type: Sequelize.DATE },
@@ -23,7 +23,7 @@ MedicalClaim.init({
   RefundAmount: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
   HRN: { type: Sequelize.STRING },
   SubType: { type: Sequelize.ENUM('FS', 'AM', 'CA'), defaultValue: 'FS' }, //FS = first submission, AM = amendment, CA=Cancel  
-  BillCategory: { type: Sequelize.ENUM('IN', 'PP', 'OU', 'DY'), defaultValue: 'IN' }, //'IN=Inpatient, PP=PreHospitalization/PostHospitalization OU=Outpatient, DY=DayPatient'
+  BillCategory: { type: Sequelize.ENUM('IN', 'PP', 'OU', 'DY', 'IP'), defaultValue: 'IN' }, //'IN=Inpatient, PP=PreHospitalization/PostHospitalization OU=Outpatient, DY=DayPatient'
   FinalPayout: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
   HospitalCode: { type: Sequelize.STRING, references: { modelName: 'Hospital', key: 'HospitalCode' }, onUpdate: 'CASCADE', onDelete: 'SET NULL' },
   RiderPrdtCode: { type: Sequelize.STRING },
@@ -31,7 +31,7 @@ MedicalClaim.init({
   RiderEffDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('RiderEffDate')) } },
   OtherDiagnosis: { type: Sequelize.STRING },
   RiderTypeID: { type: Sequelize.INTEGER.UNSIGNED },
-  PanelTypeID: { type: Sequelize.INTEGER.UNSIGNED },
+  PanelTypeID: { type: Sequelize.INTEGER },
   TotalExp: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
   Status: { type: Sequelize.INTEGER(1).UNSIGNED }, // [note: '1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
   ClaimRemark: { type: Sequelize.TEXT, defaultValue: '' },
