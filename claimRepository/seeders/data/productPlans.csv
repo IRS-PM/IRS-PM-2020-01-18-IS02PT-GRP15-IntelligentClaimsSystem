@@ -18,25 +18,9 @@ PCCD,Assist Rider Plan C,R     ,Assist Rider C,5
 PEPD,Assist Rider Preferred,R     ,Assist Rider Preferred,5
 PEAD,Assist Rider Advantage,R     ,Assist Rider Advantage,5
 PEBD,Assist Rider Basic,R     ,Assist Rider Basic,5
-PEBD,Assist Rider Basic (PRs),R     ,Assist Rider Basic - PR,5
-PBBD,Assist Rider Plan B (PRs),R     ,Assist Rider B - PR,5
-PCCD,Assist Rider Plan C (PRs),R     ,Assist Rider C - PR,5
-PEB,Enhanced Basic (PRs),H     ,Basic - PR,3
-PEBR,Plus Rider Basic (PRs),R     ,Plus Rider Basic - PR,4
-PBBR,Plus Rider Plan B (PRs),R     ,Plus Rider B - PR,4
-PCCR,Plus Rider Plan C (PRs),R     ,Plus Rider C - PR,4
 PECD,Plus Rider EC,R     ,Assist Rider Enhanced C,5
-PEB,Enhanced Basic (FRs),H     ,Basic - FR,3
-PEBD,Assist Rider Basic (FRs),R     ,Assist Rider Basic - FR,5
-PEBR,Plus Rider Basic (FRs),R     ,Plus Rider Basic - FR,4
 PEC,Enhanced C,H     ,Enhanced C,3
 PECR,Plus Rider C,R     ,Plus Rider Enhanced C,4
-PEC,Enhanced C (PRs),H     ,Enhanced C - PR,3
-PECD,Assist Rider EC (PRs),R     ,Assist Rider Enhanced C - PR,5
-PECR,Plus Rider EC (PRs),R     ,Plus Rider Enhanced C - PR,4
-PEC,Enhanced C (FRs),H     ,Enhanced C - FR,3
-PECD,Assist Rider EC (FRs),R     ,Assist Rider Enhanced  C- FR,5
-PECR,Plus Rider EC (FRs),R     ,Plus Rider Enhanced C - FR,4
 PHCAH,HC Rider Plan A,R     ,Daily Cash Rider,6
 PHCBH,HC Rider Plan B,R     ,Daily Cash Rider,6
 PHCCH,Daily Cash Rider,R     ,Daily Cash Rider,6
@@ -50,9 +34,5 @@ PEAH,Deluxe Care Rider Advantage,R     ,Deluxe Care Rider Advantage,9
 PEAL,Classic Care Rider Advantage,R     ,Classic Care RiderAdvantage,8
 PEBH,Deluxe Care Rider Basic,R     ,Deluxe Care Rider Basic,9
 PEBL,Classic Care Rider Basic,R     ,Classic Care Rider Basic,8
-PEBH,Deluxe Care Rider Basic (PRs),R     ,Deluxe Care Rider Basic - PR,9
-PEBL,Classic Care Rider Basic (PRs),R     ,Classic Care Rider Basic - PR,8
-PEBH,Deluxe Care Rider Basic (FRs),R     ,Deluxe Care Rider Basic - FR,9
-PEBL,Classic Care Rider Basic (FRs),R     ,Classic Care Rider Basic - FR,8
 PXPH,Standard Plan Deluxe Care Rider,R     ,Standard Plan Deluxe Care Rider,9
 PXPL,Standard Plan Classic Care Rider,R     ,Standard Plan Classic Care Rider,8
