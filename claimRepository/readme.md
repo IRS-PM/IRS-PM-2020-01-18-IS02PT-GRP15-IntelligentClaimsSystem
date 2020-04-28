@@ -54,6 +54,12 @@ Method: get
 Endpoint: /healthpolicy/:policyNo
 ```
 
+Get by insured id
+```
+Method: get
+Endpoint: /healthpolicy/byinsuredid/:insuredID
+```
+
 ### Medical claims
 Get all
 ```

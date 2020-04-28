@@ -48,6 +48,29 @@ router.get('/:policyNo', async (req, res) => {
   }  
 })
 
+router.get('/byinsuredid/:insuredId', async (req, res) => {
+  const { insuredId } = req.params
+  try {
+    const policy = await HealthPolicy.findOne({
+      InsuredID: insuredId,
+      include: {
+        model: ProductPlan,
+        include: PolicyBenefit
+      }
+    })
+    if (!policy) {
+      res.status(404)
+      return res.send('Not found')
+    }
+
+    return res.json(policy)
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
 module.exports = {
   router
 }
