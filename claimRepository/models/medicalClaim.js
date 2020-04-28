@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const { db } = require('../db/mysql.js')
+const { formatDateForClassification } = require('../utils/date') 
 
 class MedicalClaim extends Sequelize.Model {}
 
@@ -9,8 +10,11 @@ MedicalClaim.init({
   ClaimType: { type: Sequelize.STRING },
   PolicyNo: { type: Sequelize.STRING, references: { modelName: 'HealthPolicy', key: 'PolicyNo' } },
   DateOcc: { type: Sequelize.DATE },
+  DateOccFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('DateOcc')) } },
   EffDate: { type: Sequelize.DATE },
+  EffDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('EffDate')) } },
   ExpDate: { type: Sequelize.DATE },
+  ExpDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('ExpDate')) } },
   Rider: { type: Sequelize.STRING },
   HospitalType: { type: Sequelize.STRING },
   Specialist: { type: Sequelize.STRING },
@@ -24,6 +28,7 @@ MedicalClaim.init({
   HospitalCode: { type: Sequelize.STRING, references: { modelName: 'Hospital', key: 'HospitalCode' }, onUpdate: 'CASCADE', onDelete: 'SET NULL' },
   RiderPrdtCode: { type: Sequelize.STRING },
   RiderEffDate: { type: Sequelize.DATE },
+  RiderEffDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('RiderEffDate')) } },
   OtherDiagnosis: { type: Sequelize.STRING },
   RiderTypeID: { type: Sequelize.INTEGER.UNSIGNED },
   PanelTypeID: { type: Sequelize.INTEGER.UNSIGNED },
@@ -38,7 +43,9 @@ MedicalClaim.init({
   PoolID: { type: Sequelize.INTEGER.UNSIGNED, allowNull: true, defaultValue: null },
   PolicyDuration: { type: Sequelize.INTEGER.UNSIGNED },
   AssignDate: { type: Sequelize.DATE, allowNull: true, defaultValue: null },
+  AssignDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('AssignDate')) } },
   CloseDate: { type: Sequelize.DATE, allowNull: true, defaultValue: null },
+  CloseDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('CloseDate')) } },
   AutoClaim: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: 1 },
   ClassificationReason: { type: Sequelize.TEXT, allowNull: true, defaultValue: null },
   DeductibleAmount: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
