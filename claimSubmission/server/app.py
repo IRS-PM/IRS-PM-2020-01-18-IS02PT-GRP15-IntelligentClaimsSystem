@@ -6,6 +6,7 @@ from uuid import uuid4
 import os
 import dialogflow
 from util import *
+
 app = Flask(__name__)
 CORS(app)
 
@@ -21,19 +22,21 @@ def uploadFile():
 	file = request.files['file']
 	ext = file.filename.rsplit('.', 1)[1].lower()
 	if ext not in ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'pdf']:
-		return make_response(jsonify({ "message": "File extension not allowed" }), 400)
+		return make_response(jsonify({ "message": "File extension %s not allowed" % ext }), 400)
 	targetFilename = uuid4().hex + "." + ext
+	parameters = uploadEventParameters(request.host_url + "static/uploads/" + targetFilename, file, ext)
+	file.seek(0)
 	file.save(os.path.join('static/uploads', targetFilename))
-
 	# 2. SEND EVENT TO DIALOG FLOW
 
 	dfClient = dialogflow.SessionsClient()
 	session = dfClient.session_path(DIALOGFLOW_PROJECT_ID, request.headers['Dfsessionid'])
-	eventInput = dialogflow.types.EventInput(name='fileUploaded', language_code='en')
+
+	eventInput = dialogflow.types.EventInput(name='fileUploaded', language_code='en', parameters=parameters)
 	query_input = dialogflow.types.QueryInput(event=eventInput)
 	dfResponse = dfClient.detect_intent(session=session, query_input=query_input)
 	print(dfResponse)
-	return make_response(jsonify({ 
+	return make_response(jsonify({
 		"url": request.host_url + "static/uploads/" + targetFilename,
 		"originalFileName": file.filename,
 		"fulfillmentMessages": dfResponse.query_result.fulfillment_text
