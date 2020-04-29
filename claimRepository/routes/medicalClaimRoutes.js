@@ -12,13 +12,13 @@ const modelIncludes = [HealthPolicy, {
   include: Staff
 }]
 
-router.get(['/', '/classificationstatus/:classificationStatus'], async (req, res) => {
+router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
-    const { classificationStatus = '' } = req.params
+    const { status = '', policyNo = '' } = req.params
     const { offset=0, limit=50 } = req.query
-    const whereClause = classificationStatus? {
-      classificationStatus: classificationStatus
-    } : {}
+    const whereClause = {}
+    if (!!status) whereClause.Status = status
+    if (!!policyNo) whereClause.PolicyNo = policyNo
 
     const claims = await MedicalClaim.findAll({
       where: whereClause,

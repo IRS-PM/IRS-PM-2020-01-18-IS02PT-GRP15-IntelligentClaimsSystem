@@ -28,6 +28,19 @@ Method: get
 Endpoint: /productplan/:productCode
 ```
 
+### Hospital
+Get all
+```
+Method: get
+Endpoint: /hospital?offset=0&limit=100
+```
+
+Get one
+```
+Method: get
+Endpoint: /hospital/:hospitalCode
+```
+
 ### Medical Panels
 Get all
 ```
@@ -39,6 +52,19 @@ Get one
 ```
 Method: get
 Endpoint: /medicalpanel/:panelID
+```
+
+### DiagnosisCode
+Get all
+```
+Method: get
+Endpoint: /diagnosiscode?offset=0&limit=100
+```
+
+Get one
+```
+Method: get
+Endpoint: /diagnosiscode/:code
 ```
 
 ### Health Policies
@@ -67,12 +93,18 @@ Method: get
 Endpoint: /medicalclaim?offset=0&limit=100
 ```
 
-**Get by classification status**
+Get by status
 ```
 Method: get
-Endpoint: /medicalclaim/classificationstatus/:status?offset=0&limit=100
+Endpoint: /medicalclaim/status/:status?offset=0&limit=100
 ```
-* Note: Valid statuses are: `pending`, `approved`, `rejected`, `human_intervention`
+* Note: [status codes: 1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
+
+Get by policyno
+```
+Method: get
+Endpoint: /medicalclaim/policyno/:policyno?offset=0&limit=100
+```
 
 Get one
 ```

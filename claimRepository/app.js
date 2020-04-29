@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const { connect: connectToDB } = require('./db/mysql.js')
 const { connect: connectToEventQueue, dispatchEvent, subscribeToEvent } = require('./eventDispatcher/amqp')
-const { healthPolicyRoutes, medicalPanelRoutes, medicalClaimRoutes, productPlanRoutes, staffRoutes } = require('./routes/index.js')
+const { healthPolicyRoutes, medicalPanelRoutes, medicalClaimRoutes, productPlanRoutes, staffRoutes, diagnosisCodeRoutes, hospitalRoutes } = require('./routes/index.js')
 
 const { HTTP_PORT, WAIT_TO_START=0 } = process.env
 /**
@@ -26,6 +26,8 @@ const init = async () => {
     app.use('/medicalclaim', medicalClaimRoutes)
     app.use('/healthpolicy', healthPolicyRoutes)
     app.use('/medicalpanel', medicalPanelRoutes)
+    app.use('/diagnosiscode', diagnosisCodeRoutes)
+    app.use('/hospital', hospitalRoutes)
     app.use('/staff', staffRoutes)
 
     app.listen(HTTP_PORT, () => {
