@@ -90,7 +90,7 @@ export function UploadFileDialog({
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth={true}>
-            <DialogTitle>Upload File</DialogTitle>
+            <DialogTitle>Upload Bill</DialogTitle>
             <DialogContent>
                 <Box className={cssClasses.fileContainer}>
                     {!!file?
@@ -105,7 +105,7 @@ export function UploadFileDialog({
                         )
                         : (
                             <FileDropZone
-                                acceptedMimeTypes={['image/*','application/pdf']}
+                                acceptedMimeTypes={['image/png','image/jpg','image/jpeg','image/gif','image/bmp','application/pdf']}
                                 onFilesAdded={handleFileChange}
                                 onFilesRejected={handleFileRejected}
                                 blockOtherDrops={true}
@@ -114,6 +114,8 @@ export function UploadFileDialog({
                         )
                     }
                 </Box>
+                <br />
+                <Typography variant="caption">*Supported file formats: png, jpg, gif, bmp, and pdf</Typography>
             </DialogContent>
             <DialogActions>
                 <Button 
