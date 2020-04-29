@@ -58,6 +58,8 @@ services:
       DIALOG_FLOW_CLIENT_ID: 111476536459718875872
       GOOGLE_APPLICATION_CREDENTIALS: private_key.json
       CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+      GOOGLE_API_KEY: AIzaSyBuZXEcDehWONb3Np0axuAj0jg8l9K00pw
+      OCR_FEATURE: 0
 
   # CLAIM SUBMISSION FRONTEND
   claimsubmissionfrontend:

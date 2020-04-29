@@ -1,7 +1,7 @@
 import requests
 from flask import jsonify
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-from config import CLAIM_REPOSITORY_HOST, OCR_FEATURE
+from config import CLAIM_REPOSITORY_HOST, OCR_FEATURE, GOOGLE_API_KEY
 import json
 from google.protobuf import struct_pb2
 import base64
@@ -40,40 +40,47 @@ def uploadEventParameters(url, file, ext):
 	parameters = struct_pb2.Struct()
 	parameters["attachUrl"] = url
 	parameters["originalFileName"] = file.filename
-	if 1==1: #OCR_FEATURE=="TRUE":
+	parameters["ocrResult"] = ""
+	if OCR_FEATURE=="1":
 		file.seek(0)
 		if ext in ['png', 'jpg', 'jpeg', 'gif', 'bmp']:
-			url='https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBuZXEcDehWONb3Np0axuAj0jg8l9K00pw'
-			payload = json.dumps(get_vision_image_request(file))
+			parameters["ocrResult"] = imagesAnnotate(file)
 		elif ext in ['pdf']:
-			url='https://vision.googleapis.com/v1/files:annotate?key=AIzaSyBuZXEcDehWONb3Np0axuAj0jg8l9K00pw'
-			payload = json.dumps(get_vision_pdf_request(file))
+			parameters["ocrResult"] = filesAnnotate(file)
 		else:
-			return "The file is not supported"
-		(status,response) = post(url,payload)
-		if status == requests.codes.ok:
-			text = ''
-			for page in response["responses"][0]["responses"]:
-				text += page["fullTextAnnotation"]["text"] + "\n"
-			parameters["ocrResult"] = text
-		else:
-			parameters["ocrResult"] = "OCR error %s: %s" % (status, response)
+			parameters["ocrResult"] = "The file is not supported"
 	return parameters
 
-def get_vision_pdf_request(file):
-	return {
+def filesAnnotate(file):
+	url = "https://vision.googleapis.com/v1/files:annotate?key=%s" % GOOGLE_API_KEY
+	payload = json.dumps({
 		"requests": [{
 			"inputConfig" : {"content" : (base64.b64encode(file.read())).decode('UTF-8'), "mimeType": "application/pdf"},
 			"features" : [{"type": "DOCUMENT_TEXT_DETECTION"}],
 			"imageContext" : {"languageHints": ["en-t-i0-handwrit"]}
 		}]
-	}
+	})
 
-def get_vision_image_request(file):
-	return {
+	(status,response) = post(url,payload)
+	if status == requests.codes.ok:
+		text = ''
+		for page in response["responses"][0]["responses"]:
+			text += page["fullTextAnnotation"]["text"] + "\n"
+		return text
+	else:
+		return "filesAnnotate error %s: %s" % (status, response)
+
+def imagesAnnotate(file):
+	url = "https://vision.googleapis.com/v1/images:annotate?key=%s" % GOOGLE_API_KEY
+	payload = json.dumps({
 		"requests": [{
 			"image" : {"content" : (base64.b64encode(file.read())).decode('UTF-8')},
 			"features" : [{"type": "DOCUMENT_TEXT_DETECTION"}],
 			"imageContext" : {"languageHints": ["en-t-i0-handwrit"]}
 		}]
-	}
+	})
+	(status,response) = post(url,payload)
+	if status == requests.codes.ok:
+		return response["responses"][0]["textAnnotations"][0]["description"]
+	else:
+		return "imageAnnotate error %s: %s" % (status, response)
