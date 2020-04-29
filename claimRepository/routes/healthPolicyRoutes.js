@@ -1,5 +1,5 @@
 const express = require('express')
-const { HealthPolicy, ProductPlan, PolicyBenefit } = require('../models')
+const { HealthPolicy, ProductPlan, PolicyBenefit, MedicalClaim } = require('../models')
 const router = express.Router()
 
 const modelIncludeList = [{
@@ -8,6 +8,9 @@ const modelIncludeList = [{
 }, {
   association: 'RiderPlan',
   include: PolicyBenefit
+}, {
+  model: MedicalClaim,
+  attributes: ['ClaimNo']
 }]
 
 router.get('/', async (req, res) => {

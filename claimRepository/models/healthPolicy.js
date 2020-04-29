@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize')
+const { get } =  require('lodash')
 const { db } = require('../db/mysql.js')
 const { formatDateForClassification } = require('../utils/date') 
 
+const today = new Date()
 class HealthPolicy extends Sequelize.Model {}
 
 HealthPolicy.init({
@@ -58,7 +60,38 @@ HealthPolicy.init({
   PolicyYearLimit: { type: Sequelize.FLOAT(10, 2), allowNull: false, defaultValue: 0 },
   PolicyYearBalance: { type: Sequelize.FLOAT(10, 2), allowNull: false, defaultValue: 0 },
   LifeTimeLimit: { type: Sequelize.FLOAT(10, 2), allowNull: false, defaultValue: 0 },
-  LifeTimeBalance: { type: Sequelize.FLOAT(10, 2), allowNull: false, defaultValue: 0 }
+  LifeTimeBalance: { type: Sequelize.FLOAT(10, 2), allowNull: false, defaultValue: 0 },
+  CurrentYearAutoClaimCount: { 
+    type: Sequelize.VIRTUAL, 
+    get() { 
+      if (!this.MedicalClaims) {
+        return undefined
+      }
+
+      const dateFrom = new Date(this.getDataValue('CommencementDate'))
+      dateFrom.setFullYear(today.getFullYear())
+      if (today.getTime() < dateFrom.getTime())
+      dateFrom.setFullYear(dateFrom.getFullYear() - 1)
+
+      const dateTo = new Date(dateFrom)
+      dateTo.setFullYear(dateFrom.getFullYear() + 1)
+
+      const timeFrom = dateFrom.getTime()
+      const timeTo = dateTo.getTime()
+
+      return this.MedicalClaims.reduce((count, claim) => {
+        if (!claim.AutoClaim || !claim.DateOcc) {
+          return count
+        }
+
+        const timeOcc = claim.DateOcc.getTime()
+        if (timeOcc >= timeFrom && timeOcc <= timeTo) {
+          count ++
+        }
+        return count
+      }, 0)
+    } 
+  },
 }, {
   sequelize: db,
   modelName: 'HealthPolicy',

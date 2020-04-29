@@ -61,6 +61,20 @@ Method: get
 Endpoint: /diagnosiscode?offset=0&limit=100
 ```
 
+Get by auto reject flag
+```
+Method: get
+Endpoint: /diagnosiscode/autoreject/:autoReject?offset=0&limit=100
+```
+* note: autoReject can be `Y` or `N`
+  
+Get by minor claims flag
+```
+Method: get
+Endpoint: /diagnosiscode/minorclaims/:minorClaims?offset=0&limit=100
+```
+* note: minorClaims can be `Y` or `N`
+
 Get one
 ```
 Method: get

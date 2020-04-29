@@ -1,10 +1,25 @@
 const express = require('express')
-const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, PolicyBenefit } = require('../models')
+const sequelize = require('sequelize')
+const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit } = require('../models')
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
 const router = express.Router()
+const currentDate = new Date()
 
-const modelIncludes = [HealthPolicy, {
+const modelIncludes = [{
+  model: HealthPolicy,
+  include: [{
+    model: ProductPlan,
+    include: PolicyBenefit
+  }, {
+    model: MedicalClaim,
+    attributes: [
+      'ClaimNo', 
+      'DateOcc',
+      'AutoClaim'
+    ]
+  }]
+}, {
   model: ClaimItem,
   include: PolicyBenefit
 }, {

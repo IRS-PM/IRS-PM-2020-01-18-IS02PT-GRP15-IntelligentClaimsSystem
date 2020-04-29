@@ -2,15 +2,23 @@ const express = require('express')
 const { DiagnosisCode } = require('../models')
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get(['/', '/autoreject/:autoReject', '/minorclaims/:minorClaims'], async (req, res) => {
   const { offset=0, limit=50 } = req.query
+  const { autoReject = '', minorClaims = '' } = req.params
+  const whereClause = {}
+  if (!!autoReject) whereClause.AutoReject = autoReject
+    if (!!minorClaims) whereClause.MinorClaims = minorClaims
+
   try {
     const entries = await DiagnosisCode.findAll({
+      where: whereClause,
       offset: parseInt(offset),
       limit: parseInt(limit)
     })
     return res.json({
-      total: await DiagnosisCode.count(),
+      total: await DiagnosisCode.count({
+        where: whereClause
+      }),
       offset: offset,
       limit: limit,
       data: entries
