@@ -907,95 +907,344 @@ D390,Neoplasm of uncertain or unknown behaviour of uterus,N,10,N
 D391,Neoplasm of uncertain or unknown behaviour of ovary,N,10,N
 D392,Neoplasm of uncertain or unknown behaviour of placenta,N,10,N
 D397,Neoplasm of uncertain or unknown behaviour of other female genital organs,N,10,N
-5206,DISTURBANCES IN TOOTH ERUPTION,Y,9,N
-5207,TEETHING SYNDROME,N,9,N
-5294,ATROPHY OF TONGUE PAPILLAE,N,9,N
-6069,"MALE INFERTILITY, UNSPECIFIED",Y,9,N
-6381,FAILED ATTEMPTED ABORTION COMPLICATED BY DELAYED OR EXCESSIVE HEMO,Y,9,N
-6823,CELLULITIS AND ABSCESS OF UPPER ARM AND FOREARM,N,9,N
-7485,"CONGENITAL AGENESIS, HYPOPLASIA, AND DYSPLASIA OF LUNG",Y,9,N
-7486,CONGENITAL OTHER ANOMALIES OF LUNG,Y,9,N
-7488,OTHER SPECIFIED CONGENITAL ANOMALIES OF RESPIRATORY SYSTEM,Y,9,N
-7489,UNSPECIFIED CONGENITAL ANOMALY OF RESPIRATORY SYSTEM,Y,9,N
-7490,CLEFT PALATE,Y,9,N
-7491,CLEFT LIP,Y,9,N
-7492,CLEFT PALATE WITH CLEFT LIP,Y,9,N
-7500,TONGUE TIE,Y,9,N
-7501,OTHER CONGENITAL ANOMALIES OF TONGUE,Y,9,N
-7502,OTHER SPECIFIED CONGENITAL ANOMALIES OF MOUTH AND PHARYNX,Y,9,N
-7503,"CONGENITAL TRACHEOESOPHAGEAL FISTULA, ESOPHAGEAL ATRESIA AND STENO",Y,9,N
-7504,OTHER SPECIFIED CONGENITAL ANOMALIES OF ESOPHAGUS,Y,9,N
-7505,CONGENITAL HYPERTROPHIC PYLORIC STENOSIS,Y,9,N
-7506,CONGENITAL HIATUS HERNIA,Y,9,N
-7507,OTHER SPECIFIED CONGENITAL ANOMALIES OF STOMACH,Y,9,N
-7508,OTHER SPECIFIED CONGENITAL ANOMALIES OF UPPER ALIMENTARY TRACT,Y,9,N
-7509,UNSPECIFIED CONGENITAL ANOMALY OF UPPER ALIMENTARY TRACT,Y,9,N
-7510,MECKELS DIVERTICULUM,Y,9,N
-7511,CONGENITAL ATRESIA AND STENOSIS OF SMALL INTESTINE,Y,9,N
-7512,"CONGENITAL ATRESIA AND STENOSIS OF LARGE INTESTINE, RECTUM, AND AN",Y,9,N
-7513,HIRSCHSPRUNGS DISEASE AND OTHER CONGENITAL FUNCTIONAL DISORDERS O,Y,9,N
-7514,CONGENITAL ANOMALIES OF INTESTINAL FIXATION,Y,9,N
-7515,OTHER CONGENITAL ANOMALIES OF INTESTINE,Y,9,N
-7516,"ANOMALIES OF GALLBLADDER, BILE DUCTS, AND LIVER",Y,9,N
-7517,CONGENITAL ANOMALIES OF PANCREAS,Y,9,N
-7518,OTHER SPECIFIED CONGENITAL ANOMALIES OF DIGESTIVE SYSTEM,Y,9,N
-7519,UNSPECIFIED CONGENITAL ANOMALY OF DIGESTIVE SYSTEM,Y,9,N
-7520,CONGENITAL ANOMALIES OF OVARIES,Y,9,N
-7521,CONGENITAL ANOMALIES OF FALLOPIAN TUBES AND BROAD LIGAMENTS,Y,9,N
-7522,DOUBLING OF UTERUS,Y,9,N
-7523,OTHER CONGENITAL ANOMALIES OF UTERUS,Y,9,N
-7524,"CONGENITAL ANOMALIES OF CERVIX, VAGINA, AND EXTERNAL FEMALE GENITA",Y,9,N
-7525,UNDESCENDED TESTICLE,Y,9,N
-7526,HYPOSPADIAS AND EPISPADIAS,Y,9,N
-7527,INDETERMINATE SEX AND PSEUDOHERMAPHRODITISM,Y,9,N
-7528,OTHER SPECIFIED CONGENITAL ANOMALIES OF GENITAL ORGANS,Y,9,N
-7529,UNSPECIFIED CONGENITAL ANOMALY OF GENITAL ORGANS,Y,9,N
-7530,RENAL AGENESIS AND DYSGENESIS,Y,9,N
-7531,CONGENITAL CYSTIC KIDNEY DISEASE,Y,9,N
-7532,CONGENITAL OBSTRUCTIVE DEFECTS OF RENAL PELVIS AND URETER,Y,9,N
-7533,OTHER SPECIFIED CONGENITAL ANOMALIES OF KIDNEY,Y,9,N
-7534,OTHER SPECIFIED CONGENITAL ANOMALIES OF URETER,Y,9,N
-7535,EXSTROPHY OF URINARY BLADDER,Y,9,N
-7536,CONGENITAL ATRESIA AND STENOSIS OF URETHRA AND BLADDER NECK,Y,9,N
-7537,CONGENITAL ANOMALIES OF URACHUS,Y,9,N
-7538,OTHER SPECIFIED CONGENITAL ANOMALIES OF BLADDER AND URETHRA,Y,9,N
-7539,UNSPECIFIED CONGENITAL ANOMALY OF URINARY SYSTEM,Y,9,N
-7540,"CONGENITAL MUSCULOSKELETAL DEFORMITIES OF SKULL, FACE, AND JAW",Y,9,N
-7541,CONGENITAL MUSCULOSKELETAL DEFORMITIES OF STERNOCLEIDOMASTOID MUSC,Y,9,N
-7542,CONGENITAL MUSCULOSKELETAL DEFORMITIES OF SPINE,Y,9,N
-7543,CONGENITAL DISLOCATION OF HIP,Y,9,N
-7544,CONGENITAL GENU RECURVATUM AND BOWING OF LONG BONES OF LEG,Y,9,N
-7545,CONGENITAL VARUS DEFORMITIES OF FEET,Y,9,N
-7546,CONGENITAL VALGUS DEFORMITIES OF FEET,Y,9,N
-7547,OTHER CONGENITAL DEFORMITIES OF FEET,Y,9,N
-7548,OTHER SPECIFIED NONTERATOGENIC ANOMALIES,Y,9,N
-7550,POLYDACTYLY,Y,9,N
-7551,SYNDACTYLY,Y,9,N
-7552,"REDUCTION DEFORMITIES OF UPPER LIMB, CONGENITAL",Y,9,N
-7553,CONGENITAL REDUCTION DEFORMITIES OF LOWER LIMB,Y,9,N
-7554,"CONGENITAL REDUCTION DEFORMITIES, UNSPECIFIED LIMB",Y,9,N
-2864,VON WILLEBRANDS DISEASE,Y,9,N
-2865,HEMORRHAGIC DISORDER DUE TO CIRCULATING ANTICOAGULANTS,Y,9,N
-2866,DEFIBRINATION SYNDROME,Y,9,N
-2867,ACQUIRED COAGULATION FACTOR DEFICIENCY,Y,9,N
-2869,OTHER AND UNSPECIFIED COAGULATION DEFECTS,Y,9,N
-2870,ALLERGIC PURPURA,N,9,N
-2871,QUALITATIVE PLATELET DEFECTS,N,9,N
-2872,OTHER NONTHROMBOCYTOPENIC PURPURAS,N,9,N
-2873,PRIMARY THROMBOCYTOPENIA,N,9,N
-2874,SECONDARY THROMBOCYTOPENIA,N,9,N
-2875,"THROMBOCYTOPENIA, UNSPECIFIED",N,9,N
-2878,OTHER SPECIFIED HEMORRHAGIC CONDITIONS,N,9,N
-2879,UNSPECIFIED HEMORRHAGIC CONDITIONS,N,9,N
-2880,AGRANULOCYTOSIS,N,9,N
-2881,FUNCTIONAL DISORDERS OF POLYMORPHONUCLEAR NEUTROPHILS,N,9,N
-2882,GENETIC ANOMALIES OF LEUKOCYTES,N,9,N
-2883,EOSINOPHILIA,N,9,N
-2888,OTHER SPECIFIED DISEASE OF WHITE BLOOD CELLS,N,9,N
-2889,UNSPECIFIED DISEASE OF WHITE BLOOD CELLS,N,9,N
-2890,"POLYCYTHEMIA, SECONDARY",N,9,N
-2891,CHRONIC LYMPHADENITIS,N,9,N
-2892,NONSPECIFIC MESENTERIC LYMPHADENITIS,N,9,N
-2893,"LYMPHADENITIS, UNSPECIFIED, EXCEPT MESENTERIC",N,9,N
-2894,HYPERSPLENISM,N,9,N
-2895,OTHER DISEASES OF SPLEEN,N,9,N
+D311,Benign neoplasm of cornea,N,10,Y
+D320,Benign neoplasm of cerebral meninges,N,10,N
+D334,Benign neoplasm of spinal cord,N,10,N
+2958,OTHER SPECIFIED TYPES OF SCHIZOPHRENIA,Y,9,N
+2964,"BIPOLAR AFFECTIVE DISORDER, MANIC",Y,9,N
+D399,"Neoplasm of uncertain or unknown behaviour of female genital organ, unspecified",N,10,N
+D411,Neoplasm of uncertain or unknown behaviour of renal pelvis,N,10,N
+D469,"Myelodysplastic syndrome, unspecified",N,10,N
+D470,Histiocytic and mast cell tumours of uncertain and unknown behaviour,N,10,N
+31234,INTERMITTENT EXPLOSIVE DISORDER,Y,9,N
+A001,"Cholera due to Vibrio cholerae 01, biovar eltor",N,10,Y
+A009,"Cholera, unspecified",N,10,Y
+A031,Shigellosis due to Shigella flexneri,N,10,N
+A048,Other specified bacterial intestinal infections,N,10,Y
+A08,Viral and other specified intestinal infections,N,10,Y
+A080,Rotaviral enteritis,N,10,Y
+A085,Other specified intestinal infections,N,10,Y
+A099,Gastroenteritis and colitis of unspecified origin,N,10,Y
+A150,"Tuberculosis of lung, confirmed by sputum microscopy with or without culture",N,10,N
+A221,Pulmonary anthrax,N,10,N
+A37,Whooping cough,N,10,N
+A419,"Sepsis, unspecified",N,10,Y
+B961,Klebsiella pneumoniae [K. pneumoniae] as the cause of diseases classified to other chapters,N,10,Y
+B962,Escherichia coli [E. coli] as the cause of diseases classified to other chapters,N,10,Y
+B965,Pseudomonas (aeruginosa) as the cause of diseases classified to other chapters,N,10,Y
+B9681,Helicobacter pylori [H. pylori] as the cause of diseases classified to other chapters,N,10,Y
+C005,"Malignant neoplasm of lip, unspecified, inner aspect",N,10,N
+C119,"Malignant neoplasm of nasopharynx, unspecified",N,10,N
+C169,"Malignant neoplasm of stomach, unspecified",N,10,N
+C187,Malignant neoplasm of sigmoid colon,N,10,N
+C189,"Malignant neoplasm of colon, unspecified part",N,10,N
+C220,Liver cell carcinoma,N,10,N
+C221,Intrahepatic bile duct carcinoma,N,10,N
+C250,Malignant neoplasm of head of pancreas,N,10,N
+C259,"Malignant neoplasm of pancreas, part unspecified",N,10,N
+C269,Malignant neoplasm of ill-defined sites within the digestive system,N,10,N
+C34,Malignant neoplasm of bronchus and lung,N,10,N
+C341,"Malignant neoplasm of upper lobe, bronchus or lung",N,10,N
+C349,"Malignant neoplasm of bronchus or lung, unspecified",N,10,N
+C37,Malignant neoplasm of thymus,N,10,N
+C50,Malignant neoplasm of breast,N,10,N
+C500,Malignant neoplasm of nipple and areola,N,10,N
+C502,Malignant neoplasm of upper-inner quadrant of breast,N,10,N
+C509,"Malignant neoplasm of breast, unspecified part",N,10,N
+C541,Malignant neoplasm of endometrium,N,10,N
+C55,"Malignant neoplasm of uterus, part unspecified",N,10,N
+C56,Malignant neoplasm of ovary,N,10,N
+C61,Malignant neoplasm of prostate,N,10,N
+C675,Malignant neoplasm of bladder neck,N,10,N
+C73,Malignant neoplasm of thyroid gland,N,10,N
+C791,Secondary malignant neoplasm of bladder and other and unspecified urinary organs,N,10,N
+C833,Large cell (diffuse) non-Hodgkin lymphoma,N,10,N
+C850,Lymphosarcoma,N,10,N
+C859,"Non-Hodgkin lymphoma, unspecified type",N,10,N
+C9000,"Multiple myeloma, without mention of remission",N,10,N
+C9100,"Acute lymphoblastic leukaemia, without mention of remission",N,10,N
+C911,Chronic lymphocytic leukaemia,N,10,N
+C92,Myeloid leukaemia,N,10,N
+C9200,"Acute myeloid leukaemia, without mention of remission",N,10,N
+C9210,"Chronic myeloid leukaemia, without mention of remission",N,10,N
+C962,Malignant mast cell tumour,N,10,N
+D020,Carcinoma in situ of larynx,N,10,N
+D121,Benign neoplasm of appendix,N,10,Y
+D122,Benign neoplasm of ascending colon,N,10,Y
+D123,Benign neoplasm of transverse colon,N,10,Y
+D124,Benign neoplasm of descending colon,N,10,Y
+D125,Benign neoplasm of sigmoid colon,N,10,Y
+D129,Benign neoplasm of anus and anal canal,N,10,Y
+D171,Benign lipomatous neoplasm of skin and subcutaneous tissue of trunk,N,10,Y
+D172,Benign lipomatous neoplasm of skin and subcutaneous tissue of limbs,N,10,Y
+D1801,"Haemangioma, skin and subcutaneous tissue",N,10,N
+D250,Submucous leiomyoma of uterus,N,10,Y
+D251,Intramural leiomyoma of uterus,N,10,Y
+D252,Subserosal leiomyoma of uterus,N,10,Y
+D259,"Leiomyoma of uterus, unspecified",N,10,Y
+D300,Benign neoplasm of kidney,N,10,Y
+D509,"Iron deficiency anaemia, unspecified",N,10,N
+D638,Anaemia in other chronic diseases classified elsewhere,N,10,N
+D649,"Anaemia, unspecified",N,10,N
+E00,Congenital iodine-deficiency syndrome,Y,10,N
+E04,Other nontoxic goitre,N,10,Y
+E1165,Type 2 diabetes mellitus with poor control,N,10,N
+E1169,Type 2 diabetes mellitus with other specified complication,N,10,N
+E1172,Type 2 diabetes mellitus with features of insulin resistance,N,10,N
+E118,Type 2 diabetes mellitus with unspecified complication,N,10,N
+E119,Type 2 diabetes mellitus without complication,N,10,N
+E139,Other specified diabetes mellitus without complication,N,10,N
+E1429,Unspecified diabetes mellitus with other specified kidney complication,N,10,N
+E1431,Unspecified diabetes mellitus with background retinopathy,N,10,N
+E1472,Unspecified diabetes mellitus with features of insulin resistance,N,10,N
+E149,Unspecified diabetes mellitus without complication,N,10,N
+E162,"Hypoglycaemia, unspecified",N,10,N
+E274,Other and unspecified adrenocortical insufficiency,N,10,N
+E559,"Vitamin D deficiency, unspecified",N,10,N
+E668,Other obesity,N,10,N
+E781,Pure hyperglyceridaemia,N,10,N
+E785,"Hyperlipidaemia, unspecified",N,10,N
+E86,Volume depletion,N,10,N
+E872,Acidosis,N,10,N
+F03,Unspecified dementia,Y,10,N
+F10,Mental and behavioural disorders due to use of alcohol,Y,10,N
+F102,"Mental and behavioural disorders due to use of alcohol, dependence syndrome",Y,10,N
+F109,"Mental and behavioural disorders due to use of alcohol, unspecified mental and behavioural disorder",Y,10,N
+F206,Simple schizophrenia,Y,10,N
+F209,"Schizophrenia, unspecified",Y,10,N
+F432,Adjustment disorders,Y,10,N
+F441,Dissociative fugue,Y,10,N
+G04,"Encephalitis, myelitis and encephalomyelitis",N,10,Y
+G122,Motor neuron disease,N,10,N
+G20,Parkinsons disease,N,10,N
+G4030,"Generalised idiopathic epilepsy and epileptic syndromes, without mention of intractable epilepsy",N,10,N
+G418,Other status epilepticus,N,10,N
+G47,Sleep disorders,N,10,Y
+G470,Disorders of initiating and maintaining sleep [insomnias],N,10,Y
+G4732,Obstructive sleep apnoea syndrome,N,10,Y
+G4733,Sleep hypoventilation syndrome,N,10,Y
+G474,Narcolepsy and cataplexy,N,10,Y
+G513,Clonic hemifacial spasm,N,10,N
+G551,Nerve root and plexus compressions in intervertebral disc disorders (M50-M51+),N,10,N
+G560,Carpal tunnel syndrome,N,10,Y
+G819,"Hemiplegia, unspecified",N,10,N
+G834,Cauda equina syndrome,N,10,N
+H024,Ptosis of eyelid,N,10,Y
+H250,Senile incipient cataract,N,10,Y
+H251,Senile nuclear cataract,N,10,Y
+H259,"Senile cataract, unspecified",N,10,Y
+H264,After-cataract,N,10,Y
+H269,"Cataract, unspecified",N,10,Y
+H31,Other disorders of choroid,N,10,Y
+H314,Choroidal detachment,N,10,Y
+H318,Other specified disorders of choroid,N,10,Y
+H330,Retinal detachment with retinal break,N,10,Y
+H332,Serous retinal detachment,N,10,Y
+H333,Retinal breaks without detachment,N,10,Y
+H350,Background retinopathy and retinal vascular changes,N,10,Y
+H357,Separation of retinal layers,N,10,Y
+H358,Other specified retinal disorders,N,10,Y
+H518,Other specified disorders of binocular movement,N,10,N
+H663,Other chronic suppurative otitis media,N,10,Y
+H669,"Otitis media, unspecified",N,10,Y
+H810,Menieres disease,N,10,Y
+H931,Tinnitus,N,10,Y
+H938,Other specified disorders of ear,N,10,Y
+I029,Rheumatic chorea without heart involvement,N,10,N
+I080,Disorders of both mitral and aortic valves,N,10,N
+I10,Essential (primary) hypertension,N,10,N
+I120,Hypertensive kidney disease with kidney failure,N,10,N
+I214,Acute subendocardial myocardial infarction,N,10,N
+I219,"Acute myocardial infarction, unspecified",N,10,N
+I2511,"Atherosclerotic heart disease, of native coronary artery",N,10,N
+I259,"Chronic ischaemic heart disease, unspecified",N,10,N
+I269,Pulmonary embolism without mention of acute cor pulmonale,N,10,N
+I313,Pericardial effusion (noninflammatory),N,10,N
+I48,Atrial fibrillation and flutter,N,10,N
+I493,Ventricular premature depolarisation,N,10,N
+I620,Subdural haemorrhage (acute)(nontraumatic),N,10,N
+I629,"Intracranial haemorrhage (nontraumatic), unspecified",N,10,N
+I630,Cerebral infarction due to thrombosis of precerebral arteries,N,10,N
+I635,Cerebral infarction due to unspecified occlusion or stenosis of cerebral arteries,N,10,N
+I639,"Cerebral infarction, unspecified",N,10,N
+I676,Nonpyogenic thrombosis of intracranial venous system,N,10,N
+I714,"Abdominal aortic aneurysm, without mention of rupture",N,10,N
+I745,Embolism and thrombosis of iliac artery,N,10,N
+I781,"Naevus, non-neoplastic",N,10,N
+I802,Phlebitis and thrombophlebitis of other deep vessels of lower extremities,N,10,Y
+I841,Internal haemorrhoids with other complications,N,10,Y
+I842,Internal haemorrhoids without complication,N,10,Y
+I848,Unspecified haemorrhoids with other complications,N,10,Y
+I849,Unspecified haemorrhoids without complication,N,10,Y
+I891,Lymphangitis,N,10,Y
+I951,Orthostatic hypotension,N,10,N
+I982,Oesophageal varices without mention of bleeding in diseases classified elsewhere,N,10,N
+J011,Acute frontal sinusitis,N,10,Y
+J019,"Acute sinusitis, unspecified",N,10,Y
+J039,"Acute tonsillitis, unspecified",N,10,Y
+J06,Acute upper respiratory infections of multiple and unspecified sites,N,10,Y
+J069,"Acute upper respiratory infection, unspecified",N,10,Y
+J101,"Influenza with other respiratory manifestations, other influenza virus identified",N,10,Y
+J13,Pneumonia due to Streptococcus pneumoniae,N,10,Y
+J18,"Pneumonia, organism unspecified",N,10,Y
+J189,"Pneumonia, unspecified",N,10,Y
+J22,Unspecified acute lower respiratory infection,N,10,Y
+J304,"Allergic rhinitis, unspecified",N,10,Y
+J310,Chronic rhinitis,N,10,Y
+J321,Chronic frontal sinusitis,N,10,Y
+J34,Other disorders of nose and nasal sinuses,N,10,Y
+J342,Deviated nasal septum,N,10,Y
+J343,Hypertrophy of nasal turbinates,N,10,Y
+J348,Other specified disorders of nose and nasal sinuses,N,10,Y
+J47,Bronchiectasis,N,10,N
+J80,Adult respiratory distress syndrome,N,10,N
+J90,"Pleural effusion, not elsewhere classified",N,10,N
+K081,"Loss of teeth due to accident, extraction or local periodontal disease",Y,10,N
+K099,"Cyst of oral region, unspecified",N,10,Y
+K20,Oesophagitis,N,10,Y
+K219,Gastro-oesophageal reflux disease without oesophagitis,N,10,Y
+K290,Acute haemorrhagic gastritis,N,10,Y
+K291,Other acute gastritis,N,10,Y
+K294,Chronic atrophic gastritis,N,10,Y
+K295,"Chronic gastritis, unspecified",N,10,Y
+K297,"Gastritis, unspecified",N,10,Y
+K299,"Gastroduodenitis, unspecified",N,10,Y
+K30,Dyspepsia,N,10,Y
+K311,Adult hypertrophic pyloric stenosis,N,10,Y
+K317,Polyp of stomach and duodenum,N,10,Y
+K3181,Angiodysplasia of stomach and duodenum without mention of haemorrhage,N,10,Y
+K3188,Other specified diseases of stomach and duodenum,N,10,Y
+K350,Acute appendicitis with generalised peritonitis,N,10,Y
+K359,"Acute appendicitis, unspecified",N,10,Y
+K4020,"Bilateral inguinal hernia, without obstruction or gangrene, not specified as recurrent",N,10,Y
+K4090,"Unilateral or unspecified inguinal hernia, without obstruction or gangrene, not specified as recurre",N,10,Y
+K5730,"Diverticulosis of large intestine without perforation, abscess or mention of haemorrhage",N,10,Y
+K5732,"Diverticulitis of large intestine without perforation, abscess or mention of haemorrhage",N,10,Y
+K590,Constipation,N,10,Y
+K610,Anal abscess,N,10,Y
+K613,Ischiorectal abscess,N,10,Y
+K621,Rectal polyp,N,10,Y
+K633,Ulcer of intestine,N,10,Y
+K635,Polyp of colon,N,10,Y
+K6350,"Polyp of colon, unspecified",N,10,Y
+K6358,Other polyp of colon,N,10,Y
+K639,"Disease of intestine, unspecified",N,10,Y
+K709,"Alcoholic liver disease, unspecified",Y,10,N
+K746,Other and unspecified cirrhosis of liver,N,10,N
+K750,Abscess of liver,N,10,N
+K8000,"Calculus of gallbladder with acute cholecystitis, without mention of obstruction",N,10,Y
+K8020,"Calculus of gallbladder without cholecystitis, without mention of obstruction",N,10,Y
+K8050,"Calculus of bile duct without cholangitis or cholecystitis, without mention of obstruction",N,10,Y
+K819,"Cholecystitis, unspecified",N,10,Y
+K831,Obstruction of bile duct,N,10,Y
+K922,"Gastrointestinal haemorrhage, unspecified",N,10,N
+L0311,Cellulitis of lower limb,N,10,N
+L039,"Cellulitis, unspecified",N,10,N
+L089,"Local infection of skin and subcutaneous tissue, unspecified",N,10,Y
+L309,"Dermatitis, unspecified",N,10,Y
+L720,Epidermal cyst,N,10,Y
+L9050,"Scar conditions and fibrosis of skin, unspecified cause",N,10,N
+L97,"Ulcer of lower limb, not elsewhere classified",N,10,Y
+M0096,"Pyogenic arthritis, unspecified, lower leg",N,10,Y
+M0619,"Adult-onset Stills disease, site unspecified",N,10,N
+M17,Gonarthrosis [arthrosis of knee],N,10,Y
+M170,"Primary gonarthrosis, bilateral",N,10,Y
+M171,Other primary gonarthrosis,N,10,Y
+M2555,"Pain in a joint, pelvic region and thigh",N,10,N
+M4189,"Other forms of scoliosis, site unspecified",N,10,N
+M4782,"Other spondylosis, cervical region",N,10,N
+M4786,"Other spondylosis, lumbar region",N,10,N
+M480,Spinal stenosis,N,10,N
+M511,Lumbar and other intervertebral disc disorders with radiculopathy (G55.1*),N,10,N
+M545,Low back pain,N,10,Y
+M6091,"Unspecified myositis, shoulder region",N,10,Y
+M751,Rotator cuff syndrome,N,10,Y
+M7920,"Neuralgia and neuritis, unspecified, multiple sites",N,10,N
+M8445,"Pathological fracture, not elsewhere classified, pelvic region and thigh",N,10,N
+M9076,"Fracture of bone in neoplastic disease, lower leg (C00-D48+)",N,10,N
+N179,"Acute kidney failure, unspecified",N,10,N
+N18,Chronic kidney disease,N,10,N
+N181,"Chronic kidney disease, stage 1",N,10,N
+N183,"Chronic kidney disease, stage 3",N,10,N
+N185,"Chronic kidney disease, stage 5",N,10,N
+N189,"Chronic kidney disease, unspecified",N,10,N
+N19,Unspecified kidney failure,N,10,N
+N201,Calculus of ureter,N,10,Y
+N210,Calculus in bladder,N,10,Y
+N390,"Urinary tract infection, site not specified",N,10,Y
+N399,"Disorder of urinary system, unspecified",N,10,Y
+N40,Hyperplasia of prostate,N,10,Y
+N47,"Redundant prepuce, phimosis and paraphimosis",N,10,Y
+N750,Cyst of Bartholins gland,N,10,N
+N813,Complete uterovaginal prolapse,N,10,N
+N830,Follicular cyst of ovary,N,10,Y
+N840,Polyp of corpus uteri,N,10,Y
+N842,Polyp of vagina,N,10,Y
+N849,"Polyp of female genital tract, unspecified",N,10,Y
+N852,Hypertrophy of uterus,N,10,N
+N920,Excessive and frequent menstruation with regular cycle,N,10,N
+O00,Ectopic pregnancy,Y,10,N
+O010,Classical hydatidiform mole,Y,10,N
+O019,"Hydatidiform mole, unspecified",Y,10,N
+O034,"Spontaneous abortion, incomplete, without complication",Y,10,N
+O089,"Complication following abortion and ectopic and molar pregnancy, unspecified",Y,10,N
+O091,Duration of pregnancy 5-13 completed weeks,Y,10,N
+O459,"Premature separation of placenta, unspecified",Y,10,N
+O72,Postpartum haemorrhage,Y,10,N
+O720,Third-stage haemorrhage,Y,10,N
+O722,Delayed and secondary postpartum haemorrhage,Y,10,N
+O80,Single spontaneous delivery,Y,10,N
+R002,Palpitations,N,10,N
+R040,Epistaxis,N,10,Y
+R073,Other chest pain,N,10,Y
+R074,"Chest pain, unspecified",N,10,Y
+R100,Acute abdomen,N,10,Y
+R101,Pain localised to upper abdomen,N,10,Y
+R102,Pelvic and perineal pain,N,10,Y
+R104,Other and unspecified abdominal pain,N,10,Y
+R19,Other symptoms and signs involving the digestive system and abdomen,N,10,Y
+R190,"Intra-abdominal and pelvic swelling, mass and lump",N,10,Y
+R195,Other faecal abnormalities,N,10,Y
+R296,"Tendency to fall, not elsewhere classified",N,10,Y
+R31,Unspecified haematuria,N,10,Y
+R418,Other and unspecified symptoms and signs involving cognitive functions and awareness,N,10,N
+R509,"Fever, unspecified",N,10,Y
+R51,Headache,N,10,Y
+R798,Other specified abnormal findings of blood chemistry,N,10,N
+R933,Abnormal findings on diagnostic imaging of other parts of digestive tract,N,10,N
+R935,"Abnormal findings on diagnostic imaging of other abdominal regions, including retroperitoneum",N,10,N
+S011,Open wound of eyelid and periocular area,N,10,Y
+S022,Fracture of nasal bones,N,10,Y
+S065,Traumatic subdural haemorrhage,Y,10,N
+S099,Unspecified injury of head,N,10,N
+S324,Fracture of acetabulum,N,10,Y
+S407,Multiple superficial injuries of shoulder and upper arm,N,10,Y
+S422,Fracture of upper end of humerus,N,10,Y
+S5200,"Fracture of upper end of ulna, part unspecified",N,10,Y
+S5221,Fracture of proximal shaft of ulna with dislocation of head of radius,N,10,Y
+S534,Sprain and strain of elbow,N,10,Y
+S548,Injury of other nerves at forearm level,N,10,N
+S6231,Fracture of base of other metacarpal bone(s),N,10,Y
+S7211,Fracture of intertrochanteric section of femur,N,10,Y
+S724,Fracture of lower end of femur,N,10,Y
+S760,Injury of muscle and tendon of hip,N,10,Y
+S801,Contusion of other and unspecified parts of lower leg,N,10,Y
+S810,Open wound of knee,N,10,Y
+S826,Fracture of lateral malleolus,N,10,Y
+S8282,"Trimalleolar fracture, ankle",N,10,Y
+S8288,Fracture of other parts of lower leg,N,10,Y
+T173,Foreign body in larynx,N,10,Y
+T189,"Foreign body in alimentary tract, part unspecified",N,10,Y
+T812,"Accidental puncture and laceration during a procedure, not elsewhere classified",Y,10,N
+T828,"Other complications of cardiac and vascular prosthetic devices, implants and grafts",Y,10,N
+T8571,Infection and inflammatory reaction due to peritoneal dialysis catheter,Y,10,N
+Z098,Follow-up examination after other treatment for other conditions,Y,10,N
+Z33,"Pregnant state, incidental",Y,10,N
+Z370,Single live birth,Y,10,N
+Z411,Other plastic surgery for unacceptable cosmetic appearance,Y,10,N
+Z470,Follow-up care involving removal of fracture plate and other internal fixation device,N,10,N
+Z490,Preparatory care for dialysis,Y,10,N
+Z720,"Tobacco use, current",Y,10,N
+Z8643,Personal history of tobacco use disorder,Y,10,N
+Z911,Personal history of noncompliance with medical treatment and regimen,Y,10,N
+Z940,Kidney transplant status,Y,10,N
