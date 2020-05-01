@@ -45,18 +45,37 @@ def uploadFile():
 @app.route("/claim/intenthandler", methods = ["POST"])
 def main():
 	req = request.get_json(silent=True, force=True)
+	resp_context = None
 	print(req)
 	intent_name = req["queryResult"]["intent"]["displayName"]
 
 	if intent_name == "SubmitClaimIntent":
 		param = req["queryResult"]["parameters"]
 		resp_text = submitClaimIntentHandler(param)
-	else:
-		resp_text = "Unable to find a matching intent. Try again."
+	elif intent_name == "CheckInsurerIntent":
+		param = req["queryResult"]["parameters"]
+		(resp_text, context_param) = validatePoliyIntentHandler(param)
+		if context_param != None and req.get("session", None) != None:
+			contextName = "%s/contexts/PolicyContext" % req.get("session", None)
+			resp_text = req["queryResult"]["fulfillmentText"]
+			resp_context = [{
+				"name": contextName,
+				"lifespanCount": 5,
+				"parameters": context_param
+			}]
 
-	resp = {
-		"fulfillmentText": resp_text
-	}
+	else:
+		resp_text = "Paiseh, Unable to understand your intent. Pls try again."
+
+	if (resp_context == None):
+		resp = {
+			"fulfillmentText": resp_text
+		}
+	else:
+		resp = {
+			"fulfillmentText": resp_text,
+			"outputContexts": resp_context
+		}
 
 	return make_response(jsonify(resp), 200)
 
