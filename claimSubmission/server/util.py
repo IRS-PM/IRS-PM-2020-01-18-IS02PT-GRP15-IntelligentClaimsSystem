@@ -43,7 +43,7 @@ def submitClaimIntentHandler(param):
 	payload = json.dumps({
 		"PolicyNo" : param.get("PolicyNo", None),
 		"MainClaimNo" : param.get("MainClaimNo", None),
-		"DateOcc" : param.get("DateOcc", None)
+		"DateOcc" : param.get("DateOcc", None),
 		"CreatedBy" : param.get("CreatedBy", "ClaimBot"),
 		"Specialist" : param.get("Specialist", "REG0000731 General Surgery Specialist"),
 		"SubType" : param.get("SubType", "FS"),
