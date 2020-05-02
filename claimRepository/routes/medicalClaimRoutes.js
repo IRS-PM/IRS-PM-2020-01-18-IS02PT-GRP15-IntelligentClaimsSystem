@@ -161,7 +161,7 @@ router.post('/', async (req, res) => {
     }
     else {
       const claimItem = new ClaimItem({
-        ClaimNo: claim.ClaimNo, ItemDesc: claim.Remark, BenefitCode, Qty: 1, Amount: TotalExp, ReceiptRef
+        ClaimNo: claim.ClaimNo, ItemDesc: ClaimRemark, BenefitCode, Qty: 1, Amount: TotalExp, ReceiptRef
       })
       await claimItem.save()
     }
