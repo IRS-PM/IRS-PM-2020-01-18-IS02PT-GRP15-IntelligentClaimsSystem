@@ -50,6 +50,7 @@ export const StateProvider = ( { children } ) => {
                     dialogFlowSessionId: action.payload
                 }
             }
+            break
 
         default:
             return state
