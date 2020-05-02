@@ -102,7 +102,7 @@ router.post('/', async (req, res) => {
       RiderTypeID = null,
       PanelTypeID = null,
       TotalExp = 0,
-      Status = 1, // [note: '1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
+      Status = 0, // [note: '1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
       ClaimRemark = null,
       AttachUrl = null,
       PolicyHolderID = null,
@@ -116,7 +116,10 @@ router.post('/', async (req, res) => {
       AutoClaim = 1,
       ClassificationReason = null,
       DeductibleAmount = 0,
-      CopayAmount = 0
+      CopayAmount = 0,
+      CreatedDate = Date.now(),
+      BenefitCode = 'PP', // for claimitem
+      ReceiptRef = null // for claimitem
     } = req.body
 
     // validation
@@ -133,11 +136,35 @@ router.post('/', async (req, res) => {
       HRN, SubType, BillCategory, FinalPayout, HospitalCode, RiderPrdtCode, RiderEffDate,
       OtherDiagnosis, RiderTypeID, PanelTypeID, TotalExp, Status, ClaimRemark, AttachUrl,
       PolicyHolderID, PolicyHolderName, InsuredID, InsuredName, PoolID, PolicyDuration,
-      AssignDate, CloseDate, AutoClaim, ClassificationReason, DeductibleAmount, CopayAmount
+      AssignDate, CloseDate, AutoClaim, ClassificationReason, DeductibleAmount, CopayAmount, CreatedDate
     })
 
     await claim.save()
     claim.reload()
+
+    // injecting items
+    if (req.body.ClaimItem){
+      for (item of req.body.ClaimItem) { 
+        const {
+          ClaimNo = claim.ClaimNo,
+          BenefitCode = 'PP',
+          ItemDesc = null,
+          Qty = 0,
+          Amount = 0,
+          ReceiptRef = null // for claimitem
+        } = item
+        const claimItem = new ClaimItem({
+          ClaimNo, ItemDesc, BenefitCode, Qty, Amount, ReceiptRef
+        })
+        await claimItem.save()
+      }
+    }
+    else {
+      const claimItem = new ClaimItem({
+        ClaimNo: claim.ClaimNo, ItemDesc: claim.Remark, BenefitCode, Qty: 1, Amount: TotalExp, ReceiptRef
+      })
+      await claimItem.save()
+    }
 
     dispatchEvent(NEW_CLAIM_SUBMITTED, JSON.stringify({
       ClaimNo: claim.ClaimNo

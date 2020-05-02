@@ -57,7 +57,9 @@ router.get('/byinsuredid/:insuredId', async (req, res) => {
   const { insuredId } = req.params
   try {
     const policy = await HealthPolicy.findOne({
-      InsuredID: insuredId,
+      where: {
+        InsuredID: insuredId
+      },
       include: modelIncludeList
     })
     if (!policy) {
