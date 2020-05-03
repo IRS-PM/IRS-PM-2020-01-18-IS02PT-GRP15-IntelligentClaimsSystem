@@ -52,12 +52,13 @@ def main():
 	if intent_name == "SubmitClaimIntent":
 		param = req["queryResult"]["parameters"]
 		resp_text = submitClaimIntentHandler(param)
-	elif intent_name == "CheckInsurerIntent":
+	elif intent_name == "CheckInsuredIntent":
 		param = req["queryResult"]["parameters"]
-		(resp_text, context_param) = validatePoliyIntentHandler(param)
+		(resp_text, context_param) = checkInsuredIntentHandler(param)
 		if context_param != None and req.get("session", None) != None:
 			contextName = "%s/contexts/PolicyContext" % req.get("session", None)
-			resp_text = req["queryResult"]["fulfillmentText"]
+			# resp_text = req["queryResult"]["fulfillmentText"]
+			resp_text = "Please enter the numeric OTP sent to the mobile number registered with your policy account."
 			resp_context = [{
 				"name": contextName,
 				"lifespanCount": 5,

@@ -4,6 +4,7 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 from config import CLAIM_REPOSITORY_HOST, OCR_FEATURE, GOOGLE_API_KEY
 import json
 from google.protobuf import struct_pb2
+from datetime import datetime
 import base64
 
 def post(url, payload=None):
@@ -11,41 +12,56 @@ def post(url, payload=None):
 	print("POST '%s' size '%s'", url, size)
 	print("Payload: %s", payload)
 	resp = requests.post(url, data=payload, headers={'content-type':'application/json'})
-	#print("POST response %s: '%s'", resp.status_code, resp.text)
-	return (resp.status_code, resp.json())
+	if (resp != None or resp != '') and resp.status_code == requests.codes.ok:
+		return (resp.status_code, resp.json())
+	else:
+		return (resp.status_code, None)
 
 def get(url, params=None):
 	resp = requests.get(url, params=params)
-	return (resp.status_code, resp.json())
+	print("url: %s", url)
+	print("resp: %s", resp)
+
+	if (resp != None or resp != '') and resp.status_code == requests.codes.ok:
+		return (resp.status_code, resp.json())
+	else:
+		return (resp.status_code, None)
 
 def getPolicyByInsuredID(insuredid):
 	url = "%s/HealthPolicy/byinsuredid/%s" % (CLAIM_REPOSITORY_HOST, insuredid)
 	(status,response) = get(url)
-	if status == requests.codes.ok:
-		res = response
-	else:
-		res = None
-	return res
+	return response
 
 def getClaimByPolicyNo(policyno):
 	url = "%s/MedicalClaim/policyno/%s" % (CLAIM_REPOSITORY_HOST, policyno)
 	(status,response) = get(url)
-	if status == requests.codes.ok:
-		res = response
-	else:
-		res = None
-	return res
+	return response
+
+def getMainClaimByPolicyNoDateOcc(policyno,dateocc):
+	claimno = None
+	return next((claim["ClaimNo"] for claim in getClaimByPolicyNo(policyno)["data"] if claim["DateOcc"][0:10] == dateocc[0:10]),None)
+	#return [claim["ClaimNo"] for claim in getClaimByPolicyNo(policyno) if (claim["DateOcc"] == dateocc)]
+	#return filtered[0]["ClaimNo"] if filtered else None
 
 def submitClaimIntentHandler(param):
 	url = "%s/MedicalClaim/" % CLAIM_REPOSITORY_HOST
 	#url = "http://127.0.0.1:8081/MedicalClaim"
 	#lparam = set(k.lower() for k in param)
+	policyno = param.get("PolicyNo", None)
+	hospdate = datetime.strptime(param.get("HospitalDate", None)[0:10], '%Y-%m-%d').date()
+	dateocc = datetime.strptime(param.get("DateOcc", None)[0:10], '%Y-%m-%d').date()
+	currdate = datetime.today().date()
+	if dateocc > currdate or hospdate > currdate:
+		return "Sorry, we could not file a future claim.  Please try again."
+	mainclaimno = param.get("MainClaimNo", getMainClaimByPolicyNoDateOcc(policyno,param.get("HospitalDate", None)))
 	payload = json.dumps({
-		"PolicyNo" : param.get("PolicyNo", None),
-		"MainClaimNo" : param.get("MainClaimNo", None),
+		"PolicyNo" : policyno,
+		"MainClaimNo" : mainclaimno,
 		"DateOcc" : param.get("DateOcc", None),
+		"EffDate" : param.get("EffDate", None),
+		"ExpDate" : param.get("ExpDate", None),
 		"CreatedBy" : param.get("CreatedBy", "ClaimBot"),
-		"Specialist" : param.get("Specialist", "REG0000731 General Surgery Specialist"),
+		"Specialist" : param.get("Specialist", ""),
 		"SubType" : param.get("SubType", "FS"),
 		"BillCategory" : param.get("BillCategory", "PP"),
 		"TotalExp" : param.get("TotalExp", 0),
@@ -56,11 +72,13 @@ def submitClaimIntentHandler(param):
 		"ClaimRemark": param.get("ClaimRemark", None),
 		"AttachUrl": param.get("AttachUrl", None),
 		"BenefitCode": param.get("BenefitCode", "PP"),
-		"EffDate" : param.get("EffectiveDate", None),
-		"ExpDate" : param.get("ExpiryDate", None),
 		"ProductCode" : param.get("ProductCode", ""),
 		"RiderPrdtCode" : param.get("RiderPrdtCode", None),
-		"Rider" : param.get("Rider", "N")
+		"Rider" : param.get("Rider", "N"),
+		"PanelTypeID" : "1",
+		"ClaimType" : "1",
+		"HospitalType" : "V",
+		"RefundAmount" : param.get("TotalExp", 0)
 	})
 	(status,response) = post(url, payload)
 	if status == requests.codes.ok:
@@ -70,14 +88,14 @@ def submitClaimIntentHandler(param):
 	return res
 
 
-def validatePoliyIntentHandler(param):
+def checkInsuredIntentHandler(param):
 	insuredID = param.get("InsuredID", None)
 	if len(insuredID) < 7:
 		return "Sorry, Please provide a valid ID number"
 	policy = getPolicyByInsuredID(insuredID)
 	parameters = None
 	if policy != None:
-		res = "The insured is %s" % policy["InsuredName"]
+		res = "" #"Hi %s, I have verified your ID." % policy["InsuredName"]
 		parameters = {
 			"InsuredID": policy.get("InsuredID", None),
 			"InsuredName": policy.get("InsuredName", None),
@@ -91,7 +109,7 @@ def validatePoliyIntentHandler(param):
 			"Rider": policy.get("Rider", None)
 		}
 	else:
-		res = "Sorry, We could not find valid policy for the ID provided"
+		res = "The provided ID is not valid"
 	return (res, parameters)
 
 def uploadEventParameters(url, file, ext):
