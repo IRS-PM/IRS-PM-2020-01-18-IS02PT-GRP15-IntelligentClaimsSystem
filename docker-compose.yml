@@ -72,6 +72,16 @@ services:
     environment: 
       API_HOST: http://127.0.0.1:5000
       DIALOGFLOW_AGENT_ID: f100c550-d81c-4f7f-952b-c2690d1c933f
+
+  # DASHBOARD
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "9001:80"
+    restart: always
+    environment: 
+      CLAIM_REPOSITORY_HOST: http://127.0.0.1:8081
+      CHATBOT_URL: http://127.0.0.1:5001
       
   # CLAIM CLASSIFICATION SERVICE
   # claimclassification:
