@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
+const cors = require('cors')
 const { connect: connectToDB } = require('./db/mysql.js')
 const { connect: connectToEventQueue, dispatchEvent, subscribeToEvent } = require('./eventDispatcher/amqp')
 const { healthPolicyRoutes, medicalPanelRoutes, medicalClaimRoutes, productPlanRoutes, staffRoutes, diagnosisCodeRoutes, hospitalRoutes } = require('./routes/index.js')
@@ -21,6 +22,7 @@ const init = async () => {
     // start http server
     const app = express()
     app.use(express.json())
+    app.use(cors())
 
     app.use('/productplan', productPlanRoutes)
     app.use('/medicalclaim', medicalClaimRoutes)

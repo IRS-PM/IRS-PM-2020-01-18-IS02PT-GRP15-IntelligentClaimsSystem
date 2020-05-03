@@ -30,16 +30,23 @@ const modelIncludes = [{
 router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
     const { status = '', policyNo = '' } = req.params
-    const { offset=0, limit=50 } = req.query
+    const { offset=0, limit=50, orderby='DateOcc', orderseq='DESC', datefrom=null, dateto=null } = req.query
     const whereClause = {}
     if (!!status) whereClause.Status = status
     if (!!policyNo) whereClause.PolicyNo = policyNo
+    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+      [sequelize.Op.gte]: datefrom,
+      [sequelize.Op.lte]: dateto
+    }
 
     const claims = await MedicalClaim.findAll({
       where: whereClause,
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: modelIncludes
+      include: modelIncludes,
+      order: [
+        [orderby, orderseq]
+      ]
     })
     return res.json({
       total: await MedicalClaim.count({
@@ -49,6 +56,30 @@ router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => 
       limit: limit,
       data: claims
     })
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+router.get('/statusdistribution', async (req, res) => {
+  try {
+    const { datefrom=null, dateto=null } = req.query
+    const whereClause = {}
+    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+      [sequelize.Op.gte]: datefrom,
+      [sequelize.Op.lte]: dateto
+    }
+
+    const statuses = await MedicalClaim.findAll({
+      attributes: ['Status', [sequelize.literal('COUNT(*)'), 'Count']],
+      group: ['Status'],
+      where: whereClause
+    })
+    
+    return res.json(statuses)
+
   } catch (e) {
     console.error(e)
     res.status(500)
