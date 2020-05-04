@@ -7,16 +7,19 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1
+  },
+  bigTitle: {
+    fontSize: '1.5rem'
   }
 }))
 
-export const SectionHeader = ({title, actions=null}) => {
+export const SectionHeader = ({title, actions=null, subsection=false}) => {
   const cssClasses = useStyles({})
 
   return (
     <>
       <Toolbar disableGutters={true}>
-        <Typography className={cssClasses.title} variant="h6">{title}</Typography>
+        <Typography className={`${cssClasses.title} ${!subsection && cssClasses.bigTitle}`} variant="h6">{title}</Typography>
         <Box>
           {actions}
         </Box>

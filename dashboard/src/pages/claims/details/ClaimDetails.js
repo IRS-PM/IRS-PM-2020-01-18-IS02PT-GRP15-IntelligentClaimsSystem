@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { get } from 'lodash'
 import { Button, Grid, Typography, Divider } from '@material-ui/core'
-import { PageContainer, LabelValuePair } from '../../../components'
+import { PageContainer, LabelValuePair, SectionHeader } from '../../../components'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter, useParams } from 'react-router-dom'
 import { ClaimStatus } from '../../../components/ClaimStatus'
@@ -51,8 +52,21 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="CoPay" value={formatMoney(data.CopayAmount)} />
         </Grid>
         <br /><br />
-        <Typography variant="h6">Claim Items</Typography>
-        <Divider style={{marginTop: 10, marginBottom: 30}} />
+        <SectionHeader 
+          title="Medical Panel"
+          subsection
+        />
+        <Grid container>
+          <LabelValuePair label="Medical Panel Reg No" value={get(data, 'MedicalPanel.RegistrationNo', '-')} />
+          <LabelValuePair label="Medical Panel Name" value={get(data, 'MedicalPanel.SpecialistName', '-')} />
+          <LabelValuePair label="Medical Panel Specialty" value={get(data, 'MedicalPanel.Specialty', '-')} />
+          <LabelValuePair label="Medical Panel Blacklisted?" value={!!get(data, 'MedicalPanel.BlacklistReasonID', null)? 'Y' : 'N'} />
+        </Grid>
+        <br /><br />
+        <SectionHeader 
+          title="Claim Items"
+          subsection
+        />
         <MUIDataTable
             data={data.ClaimItems}
             columns={[{

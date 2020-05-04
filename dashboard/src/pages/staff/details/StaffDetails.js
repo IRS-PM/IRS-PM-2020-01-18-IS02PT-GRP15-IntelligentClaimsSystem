@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Typography, Divider, IconButton, Tooltip } from '@material-ui/core'
-import { PageContainer, LabelValuePair } from '../../../components'
+import { PageContainer, LabelValuePair, SectionHeader } from '../../../components'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter, useParams } from 'react-router-dom'
 import { formatDate } from '../../../utils/formatting'
@@ -81,13 +81,17 @@ export const StaffDetails = withRouter(({ history }) => {
             <LabelValuePair label="Pool2" value={data.Pool2} />
           </Grid>
           <br /><br />
-          <Typography variant="h6">
-            Leave Schedule 
-            <Tooltip title="Add Leave">
-              <IconButton color="primary" variant="contained" onClick={handleNewLeave}><AddIcon /></IconButton>
-            </Tooltip>
-          </Typography>
-          <Divider style={{marginTop: 10, marginBottom: 30}} />
+          <SectionHeader 
+            title={
+              <>
+                Leave Schedule 
+                <Tooltip title="Add Leave">
+                  <IconButton color="primary" variant="contained" onClick={handleNewLeave}><AddIcon /></IconButton>
+                </Tooltip>
+              </>
+            }
+            subsection
+          />
           <MUIDataTable
             data={data.LeaveSchedules}
             columns={[{
