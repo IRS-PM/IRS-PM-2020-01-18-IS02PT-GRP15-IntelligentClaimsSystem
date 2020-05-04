@@ -94,7 +94,7 @@ const steps = [
         MainClaimNo: data['MainClaimNo'] || null,
         SubType: data['SubType'] || null,
         PanelTypeID: data['PanelTypeID'] || null,
-        AutoClaim: data['AutoClaim'] === 'Y'? true : false,
+        AutoClaim: !!data['AutoClaim']? (data['AutoClaim'] === 'Y') : null,
         HospitalCode: data['HospitalCode'] || null,
         RiderPrdtCode: data['RiderPrdtCode'] || null,
         DateOcc: data['DateOcc']? moment(data['DateOcc'], "MM/DD/YYYY").toDate() : null,
@@ -119,7 +119,7 @@ const steps = [
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-
+    
     for (let i=0; i<steps.length; i++) {
       const { tableName, csvLocation, idColumn, model, transformData=null } = steps[i]
 

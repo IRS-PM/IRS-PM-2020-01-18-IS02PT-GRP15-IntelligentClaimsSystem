@@ -9,6 +9,7 @@ const ClaimItem = require('./claimItem')
 const Staff = require('./staff')
 const LeaveSchedule = require('./leaveSchedule')
 const ClaimStaff = require('./claimStaff')
+const Settings = require('./settings')
 
 ProductPlan.hasMany(PolicyBenefit, {
   foreignKey: 'ProductCode'
@@ -91,5 +92,6 @@ module.exports = {
   ClaimItem,
   Staff,
   LeaveSchedule,
-  ClaimStaff
+  ClaimStaff,
+  Settings
 }

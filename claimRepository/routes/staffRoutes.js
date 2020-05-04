@@ -1,21 +1,103 @@
 const express = require('express')
+const moment = require('moment')
 const sequelize = require('sequelize')
 const { Staff, LeaveSchedule, ClaimStaff, MedicalClaim } = require('../models')
 const router = express.Router()
+
 
 router.get('/', async (req, res) => {
   const { offset=0, limit=50 } = req.query
   try {
     const entries = await Staff.findAll({
       offset: parseInt(offset),
-      limit: parseInt(limit),
-      include: [LeaveSchedule, {
-        model: ClaimStaff,
-        include: MedicalClaim
-      }]
+      limit: parseInt(limit)
     })
+
+    // attach latest assignment date's reports
+    const transformedEntries = await Promise.all(entries.map((entry, index) => {
+      return new Promise(async (resolve, reject) => {
+        const obj = entry.toJSON()
+        const lastAssignedClaim = await entry.getLastAssignedClaim()
+        let report = {}
+        if (lastAssignedClaim !== null) {
+          report = await entry.getReportByDate(lastAssignedClaim.AssignedForDate)
+        }
+        obj['LastAssigned'] = report
+        return resolve(obj)
+      })
+    }))
+
     return res.json({
       total: await Staff.count(),
+      offset: offset,
+      limit: limit,
+      data: transformedEntries
+    })
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+router.get('/availability', async (req, res) => {
+  const { offset=0, limit=50, date=new Date(), staffId=null } = req.query
+  try {
+    const whereClause = {}
+    if (!!staffId) {
+      whereClause.ID = staffId
+    }
+
+    const entries = await Staff.findAll({
+      where: whereClause,
+      offset: parseInt(offset),
+      limit: parseInt(limit)
+    })
+
+    // attach latest assignment date's reports
+    const transformedEntries = await Promise.all(entries.map((entry, index) => {
+      return new Promise(async (resolve, reject) => {
+        const obj = entry.toJSON()
+        const report = await entry.getReportByDate(date)
+        obj['TargettedDate'] = report
+        return resolve(obj)
+      })
+    }))
+
+    return res.json({
+      total: await Staff.count({
+        where: whereClause
+      }),
+      offset: offset,
+      limit: limit,
+      data: transformedEntries
+    })
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+router.get('/leaveschedule', async (req, res) => {
+  const { offset=0, limit=50, updatedAfter=new Date() } = req.query
+  
+  try {
+    const whereClause = {
+      UpdatedAt: {
+        [sequelize.Op.gte]: moment(updatedAfter).toDate()
+      }
+    }
+    const entries = await LeaveSchedule.findAll({
+      where: whereClause,
+      offset: parseInt(offset),
+      limit: parseInt(limit)
+    })
+
+    return res.json({
+      total: await LeaveSchedule.count({
+        where: whereClause
+      }),
       offset: offset,
       limit: limit,
       data: entries
@@ -79,7 +161,6 @@ router.post('/:staffId/leave', async (req, res) => {
       EndDateTime: EndDateTime,
       IsAbsent: IsAbsent
     })
-
     await entry.save()
 
     return res.json(entry)

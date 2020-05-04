@@ -26,6 +26,13 @@ const modelIncludes = [{
   model: MedicalPanel
 }]
 
+router.get('/test', async (req, res) => {
+  dispatchEvent(NEW_CLAIM_SUBMITTED, JSON.stringify({
+    ClaimNo: 'hoho'
+  }))
+  return res.send(NEW_CLAIM_SUBMITTED)
+})
+
 router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
     const { status = '', policyNo = '' } = req.params
@@ -236,6 +243,7 @@ router.patch('/:claimNo', async (req, res) => {
 router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
   try {
     const { claimNo, staffID } = req.params
+    const { AssignedForDate = new Date() } = req.body
     const claim = await MedicalClaim.findByPk(claimNo, {
       include: modelIncludes
     })
@@ -253,7 +261,9 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
     }
 
     const existingAssignment = await ClaimStaff.findOne({
-      ClaimNo: claim.ClaimNo
+      where: {
+        ClaimNo: claim.ClaimNo
+      }
     })
 
     if (existingAssignment) {
@@ -264,7 +274,8 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
     const claimStaff = new ClaimStaff({
       StaffID: staff.ID,
       ClaimNo: claim.ClaimNo,
-      PolicyNo: claim.PolicyNo
+      PolicyNo: claim.PolicyNo,
+      AssignedForDate: AssignedForDate
     })
 
     await claimStaff.save()

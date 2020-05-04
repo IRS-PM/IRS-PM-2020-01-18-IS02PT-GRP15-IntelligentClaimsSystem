@@ -2,6 +2,26 @@
 
 ## Endpoints
 
+### Settings
+Get
+```
+Method: get
+Endpoint: /settings
+```
+
+Update
+```
+Method: patch
+Endpoint: /settings
+Headers: {
+    Content-Type: application/json
+}
+Body: {
+    "LastSchedulerRunTime": "2020-05-07T01:00:00.000Z",
+    ...
+}
+```
+
 ### Staff
 Get all
 ```
@@ -14,6 +34,19 @@ Get one
 Method: get
 Endpoint: /staff/:id
 ```
+
+Get all staff or 1 staff, with availability details
+```
+Method: get
+Endpoint: /staff/availability?date=2020-05-01&staffId=1
+```
+
+Get leave schedule that is updated after a certain time
+```
+Method: get
+Endpoint: /staff/leaveschedule?updatedAfter=2020-04-30
+```
+
 
 ### Product Plans
 Get all
@@ -112,7 +145,7 @@ Get by status
 Method: get
 Endpoint: /medicalclaim/status/:status?offset=0&limit=100
 ```
-* Note: [status codes: 1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
+* Note: [status codes: 0=New, 1=Pending, 2=Approved, 3=Settled, 4=Rejected, 5=Cancelled']
 
 Get by policyno
 ```
