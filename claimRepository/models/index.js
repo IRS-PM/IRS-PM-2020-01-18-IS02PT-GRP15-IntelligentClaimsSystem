@@ -54,6 +54,11 @@ ClaimStaff.belongsTo(MedicalClaim, {
   foreignKey: 'ClaimNo'
 })
 
+MedicalClaim.hasOne(MedicalPanel, {
+  foreignKey: 'RegistrationNo',
+  sourceKey: 'Specialist'
+})
+
 MedicalClaim.hasMany(ClaimItem, {
   foreignKey: 'ClaimNo'
 })

@@ -1,6 +1,6 @@
 const express = require('express')
 const sequelize = require('sequelize')
-const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit } = require('../models')
+const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit, MedicalPanel } = require('../models')
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
 const router = express.Router()
@@ -23,14 +23,13 @@ const modelIncludes = [{
   model: ClaimItem,
   include: PolicyBenefit
 }, {
-  model: ClaimStaff,
-  include: Staff
+  model: MedicalPanel
 }]
 
 router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
     const { status = '', policyNo = '' } = req.params
-    const { offset=0, limit=50, orderby='DateOcc', orderseq='DESC', datefrom=null, dateto=null } = req.query
+    const { offset=0, limit=20, orderby='DateOcc', orderseq='DESC', datefrom=null, dateto=null } = req.query
     const whereClause = {}
     if (!!status) whereClause.Status = status
     if (!!policyNo) whereClause.PolicyNo = policyNo
