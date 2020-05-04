@@ -4,6 +4,8 @@ FROM node:13.12.0-alpine
 # Set the working directory to /app
 WORKDIR /app
 
+RUN apk add tzdata
+
 # npm install in temp folder
 COPY ./package.json /tmp/package.json
 RUN cd /tmp && npm install --verbose
