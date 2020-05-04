@@ -116,7 +116,6 @@ export const StaffDetails = withRouter(({ history }) => {
                 customBodyRender: (value, tableMeta) => (
                   <>
                     <Tooltip title="Delete leave"><IconButton color="secondary" onClick={() => handleDeleteLeave(value)}><DeleteIcon /></IconButton></Tooltip>
-                    <Tooltip title="Edit leave"><IconButton color="primary" onClick={() => handleEditLeave(data.LeaveSchedules[tableMeta.rowIndex])}><EditIcon /></IconButton></Tooltip>
                   </>
                 )
               }
