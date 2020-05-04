@@ -39,6 +39,7 @@ services:
       DB_PASS: claims123
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       WAIT_TO_START: 0
+      TZ: Asia/Singapore
   
   # CLAIM SUBMISSION SERVER
   claimsubmissionserver:
