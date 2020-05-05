@@ -17,7 +17,17 @@ const init = async () => {
     await connectToDB()
 
     // connect to event queue
-    await connectToEventQueue()
+    let connected = false
+    while (!connected) {
+      try {
+        await connectToEventQueue()
+        connected = true
+      } catch (e) {
+        console.error("Error connecting to ampq service. Retrying in 5 seconds...")
+        await new Promise(resolve => setTimeout(resolve, 5000))
+      }
+    }
+    
 
     // start http server
     const app = express()
