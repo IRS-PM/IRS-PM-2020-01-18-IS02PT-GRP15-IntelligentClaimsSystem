@@ -5,6 +5,7 @@ const { router: healthPolicyRoutes } = require('./healthPolicyRoutes')
 const { router: staffRoutes } = require('./staffRoutes')
 const { router: diagnosisCodeRoutes } = require('./diagnosisCodeRoutes')
 const { router: hospitalRoutes } = require('./hospitalRoutes')
+const { router: settingsRoutes } = require('./settingsRoutes')
 
 module.exports = {
   productPlanRoutes,
@@ -13,5 +14,6 @@ module.exports = {
   healthPolicyRoutes,
   staffRoutes,
   diagnosisCodeRoutes,
-  hospitalRoutes
+  hospitalRoutes,
+  settingsRoutes
 }

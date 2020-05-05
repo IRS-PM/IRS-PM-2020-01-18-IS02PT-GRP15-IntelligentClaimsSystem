@@ -1,9 +1,10 @@
 require('dotenv').config()
 
 const express = require('express')
+const cors = require('cors')
 const { connect: connectToDB } = require('./db/mysql.js')
 const { connect: connectToEventQueue, dispatchEvent, subscribeToEvent } = require('./eventDispatcher/amqp')
-const { healthPolicyRoutes, medicalPanelRoutes, medicalClaimRoutes, productPlanRoutes, staffRoutes, diagnosisCodeRoutes, hospitalRoutes } = require('./routes/index.js')
+const { healthPolicyRoutes, medicalPanelRoutes, medicalClaimRoutes, productPlanRoutes, staffRoutes, diagnosisCodeRoutes, hospitalRoutes, settingsRoutes } = require('./routes/index.js')
 
 const { HTTP_PORT, WAIT_TO_START=0 } = process.env
 /**
@@ -21,6 +22,7 @@ const init = async () => {
     // start http server
     const app = express()
     app.use(express.json())
+    app.use(cors())
 
     app.use('/productplan', productPlanRoutes)
     app.use('/medicalclaim', medicalClaimRoutes)
@@ -29,14 +31,10 @@ const init = async () => {
     app.use('/diagnosiscode', diagnosisCodeRoutes)
     app.use('/hospital', hospitalRoutes)
     app.use('/staff', staffRoutes)
+    app.use('/settings', settingsRoutes)
 
     app.listen(HTTP_PORT, () => {
       console.log(`Claims Repository service started on port: ${HTTP_PORT}`)
-    })
-
-    subscribeToEvent('NEW_CLAIM_SUBMITTED', (message) => {
-      console.log(message)
-      return true
     })
 
   } catch (e) {

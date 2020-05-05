@@ -17,7 +17,7 @@ MedicalClaim.init({
   ExpDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('ExpDate')) } },
   Rider: { type: Sequelize.STRING },
   HospitalType: { type: Sequelize.STRING },
-  Specialist: { type: Sequelize.STRING },
+  Specialist: { type: Sequelize.STRING, references: { modelName: 'MedicalPanel', key: 'RegistrationNo' } },
   Specialty: { type: Sequelize.STRING },
   DiagnosisCode: { type: Sequelize.STRING },
   RefundAmount: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },

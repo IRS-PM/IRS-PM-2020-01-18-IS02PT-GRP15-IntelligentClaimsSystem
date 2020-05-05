@@ -9,6 +9,7 @@ const ClaimItem = require('./claimItem')
 const Staff = require('./staff')
 const LeaveSchedule = require('./leaveSchedule')
 const ClaimStaff = require('./claimStaff')
+const Settings = require('./settings')
 
 ProductPlan.hasMany(PolicyBenefit, {
   foreignKey: 'ProductCode'
@@ -54,6 +55,11 @@ ClaimStaff.belongsTo(MedicalClaim, {
   foreignKey: 'ClaimNo'
 })
 
+MedicalClaim.hasOne(MedicalPanel, {
+  foreignKey: 'RegistrationNo',
+  sourceKey: 'Specialist'
+})
+
 MedicalClaim.hasMany(ClaimItem, {
   foreignKey: 'ClaimNo'
 })
@@ -86,5 +92,6 @@ module.exports = {
   ClaimItem,
   Staff,
   LeaveSchedule,
-  ClaimStaff
+  ClaimStaff,
+  Settings
 }

@@ -10,6 +10,12 @@ Run the following command:
 docker-compose -p icms up --build
 ```
 
+## DASHBOARD
+Dashboard can be accessed here
+```
+http://127.0.0.1:9001
+```
+
 ## CHATBOT
 Chatbot can be accessed here
 ```
