@@ -3,6 +3,12 @@ const moment = require('moment')
 const sequelize = require('sequelize')
 const { Staff, LeaveSchedule, ClaimStaff, MedicalClaim } = require('../models')
 const router = express.Router()
+const { connect: connectToEventQueue, dispatchEvent, subscribeToEvent } = require('../eventDispatcher/amqp')
+
+router.get('/testEvent', async(req, res) => {
+  dispatchEvent("NEW_CLAIM_SUBMITTED", JSON.stringify({ 'claimIds': ['abc123', 'haha456'] }))
+  return res.send('ok')
+})
 
 
 router.get('/', async (req, res) => {

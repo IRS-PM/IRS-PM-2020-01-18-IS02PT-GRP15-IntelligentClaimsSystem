@@ -85,17 +85,19 @@ services:
       CHATBOT_URL: http://127.0.0.1:5001
       
   # CLAIM CLASSIFICATION SERVICE
-  # claimclassification:
-  #   build: ./claimClassification
-  #   ports:
-  #     - "5000:5000"
-  #   restart: always
-  #   links: 
-  #     - "claimrepository"
-  #     - "eventdispatcher"
-  #   environment: 
-  #     CLAIM_REPOSITORY_HOST: http://claimrepository:8081
-  #     EVENT_DISPATCHER_HOST: eventdispatcher
+  claimclassification:
+    build: ./claimClassification
+    ports:
+      - "9999:9999"
+    restart: always
+    links: 
+      # - "claimrepository"
+      - "eventdispatcher"
+    environment: 
+      CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+      EVENT_DISPATCHER_HOST: amqp://eventdispatcher
+      HOST: 0.0.0.0
+      PORT: 9999
 volumes:
   eventdispatcher_data: {}
   db_data: {}  
