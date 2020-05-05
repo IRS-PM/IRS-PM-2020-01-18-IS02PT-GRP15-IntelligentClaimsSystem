@@ -1,6 +1,6 @@
 const express = require('express')
 const sequelize = require('sequelize')
-const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit, MedicalPanel } = require('../models')
+const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit, MedicalPanel, DiagnosisCode, Hospital } = require('../models')
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
 const router = express.Router()
@@ -79,8 +79,32 @@ router.get('/statusdistribution', async (req, res) => {
     }
 
     const statuses = await MedicalClaim.findAll({
-      attributes: ['Status', [sequelize.literal('COUNT(*)'), 'Count']],
-      group: ['Status'],
+      attributes: ['Status', 'AutoClaim', [sequelize.literal('COUNT(*)'), 'Count']],
+      group: ['AutoClaim', 'Status'],
+      where: whereClause
+    })
+    
+    return res.json(statuses)
+
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+router.get('/autoclaimdistribution', async (req, res) => {
+  try {
+    const { datefrom=null, dateto=null } = req.query
+    const whereClause = {}
+    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+      [sequelize.Op.gte]: datefrom,
+      [sequelize.Op.lte]: dateto
+    }
+
+    const statuses = await MedicalClaim.findAll({
+      attributes: ['AutoClaim', [sequelize.literal('COUNT(*)'), 'Count']],
+      group: ['AutoClaim'],
       where: whereClause
     })
     
@@ -150,7 +174,7 @@ router.post('/', async (req, res) => {
       PolicyDuration = null,
       AssignDate = null,
       CloseDate = null,
-      AutoClaim = 1,
+      AutoClaim = null,
       ClassificationReason = null,
       DeductibleAmount = 0,
       CopayAmount = 0,
@@ -204,7 +228,7 @@ router.post('/', async (req, res) => {
     }
 
     dispatchEvent(NEW_CLAIM_SUBMITTED, JSON.stringify({
-      ClaimNo: claim.ClaimNo
+      claimIds: [claim.ClaimNo]
     }))
 
     return res.json(claim)
@@ -288,6 +312,70 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
     res.status(500)
     return res.send('An unexpected error occurred')
   }  
+})
+
+
+router.post('/bulk-insert', async (req, res) => {
+  const { numToInsert=0 } = req.body
+
+  // get a list of policies
+  const allPolicies = await HealthPolicy.findAll()
+  const allMedicalPanels = await MedicalPanel.findAll()
+  const allDiagnosis = await DiagnosisCode.findAll()
+  const allHospitals = await Hospital.findAll()
+
+  const claims = await Promise.all(Array(numToInsert).fill(null).map(async (val, index) => {
+    const randPolicy = allPolicies[Math.round(Math.random() * (allPolicies.length - 1))]
+    const randMedicalPanel = allMedicalPanels[Math.round(Math.random() * (allMedicalPanels.length - 1))]
+    const randDiagnosis = allDiagnosis[Math.round(Math.random() * (allDiagnosis.length - 1))]
+    const randHospital = allHospitals[Math.round(Math.random() * (allHospitals.length - 1))]
+
+    const claim = new MedicalClaim({
+      MainClaimNo: null,
+      ClaimType: 1,
+      PolicyNo: randPolicy.PolicyNo,
+      DateOcc: new Date(),
+      EffDate: randPolicy.EffectiveDate,
+      ExpDate: randPolicy.ExpiryDate,
+      Rider: 'N', // <-----------------
+      HospitalType: randMedicalPanel.PanelType === 1? 'S' : 'G',
+      Specialist: MedicalPanel.RegistrationNo,
+      Specialty: MedicalPanel.Specialty,
+      DiagnosisCode: randDiagnosis.DiagnosisCode,
+      RefundAmount: 0, // <--------
+      HRN: '',
+      SubType: 'FS',
+      BillCategory: ['IN','PP','OU','DY'][Math.round(Math.random() * 3)],
+      FinalPayout: 0, // <--------
+      HospitalCode: randHospital.HospitalCode,
+      RiderPrdtCode: null, // <--------------
+      RiderEffDate: null,
+      OtherDiagnosis: '',
+      RiderTypeID: 0, // <------------
+      PanelTypeID: null,
+      TotalExp: 10000 + Math.random() * 50000,
+      Status: 0,
+      ClaimRemark: '',
+      AttachUrl: null,
+      PolicyHolderID: randPolicy.PolicyHolderID,
+      PolicyHolderName: randPolicy.PolicyHolderName,
+      InsuredID: randPolicy.InsuredID,
+      InsuredName: randPolicy.InsuredName,
+      PoolID: [31, 40, 1, 25, 0, 42][Math.round(Math.random() * 5)],
+      PolicyDuration: 0, //<---------------
+      AssignDate: null,
+      CloseDate: null,
+      AutoClaim: null,
+      DeductibleAmount: 0, //<------------------
+      CopayAmount: 0 //<---------------
+    })
+    // await claim.save()
+    return claim
+  }))
+
+  return res.json({
+    claims
+  })
 })
 
 module.exports = {

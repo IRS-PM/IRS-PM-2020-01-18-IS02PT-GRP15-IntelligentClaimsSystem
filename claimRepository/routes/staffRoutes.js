@@ -5,11 +5,6 @@ const { Staff, LeaveSchedule, ClaimStaff, MedicalClaim } = require('../models')
 const router = express.Router()
 const { connect: connectToEventQueue, dispatchEvent, subscribeToEvent } = require('../eventDispatcher/amqp')
 
-router.get('/testEvent', async(req, res) => {
-  dispatchEvent("NEW_CLAIM_SUBMITTED", JSON.stringify({ 'claimIds': ['abc123', 'haha456'] }))
-  return res.send('ok')
-})
-
 
 router.get('/', async (req, res) => {
   const { offset=0, limit=50 } = req.query
@@ -148,10 +143,10 @@ router.post('/:staffId/leave', async (req, res) => {
       where: {
         StaffID: staffId,
         StartDateTime: {
-          [sequelize.Op.lte]: EndDateTime
+          [sequelize.Op.lt]: EndDateTime
         },
         EndDateTime: {
-          [sequelize.Op.gte]: StartDateTime
+          [sequelize.Op.gt]: StartDateTime
         }
       }
     })

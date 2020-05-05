@@ -46,7 +46,7 @@ const steps = [
     csvLocation: `${__dirname}/data/staff.csv`,
     model: Staff,
     idColumn: 'ID',
-    deleteOtherRows: false
+    deleteOtherRows: true
   },
   {
     tableName: 'HealthPolicy',
@@ -94,7 +94,7 @@ const steps = [
         MainClaimNo: data['MainClaimNo'] || null,
         SubType: data['SubType'] || null,
         PanelTypeID: data['PanelTypeID'] || null,
-        AutoClaim: !!data['AutoClaim']? (data['AutoClaim'] === 'Y') : null,
+        AutoClaim: !!data['AutoClaim']? (data['AutoClaim'] == '1') : null,
         HospitalCode: data['HospitalCode'] || null,
         RiderPrdtCode: data['RiderPrdtCode'] || null,
         DateOcc: data['DateOcc']? moment(data['DateOcc'], "MM/DD/YYYY").toDate() : null,

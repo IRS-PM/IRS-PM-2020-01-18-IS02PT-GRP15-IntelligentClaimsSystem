@@ -20,9 +20,10 @@ Staff.init({
 
 Staff.prototype.getReportByDate = async function(date) {
   const ClaimStaff = this.sequelize.models.ClaimStaff
+  const MedicalClaim = this.sequelize.models.MedicalClaim
   const LeaveSchedule = this.sequelize.models.LeaveSchedule
-  const from = moment(date).hours(9).minutes(0).seconds(0).toDate()
-  const to = moment(date).hours(18).minutes(0).seconds(0).toDate()
+  const from = moment(date).hours(0).minutes(0).seconds(0).toDate()
+  const to = moment(date).hours(23).minutes(59).seconds(59).toDate()
   const claimsWithinDay =  await ClaimStaff.findAll({
     where: {
       StaffID: this.ID,
@@ -30,6 +31,10 @@ Staff.prototype.getReportByDate = async function(date) {
         [Sequelize.Op.gte]: from,
         [Sequelize.Op.lte]: to
       }
+    },
+    include: {
+      model: MedicalClaim,
+      attributes: ['PoolID']
     }
   })
 
@@ -45,7 +50,9 @@ Staff.prototype.getReportByDate = async function(date) {
     }
   })
 
-  const daysRange = moment.range(from, to)
+  const workingDayFrom = moment(date).hours(9).minutes(0).seconds(0).toDate()
+  const workingDayTo = moment(date).hours(18).minutes(0).seconds(0).toDate()
+  const daysRange = moment.range(workingDayFrom, workingDayTo)
   const absentHours = leaveForDay.reduce((acc, leave) => {
     try {
       const intersection = daysRange.intersect(moment.range(leave.StartDateTime, leave.EndDateTime))
