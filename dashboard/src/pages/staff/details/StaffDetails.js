@@ -8,6 +8,7 @@ import { getStaffDetails, deleteLeave } from '../../../httpActions/staffApi'
 import MUIDataTable from 'mui-datatables'
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons'
 import { LeaveFormDialog } from './LeaveFormDialog'
+import { PoolID } from '../../../components/PoolID'
 
 export const StaffDetails = withRouter(({ history }) => {
 
@@ -77,8 +78,8 @@ export const StaffDetails = withRouter(({ history }) => {
           <Grid container>
             <LabelValuePair label="ID" value={data.ID} />
             <LabelValuePair label="Name" value={data.Name} />
-            <LabelValuePair label="Pool1" value={data.Pool1} />
-            <LabelValuePair label="Pool2" value={data.Pool2} />
+            <LabelValuePair label="Pool1" value={<PoolID poolID={data.Pool1}/>} />
+            <LabelValuePair label="Pool2" value={<PoolID poolID={data.Pool2}/>} />
           </Grid>
           <br /><br />
           <SectionHeader 

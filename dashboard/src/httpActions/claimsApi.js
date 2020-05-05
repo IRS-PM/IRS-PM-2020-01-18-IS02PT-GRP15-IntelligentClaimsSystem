@@ -10,6 +10,16 @@ export function getClaim(claimNo) {
   return axios.get(`${apiHost}/medicalclaim/${claimNo}`)
 }
 
+export function getAutoClaimDistribution(dateFrom=new Date(), dateTo=new Date()) {    
+  return axios.get(`${apiHost}/medicalclaim/autoclaimdistribution?datefrom=${moment(dateFrom).format('YYYY-MM-DD')}&dateto=${moment(dateTo).format('YYYY-MM-DD')}`)
+}
+
 export function getClaimStatusDistribution(dateFrom=new Date(), dateTo=new Date()) {    
   return axios.get(`${apiHost}/medicalclaim/statusdistribution?datefrom=${moment(dateFrom).format('YYYY-MM-DD')}&dateto=${moment(dateTo).format('YYYY-MM-DD')}`)
+}
+
+export function bulkInsertClaims(numToInsert) {    
+  return axios.post(`${apiHost}/medicalclaim/bulk-insert`, {
+    numToInsert
+  })
 }

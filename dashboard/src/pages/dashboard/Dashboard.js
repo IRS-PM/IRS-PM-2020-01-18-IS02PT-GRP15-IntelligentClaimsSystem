@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles, Box, Typography, Divider, Grid } from '@material-ui/core'
 import { ClaimStatusDistribution } from './claimWidgets/ClaimStatusDistribution'
+import { AutoClaimDistribution } from './claimWidgets/AutoClaimDistribution'
 import { RecentClaims } from './claimWidgets/RecentClaims'
 import { JobDistribution } from './staffWidgets/JobDistribution'
 import { SectionHeader, ClaimsDateRangeSelector } from '../../components'
@@ -36,10 +37,13 @@ export const Dashboard = () => {
         actions={<ClaimsDateRangeSelector />}
       />
       <Grid container>
-        <Grid item sm={12} md={5} lg={3}>
+        <Grid item sm={12} md={6} lg={3}>
+          <AutoClaimDistribution />
+        </Grid>
+        <Grid item sm={12} md={6} lg={3}>
           <ClaimStatusDistribution />
         </Grid>
-        <Grid item sm={12} md={7} lg={9}>
+        <Grid item sm={12} md={12} lg={6}>
           <RecentClaims />
         </Grid>
       </Grid>

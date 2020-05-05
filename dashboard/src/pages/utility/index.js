@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { PageContainer } from '../../components'
-import { Button, FormControl, InputLabel, Input } from '@material-ui/core'
+import { Button, FormControl, InputLabel, Input, CircularProgress } from '@material-ui/core'
+import { bulkInsertClaims } from '../../httpActions/claimsApi'
+import { useToastMessageActions } from '../../store/toast/toastHooks'
 
 export const UtilityPage = () => {
 
+  const { addErrorMessage, addSuccessMessage } = useToastMessageActions()
+  const [isLoading, setIsLoading] = useState(false)
   const [claimCount, setClaimCount] = useState(100)
 
   const updateClaimCount = (evt) => {
@@ -12,8 +16,16 @@ export const UtilityPage = () => {
     setClaimCount(count)
   }
 
-  const handleCreateClaims = () => {
-
+  const handleCreateClaims = async () => {
+    try {
+      setIsLoading(true)
+      const resp = await bulkInsertClaims(claimCount)
+      addSuccessMessage(`${resp.data.claims.length} claims inserted`)
+    } catch (e) {
+      addErrorMessage('Error loading staff list')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -29,7 +41,15 @@ export const UtilityPage = () => {
         />
       </FormControl>
       <br /><br />
-      <Button color="primary" variant="contained" onClick={handleCreateClaims}>Create {claimCount} Claims</Button>
+      <Button 
+        color="primary" 
+        variant="contained" 
+        onClick={handleCreateClaims}
+        disabled={isLoading}
+      >
+        Create {claimCount} Claims
+        <CircularProgress size={10} />
+      </Button>
     </PageContainer>
   )
 }

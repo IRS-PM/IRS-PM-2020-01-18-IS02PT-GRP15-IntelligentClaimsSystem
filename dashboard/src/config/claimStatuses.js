@@ -5,22 +5,22 @@ export default {
   },
   1: {
     label: 'Pending',
-    color: '#1976d2'
+    color: '#4791db'
   },
   2: {
     label: 'Approved',
-    color: '#4caf50'
+    color: '#81c784'
   },
   3: {
     label: 'Settled',
-    color: '#388e3c'
+    color: '#64b5f6'
   },
   4: {
     label: 'Rejected',
-    color: '#f44336'
+    color: '#e57373'
   },
   5: {
     label: 'Cancelled',
-    color: '#ff9800'
+    color: '#ffb74d'
   }
 }

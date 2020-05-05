@@ -1,8 +1,13 @@
 import axios from 'axios'
 import { apiHost } from '../config/api'
+import moment from 'moment'
 
 export function getStaffList(limit=100, offset=0) {    
   return axios.get(`${apiHost}/staff?limit=${limit}&offset=${offset}`)
+}
+
+export function getStaffAvailability(date=new Date()) {    
+  return axios.get(`${apiHost}/staff/availability?date=${moment(date).format('YYYY-MM-DD')}&limit=10`)
 }
 
 export function getStaffDetails(id) {    

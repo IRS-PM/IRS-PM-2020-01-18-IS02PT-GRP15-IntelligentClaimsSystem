@@ -11,11 +11,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'stretch',
     justifyContent: 'stretch'
   },
-  title: {
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'stretch',
     paddingBottom: theme.spacing(2),
+  },
+  title: {
     color: theme.palette.grey[600],
     fontWeight: 'normal',
-    fontSize: '1rem'
+    fontSize: '1rem',
+    flexGrow: 1
+  },
+  actions: {
+    
   },
   contentsContainer: {
     flexGrow: 1,
@@ -25,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export const DashboardWidget = ({ children, isLoading=false, className='', title='', ...otherProps }) => {
+export const DashboardWidget = ({ children, isLoading=false, className='', title, action=null, ...otherProps }) => {
 
   const cssClasses = useStyles({})
 
@@ -34,7 +44,15 @@ export const DashboardWidget = ({ children, isLoading=false, className='', title
       {...otherProps}
       className={`${className} ${cssClasses.root}`}
     >
-      {!!title && <Typography variant="h6" className={cssClasses.title}>{title}</Typography>}
+      <div className={cssClasses.header}>
+        <Typography variant="h6" className={cssClasses.title}>{title}</Typography>
+        {!!action && 
+          <div className={cssClasses.action}>
+            {action}
+          </div>
+        }
+      </div>
+      
       <div className={cssClasses.contentsContainer}>
         {isLoading?
           <CircularProgress />
