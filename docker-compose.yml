@@ -98,6 +98,19 @@ services:
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       HOST: 0.0.0.0
       PORT: 9999
+
+  # CLAIM DISTRIBUTER SERVICE
+  claimdistributer:
+    build: ./claimDistributer
+    ports:
+      - "5003:5003"
+    restart: always
+    links: 
+      - "claimrepository"
+    environment: 
+      CLAIM_REPOSITORY_HOST: http://claimrepository:8081
+      HOST: 0.0.0.0
+      PORT: 5003
 volumes:
   eventdispatcher_data: {}
   db_data: {}  
