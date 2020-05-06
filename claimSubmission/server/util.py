@@ -5,7 +5,10 @@ from config import CLAIM_REPOSITORY_HOST, OCR_FEATURE, GOOGLE_API_KEY
 import json
 from google.protobuf import struct_pb2
 from datetime import datetime
-import base64
+import os,base64
+import lsgapp,parse,receipt
+
+parser_config = parse.read_config(os.path.join(os.getcwd(), "parser.config.yml"))
 
 def post(url, payload=None):
 	size = '%s' % len(payload)
@@ -39,7 +42,7 @@ def getClaimByPolicyNo(policyno):
 
 def getMainClaimByPolicyNoDateOcc(policyno,dateocc):
 	claimno = None
-	return next((claim["ClaimNo"] for claim in getClaimByPolicyNo(policyno)["data"] if claim["DateOcc"][0:10] == dateocc[0:10]),None)
+	return next((claim for claim in getClaimByPolicyNo(policyno)["data"] if claim["DateOcc"][0:10] == dateocc[0:10]),None)
 	#return [claim["ClaimNo"] for claim in getClaimByPolicyNo(policyno) if (claim["DateOcc"] == dateocc)]
 	#return filtered[0]["ClaimNo"] if filtered else None
 
@@ -53,10 +56,13 @@ def submitClaimIntentHandler(param):
 	currdate = datetime.today().date()
 	if dateocc > currdate or hospdate > currdate:
 		return "Sorry, we could not file a future claim.  Please try again."
-	mainclaimno = param.get("MainClaimNo", getMainClaimByPolicyNoDateOcc(policyno,param.get("HospitalDate", None)))
+	mainclaim =  getMainClaimByPolicyNoDateOcc(policyno,param.get("HospitalDate", None))
+	mainclaimno = mainclaim["ClaimNo"] if mainclaim else None
+	diagnosiscode = mainclaim["DiagnosisCode"] if mainclaim else None
 	payload = json.dumps({
 		"PolicyNo" : policyno,
 		"MainClaimNo" : mainclaimno,
+		"DiagnosisCode" : diagnosiscode,
 		"DateOcc" : param.get("DateOcc", None),
 		"EffDate" : param.get("EffDate", None),
 		"ExpDate" : param.get("ExpDate", None),
@@ -120,11 +126,18 @@ def uploadEventParameters(url, file, ext):
 	if OCR_FEATURE=="1":
 		file.seek(0)
 		if ext in ['png', 'jpg', 'jpeg', 'gif', 'bmp']:
-			parameters["ocrResult"] = imagesAnnotate(file)
+			res = imagesAnnotate(file)
 		elif ext in ['pdf']:
-			parameters["ocrResult"] = filesAnnotate(file)
+			res = filesAnnotate(file)
+		if res:
+			parameters["ocrResult"] = res["Text"]
+			parameters["Company"] = res.get("Company", None)
+			parameters["InvoiceDate"] = res.get("InvoiceDate", None)
+			parameters["InvoiceNo"] = res.get("InvoiceNo", None)
+			parameters["InvoiceAmount"] = res.get("InvoiceAmount", None)
 		else:
 			parameters["ocrResult"] = "The file is not supported"
+	print("uploadEventParameters: %s", parameters)
 	return parameters
 
 def filesAnnotate(file):
@@ -142,9 +155,20 @@ def filesAnnotate(file):
 		text = ''
 		for page in response["responses"][0]["responses"]:
 			text += page["fullTextAnnotation"]["text"] + "\n"
-		return text
+		#return text
+		rcpt = receipt.Receipt(parser_config, text)
+		#print(rcpt.date)
+		return {
+			"Text": text,
+			"Company": rcpt.company,
+			"InvoiceDate": rcpt.date,
+			"InvoiceNo": rcpt.billno,
+			"InvoiceAmount": rcpt.sum
+		}
 	else:
-		return "filesAnnotate error %s: %s" % (status, response)
+		return {
+			"Text": "filesAnnotate error %s: %s" % (status, response)
+		}
 
 def imagesAnnotate(file):
 	url = "https://vision.googleapis.com/v1/images:annotate?key=%s" % GOOGLE_API_KEY
@@ -157,6 +181,18 @@ def imagesAnnotate(file):
 	})
 	(status,response) = post(url,payload)
 	if status == requests.codes.ok:
-		return response["responses"][0]["textAnnotations"][0]["description"]
+		#return response["responses"][0]["textAnnotations"][0]["description"]
+		text = lsgapp.mergeNearByWords(response["responses"][0])
+		rcpt = receipt.Receipt(parser_config, text)
+		#print(rcpt.date)
+		return {
+			"Text": text,
+			"Company": rcpt.company,
+			"InvoiceDate": rcpt.date,
+			"InvoiceNo": rcpt.billno,
+			"InvoiceAmount": rcpt.sum
+		}
 	else:
-		return "imageAnnotate error %s: %s" % (status, response)
+		return {
+			"Text": "imageAnnotate error %s: %s" % (status, response)
+		}

@@ -5,7 +5,7 @@ FROM python:3.5-alpine
 WORKDIR /app
 
 # install dependent linux libraries
-RUN apk update && apk add --no-cache linux-headers gcc g++
+RUN apk update && apk add --no-cache linux-headers gcc g++ libc-dev geos-dev
 
 # pip install
 ADD ./requirements.txt /app/requirements.txt
