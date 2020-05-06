@@ -9,7 +9,6 @@ import { formatDate, formatMoney } from '../../../utils/formatting'
 import { getClaim } from '../../../httpActions/claimsApi'
 import MUIDataTable from 'mui-datatables'
 import { PoolID } from '../../../components/PoolID'
-import { CloudDownload } from '@material-ui/icons'
 
 export const ClaimDetails = withRouter(({ history }) => {
 
@@ -51,8 +50,11 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="Rider" value={data.Rider} />
           <LabelValuePair label="Refund Amount" value={formatMoney(data.RefundAmount)} />
           <LabelValuePair label="Auto Claim" value={data.AutoClaim? 'Y' : 'N'} />
+          <LabelValuePair label="Classification Reason" value={data.ClassificationReason} />
+          <LabelValuePair label="Remark" value={data.ClaimRemark} />
           <LabelValuePair label="CoPay" value={formatMoney(data.CopayAmount)} />
           <LabelValuePair label="Pool ID" value={(!!data.PoolID)? <PoolID poolID={data.PoolID} /> : '-'} />
+          
         </Grid>
         <br /><br />
         <SectionHeader 
