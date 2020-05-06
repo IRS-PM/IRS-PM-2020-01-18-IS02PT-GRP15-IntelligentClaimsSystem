@@ -4,6 +4,7 @@ const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, P
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
 const router = express.Router()
+const moment = require('moment')
 const currentDate = new Date()
 
 const modelIncludes = [{
@@ -25,13 +26,6 @@ const modelIncludes = [{
 }, {
   model: MedicalPanel
 }]
-
-router.get('/test', async (req, res) => {
-  dispatchEvent(NEW_CLAIM_SUBMITTED, JSON.stringify({
-    ClaimNo: 'hoho'
-  }))
-  return res.send(NEW_CLAIM_SUBMITTED)
-})
 
 router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
@@ -316,7 +310,10 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
 
 
 router.post('/bulk-insert', async (req, res) => {
-  const { numToInsert=0 } = req.body
+  let { numToInsert=0 } = req.body
+
+  // max of 300 records
+  numToInsert = Math.min(numToInsert, 300)
 
   // get a list of policies
   const allPolicies = await HealthPolicy.findAll()
@@ -329,48 +326,84 @@ router.post('/bulk-insert', async (req, res) => {
     const randMedicalPanel = allMedicalPanels[Math.round(Math.random() * (allMedicalPanels.length - 1))]
     const randDiagnosis = allDiagnosis[Math.round(Math.random() * (allDiagnosis.length - 1))]
     const randHospital = allHospitals[Math.round(Math.random() * (allHospitals.length - 1))]
+    const randAmount = Math.round((1000 + Math.random() * 50000) * 100) / 100
+    const randBillCategory = ['IN','PP','OU','DY'][Math.round(Math.random() * 3)]
+    const randHRN = 'H' + Array(8).fill(0).reduce((acc)=> acc + Math.round(Math.random() * 9).toString(), '')
+    const randPolicyProduct = await ProductPlan.findOne({ where: { ProductCode: randPolicy.ProductCode } })
+    const randBenefit = await PolicyBenefit.findOne({
+      where: { 
+        ProductCode: randPolicyProduct.ProductCode 
+      },
+      order: [
+        sequelize.literal('rand()')
+      ]
+    })
+
+    const now = new Date()
 
     const claim = new MedicalClaim({
       MainClaimNo: null,
       ClaimType: 1,
       PolicyNo: randPolicy.PolicyNo,
-      DateOcc: new Date(),
+      DateOcc: now,
       EffDate: randPolicy.EffectiveDate,
       ExpDate: randPolicy.ExpiryDate,
-      Rider: 'N', // <-----------------
-      HospitalType: randMedicalPanel.PanelType === 1? 'S' : 'G',
+      Rider: !!randPolicy.RiderPrdtCode? 'Y' : 'N',
+      HospitalType: 'S',
       Specialist: MedicalPanel.RegistrationNo,
       Specialty: MedicalPanel.Specialty,
       DiagnosisCode: randDiagnosis.DiagnosisCode,
-      RefundAmount: 0, // <--------
-      HRN: '',
+      RefundAmount: randAmount,
+      HRN: randHRN,
       SubType: 'FS',
-      BillCategory: ['IN','PP','OU','DY'][Math.round(Math.random() * 3)],
-      FinalPayout: 0, // <--------
+      BillCategory: randBillCategory,
+      FinalPayout: 0,
       HospitalCode: randHospital.HospitalCode,
-      RiderPrdtCode: null, // <--------------
-      RiderEffDate: null,
-      OtherDiagnosis: '',
-      RiderTypeID: 0, // <------------
-      PanelTypeID: null,
-      TotalExp: 10000 + Math.random() * 50000,
+      RiderPrdtCode: randPolicy.RiderPrdtCode,
+      RiderEffDate: randPolicy.RiderCommencementDate,
+      OtherDiagnosis: '', 
+      RiderTypeID: 0,
+      PanelTypeID: randMedicalPanel.PanelType,
+      TotalExp: randAmount,
       Status: 0,
-      ClaimRemark: '',
+      ClaimRemark: 'Generated',
       AttachUrl: null,
       PolicyHolderID: randPolicy.PolicyHolderID,
       PolicyHolderName: randPolicy.PolicyHolderName,
       InsuredID: randPolicy.InsuredID,
       InsuredName: randPolicy.InsuredName,
       PoolID: [31, 40, 1, 25, 0, 42][Math.round(Math.random() * 5)],
-      PolicyDuration: 0, //<---------------
+      PolicyDuration: Math.abs(Math.round(moment(randPolicy.CommencementDate).diff(moment(now)) / 1000 / 60 / 60 / 24)),
       AssignDate: null,
       CloseDate: null,
       AutoClaim: null,
-      DeductibleAmount: 0, //<------------------
-      CopayAmount: 0 //<---------------
+      DeductibleAmount: 0,
+      CopayAmount: 0
     })
-    // await claim.save()
-    return claim
+    await claim.save()
+    const claimObj = claim.toJSON()
+
+    // random benefit code from the policy's benefits
+    if (!!randBenefit) {
+      const claimItem = new ClaimItem({
+        ClaimNo: claim.ClaimNo, 
+        BenefitCode: randBenefit.BenefitCode, 
+        Qty: 1, 
+        Amount: randAmount, 
+        ReceiptRef: ''
+      })
+      await claimItem.save()
+
+      claimObj['ClaimItem'] = [claimItem.toJSON()]
+    }
+    
+
+    return claimObj
+  }))
+
+  const claimNos = claims.map(claim => claim.ClaimNo)
+  dispatchEvent(NEW_CLAIM_SUBMITTED, JSON.stringify({
+    claimIds: claimNos
   }))
 
   return res.json({

@@ -46,7 +46,7 @@ MedicalClaim.init({
   AssignDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('AssignDate')) } },
   CloseDate: { type: Sequelize.DATE, allowNull: true, defaultValue: null },
   CloseDateFormatted: { type: Sequelize.VIRTUAL, get() { return formatDateForClassification(this.getDataValue('CloseDate')) } },
-  AutoClaim: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: 1 },
+  AutoClaim: { type: Sequelize.BOOLEAN, allowNull: true, defaultValue: null },
   ClassificationReason: { type: Sequelize.TEXT, allowNull: true, defaultValue: null },
   DeductibleAmount: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
   CopayAmount: { type: Sequelize.FLOAT(10, 2), defaultValue: 0 },
