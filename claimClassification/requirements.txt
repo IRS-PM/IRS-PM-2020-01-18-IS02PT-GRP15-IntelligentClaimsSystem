@@ -2,6 +2,10 @@ Flask==1.1.2
 asyncio==3.4.3
 aio-pika==6.6.0
 python-dotenv==0.12.0
-requests==2.21.0
+requests==2.23.0
 daemon==1.2
 python-daemon==2.2.4
+Flask-RESTful==0.3.8
+cffi==1.14.0
+clipspy==0.3.2
+python-dateutil==2.8.1

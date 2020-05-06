@@ -7,9 +7,10 @@ import sys
 async def on_message(message: IncomingMessage):
     try:
         print("sending to http://127.0.0.1:%s/handle-event" % (PORT))
-        await requests.post("http://127.0.0.1:%s/handle-event" % (PORT), json = { 'event': message.routing_key, 'body': message.body.decode(encoding="utf-8") })
+        requests.post("http://127.0.0.1:%s/handle-event" % (PORT), json = { 'event': message.routing_key, 'body': message.body.decode(encoding="utf-8") })
         await message.ack()
     except:
+        print("Unexpected error:", sys.exc_info()[0])
         print("Sending to http server failed")
 
 async def main(loop):
