@@ -10,6 +10,7 @@ from util import *
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/claim/uploadfile', methods=['POST'])
 def uploadFile():
 	if 'Dfsessionid' not in request.headers:
