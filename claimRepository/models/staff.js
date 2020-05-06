@@ -69,7 +69,7 @@ Staff.prototype.getReportByDate = async function(date) {
   }, 0)
   
   return {
-    Date: date,
+    Date: moment(date).format('YYYY-MM-DD'),
     AssignedHours: claimsWithinDay.length,
     AbsentHours: absentHours,
     Claims: claimsWithinDay,

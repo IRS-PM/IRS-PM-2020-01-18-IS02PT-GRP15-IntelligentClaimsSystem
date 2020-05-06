@@ -111,6 +111,28 @@ router.get('/autoclaimdistribution', async (req, res) => {
   }  
 })
 
+router.get('/pendingassignment', async(req, res) => {
+
+  const whereClause = {
+    Status: 0,
+    AutoClaim: 0
+  }
+
+  const claims = await MedicalClaim.findAll({
+    where: whereClause,
+    order: [
+      ['CreatedDate', 'ASC']
+    ]
+  })
+
+  return res.json({
+    total: await MedicalClaim.count({
+      where: whereClause
+    }),
+    data: claims
+  })
+})
+
 router.get('/:claimNo', async (req, res) => {
   try {
     const { claimNo } = req.params
@@ -258,7 +280,7 @@ router.patch('/:claimNo', async (req, res) => {
   }  
 })
 
-router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
+router.post('/assign/:claimNo/to/:staffID', async (req, res) => {
   try {
     const { claimNo, staffID } = req.params
     const { AssignedForDate = new Date() } = req.body
@@ -278,6 +300,7 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
       return res.send('Invalid staff')
     }
 
+    // existing assignment
     const existingAssignment = await ClaimStaff.findOne({
       where: {
         ClaimNo: claim.ClaimNo
@@ -289,6 +312,7 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
       return res.send('Claim already assigned')
     }
 
+    // insert claim staff
     const claimStaff = new ClaimStaff({
       StaffID: staff.ID,
       ClaimNo: claim.ClaimNo,
@@ -298,8 +322,12 @@ router.put('/assign/:claimNo/to/:staffID', async (req, res) => {
 
     await claimStaff.save()
 
+    // update claim status
+    claim.Status = 1
+    await claim.save()
+
     await claim.reload()
-    return res.json(claim)
+    return res.json(claimStaff)
 
   } catch (e) {
     console.error(e)
