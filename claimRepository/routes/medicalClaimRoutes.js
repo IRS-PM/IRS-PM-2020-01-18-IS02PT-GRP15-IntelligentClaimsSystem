@@ -30,11 +30,11 @@ const modelIncludes = [{
 router.get(['/', '/status/:status', '/policyno/:policyNo'], async (req, res) => {
   try {
     const { status = '', policyNo = '' } = req.params
-    const { offset=0, limit=20, orderby='DateOcc', orderseq='DESC', datefrom=null, dateto=null } = req.query
+    const { offset=0, limit=20, orderby='CreatedDate', orderseq='DESC', datefrom=null, dateto=null } = req.query
     const whereClause = {}
     if (!!status) whereClause.Status = status
     if (!!policyNo) whereClause.PolicyNo = policyNo
-    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+    if (!!datefrom && !!dateto) whereClause.CreatedDate = {
       [sequelize.Op.gte]: datefrom,
       [sequelize.Op.lte]: dateto
     }
@@ -67,7 +67,7 @@ router.get('/statusdistribution', async (req, res) => {
   try {
     const { datefrom=null, dateto=null } = req.query
     const whereClause = {}
-    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+    if (!!datefrom && !!dateto) whereClause.CreatedDate = {
       [sequelize.Op.gte]: datefrom,
       [sequelize.Op.lte]: dateto
     }
@@ -91,7 +91,7 @@ router.get('/autoclaimdistribution', async (req, res) => {
   try {
     const { datefrom=null, dateto=null } = req.query
     const whereClause = {}
-    if (!!datefrom && !!dateto) whereClause.DateOcc = {
+    if (!!datefrom && !!dateto) whereClause.CreatedDate = {
       [sequelize.Op.gte]: datefrom,
       [sequelize.Op.lte]: dateto
     }
