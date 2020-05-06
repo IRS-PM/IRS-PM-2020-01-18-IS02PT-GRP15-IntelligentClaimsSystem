@@ -1,11 +1,11 @@
 # USE official node as base
-FROM python:3.5-alpine
+FROM python:3.7
 
 # Set the working directory to /app
 WORKDIR /app
 
 # install dependent linux libraries
-RUN apk update && apk add --no-cache linux-headers gcc g++ libc-dev geos-dev
+# RUN apk update && apk add --no-cache linux-headers gcc g++ libc-dev geos-dev
 
 # pip install
 ADD ./requirements.txt /app/requirements.txt
