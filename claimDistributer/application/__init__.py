@@ -5,6 +5,7 @@ import pandas as pd
 import json
 from ortools.linear_solver import pywraplp
 import datetime
+from config import HOST, PORT
 
 app = Flask(__name__)
 
@@ -16,6 +17,7 @@ def home():
 # POST /distribute
 @app.route('/distribute', methods=['GET'])
 def distribute():
+
   staffs = pd.DataFrame.from_records([x for x in getStaffs()])
   claims = pd.DataFrame.from_records([x for x in getClaims()])
   num_staffs = staffs.shape[0]
@@ -23,15 +25,15 @@ def distribute():
   num_claims = claims.shape[0]
 
   b = staffs.iloc[:, 0:4]
-  d = pd.DataFrame.from_records([x for x in staffs["lastAssignedOn"]])
+  d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
   s = pd.concat([b,d],axis=1,sort=False)
-  s["openslots"] = 8-s["assignedHrs"]-s["absentHrs"]
-  s = s[s.assignedHrs+s.absentHrs != 8].sort_values(by='date')
+  s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
+  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
   # print(s)
-  start_date = s["date"].iloc[0]
+  start_date = s["Date"].iloc[0]
 
   staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
-  staff_avail["openslots"] = 8-staff_avail["assignedHrs"]-staff_avail["absentHrs"]
+  staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
 
   openslots = staff_avail["openslots"].sum()
   c = 0
@@ -99,7 +101,7 @@ def distribute():
     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     print("next_date = ", next_date)
     staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(next_date)])
-    staff_avail["openslots"] = 8-staff_avail["assignedHrs"]-staff_avail["absentHrs"]
+    staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
     openslots = staff_avail["openslots"].sum()
     # print("openslots = ", openslots)
     n_claims = min(openslots, num_claims-n_claims)
@@ -120,15 +122,15 @@ def distribute():
 #   num_claims = claims.shape[0]
 
 #   b = staffs.iloc[:, 0:4]
-#   d = pd.DataFrame.from_records([x for x in staffs["lastAssignedOn"]])
+#   d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
 #   s = pd.concat([b,d],axis=1,sort=False)
-#   s["openslots"] = 8-s["assignedHrs"]-s["absentHrs"]
-#   s = s[s.assignedHrs+s.absentHrs != 8].sort_values(by='date')
+#   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
+#   s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
 #   # print(s)
 #   start_date = s["date"].iloc[0]
 
 #   staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
-#   staff_avail["openslots"] = 8-staff_avail["assignedHrs"]-staff_avail["absentHrs"]
+#   staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
 
 #   openslots = staff_avail["openslots"].sum()
 #   c = 0
@@ -196,10 +198,12 @@ def distribute():
 #     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 #     print("next_date = ", next_date)
 #     staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(next_date)])
-#     staff_avail["openslots"] = 8-staff_avail["assignedHrs"]-staff_avail["absentHrs"]
+#     staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
 #     openslots = staff_avail["openslots"].sum()
 #     # print("openslots = ", openslots)
 #     n_claims = min(openslots, num_claims-n_claims)
 
 #   return json.dumps({'staffs': "staffs"})
 
+
+app.run(debug=True, host=HOST, port=PORT)
