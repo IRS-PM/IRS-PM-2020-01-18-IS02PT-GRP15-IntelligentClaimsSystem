@@ -10,7 +10,7 @@ const modelIncludeList = [{
   include: PolicyBenefit
 }, {
   model: MedicalClaim,
-  attributes: ['ClaimNo']
+  attributes: ['ClaimNo', 'PolicyNo', 'Status', 'AutoClaim', 'CreatedDate', 'RefundAmount']
 }]
 
 router.get('/', async (req, res) => {

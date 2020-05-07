@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Typography, Divider, Box } from '@material-ui/core'
-import { PageContainer, LabelValuePair } from '../../../components'
+import { PageContainer, LabelValuePair, SectionHeader, ClaimsTable } from '../../../components'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter, useParams } from 'react-router-dom'
 import { formatDate, formatMoney } from '../../../utils/formatting'
@@ -24,7 +24,7 @@ export const PolicyDetails = withRouter(({ history }) => {
       const resp = await getPolicy(policyNo)
       setData(resp.data)
     } catch (e) {
-      addErrorMessage('Error loading claim')
+      addErrorMessage('Error loading policy details')
     } finally {
       setIsLoading(false)
     }
@@ -38,10 +38,11 @@ export const PolicyDetails = withRouter(({ history }) => {
       {!!data &&
         <>
           <Grid container>
+            <LabelValuePair label="Insured Name" value={data.InsuredName} />
+            <LabelValuePair label="Insured Name" value={data.InsuredID} />
             <LabelValuePair label="Commencement Date" value={formatDate(data.CommencementDate)} />
             <LabelValuePair label="Effective Date" value={formatDate(data.EffectiveDate)} />
             <LabelValuePair label="Expiry Date" value={formatDate(data.ExpiryDate)} />
-            <LabelValuePair label="Insured Name" value={data.InsuredName} />
             <LabelValuePair label="Premium Amount" value={formatMoney(data.PremiumAmount)} />
             <LabelValuePair label="Rider Premium Amount" value={formatMoney(data.RiderPremiumAmount)} />
             <LabelValuePair label="Product Code" value={data.ProductPlan.ProductCode} />
@@ -49,8 +50,16 @@ export const PolicyDetails = withRouter(({ history }) => {
           </Grid>
 
           <br /><br />
-          <Typography variant="h6">Product Benefits</Typography>
-          <Divider style={{marginTop: 10, marginBottom: 30}} />
+          <SectionHeader 
+            title="Claim History"
+          />
+
+          <ClaimsTable data={data.MedicalClaims} />
+          <br /><br />
+          
+          <SectionHeader 
+            title="Product Benefits"
+          />
 
           <Box>
             <MUIDataTable
