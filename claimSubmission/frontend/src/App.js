@@ -40,7 +40,7 @@ function App() {
         <Typography variant="h5" style={{color: '#aaa', fontWeight: 100}}>
         { isOffline 
             ? 'Dialogflow failed to load. If you are currently offline, please use the dashboard to submit claims instead.'
-            : 'To start, please talk to the chatbot at the bottom left of the screen.'
+            : 'To start, please talk to the chatbot at the bottom right of the screen.'
         }
         </Typography>
       </div>
