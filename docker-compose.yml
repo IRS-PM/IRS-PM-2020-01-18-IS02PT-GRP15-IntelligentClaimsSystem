@@ -87,10 +87,10 @@ services:
     ports:
       - "9999:9999"
     restart: always
-    links: 
+    links:
       # - "claimrepository"
       - "eventdispatcher"
-    environment: 
+    environment:
       CLAIM_REPOSITORY_HOST: http://claimrepository:8081
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       HOST: 0.0.0.0

@@ -39,6 +39,7 @@ def processClaims(claimlist):
     claim_results = []
     for claim_num in claimlist:
         new_fact = getall(claim_num)
+
         if new_fact == "Status 0":
             print(claim_num+" is not a newly submitted claim")
             continue
@@ -154,7 +155,7 @@ def getDoctordetails(data):
         blist = data["MedicalPanel"]["BlacklistReasonID"]
         if blist is None:
             new_string = "(Doctors(black_list N))"
-        elif blist is 1:
+        else:
             new_string = "(Doctors(black_list Y))"
     return new_string
 
