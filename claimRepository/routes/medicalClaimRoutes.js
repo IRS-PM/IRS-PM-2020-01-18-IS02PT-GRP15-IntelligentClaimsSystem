@@ -346,7 +346,11 @@ router.post('/bulk-insert', async (req, res) => {
   // get a list of policies
   const allPolicies = await HealthPolicy.findAll()
   const allMedicalPanels = await MedicalPanel.findAll()
-  const allDiagnosis = await DiagnosisCode.findAll()
+  const allDiagnosis = await DiagnosisCode.findAll({
+    where: {
+      AutoReject: 'N'
+    }
+  })
   const allHospitals = await Hospital.findAll()
 
   const claims = await Promise.all(Array(numToInsert).fill(null).map(async (val, index) => {
@@ -354,7 +358,7 @@ router.post('/bulk-insert', async (req, res) => {
     const randMedicalPanel = allMedicalPanels[Math.round(Math.random() * (allMedicalPanels.length - 1))]
     const randDiagnosis = allDiagnosis[Math.round(Math.random() * (allDiagnosis.length - 1))]
     const randHospital = allHospitals[Math.round(Math.random() * (allHospitals.length - 1))]
-    const randAmount = Math.round((1000 + Math.random() * 50000) * 100) / 100
+    const randAmount = Math.round((50 + Math.random() * 15000) * 100) / 100
     const randBillCategory = ['IN','PP','OU','DY'][Math.round(Math.random() * 3)]
     const randHRN = 'H' + Array(8).fill(0).reduce((acc)=> acc + Math.round(Math.random() * 9).toString(), '')
     const randPolicyProduct = await ProductPlan.findOne({ where: { ProductCode: randPolicy.ProductCode } })
@@ -392,7 +396,7 @@ router.post('/bulk-insert', async (req, res) => {
       OtherDiagnosis: '', 
       RiderTypeID: 0,
       PanelTypeID: randMedicalPanel.PanelType,
-      TotalExp: Math.random() > 0.5 ? randAmount : 0,
+      TotalExp: randAmount,
       Status: 0,
       ClaimRemark: 'Generated',
       AttachUrl: null,
