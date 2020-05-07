@@ -7,6 +7,7 @@ from google.protobuf import struct_pb2
 from datetime import datetime
 import os,base64
 import lsgapp,parse,receipt
+from random import sample 
 
 parser_config = parse.read_config(os.path.join(os.getcwd(), "parser.config.yml"))
 
@@ -45,6 +46,15 @@ def getMainClaimByPolicyNoDateOcc(policyno,dateocc):
 	return next((claim for claim in getClaimByPolicyNo(policyno)["data"] if claim["DateOcc"][0:10] == dateocc[0:10]),None)
 	#return [claim["ClaimNo"] for claim in getClaimByPolicyNo(policyno) if (claim["DateOcc"] == dateocc)]
 	#return filtered[0]["ClaimNo"] if filtered else None
+
+def demoDataIntentHandler(param):
+	url = "%s/HealthPolicy" % CLAIM_REPOSITORY_HOST
+	(status,response) = get(url)
+	if status == requests.codes.ok:
+		res = "You can use following sample Insured ID:\n" + "\n".join([data["InsuredID"] for data in sample(response["data"],5)])
+	else:
+		res = "No data available"
+	return res
 
 def submitClaimIntentHandler(param):
 	url = "%s/MedicalClaim/" % CLAIM_REPOSITORY_HOST
