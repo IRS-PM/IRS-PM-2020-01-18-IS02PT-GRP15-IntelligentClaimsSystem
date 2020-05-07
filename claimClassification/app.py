@@ -121,7 +121,7 @@ def getPolicyDetails(data):
         duration = str(getduration(data["HealthPolicy"]["CommencementDateFormatted"]))
         balance = str(data["HealthPolicy"]["PolicyYearBalance"])
         auto = data["HealthPolicy"]['AllowAutoClaim']
-        pstatus = data["HealthPolicy"]["Status"]
+        pstatus = str(data["HealthPolicy"]["Status"])
         r_string = ""
         if balance is None:
             balance = "0"
