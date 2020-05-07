@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { get } from 'lodash'
-import { Button, Grid, Typography, Divider, Box } from '@material-ui/core'
+import { Button, Grid, Typography, Divider, Box, IconButton } from '@material-ui/core'
 import { PageContainer, LabelValuePair, SectionHeader } from '../../../components'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter, useParams } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { getClaim } from '../../../httpActions/claimsApi'
 import MUIDataTable from 'mui-datatables'
 import { PoolID } from '../../../components/PoolID'
 import { AutoClaimStatus } from '../../../components/AutoClaimStatus'
+import { Search as SearchIcon } from '@material-ui/icons'
 
 export const ClaimDetails = withRouter(({ history }) => {
 
@@ -43,7 +44,11 @@ export const ClaimDetails = withRouter(({ history }) => {
         <>
         <Grid container>
           <LabelValuePair label="Policy No" value={
-            <Box onClick={()=>history.push(`/policies/details/${data.PolicyNo}`)}>{data.PolicyNo}</Box>
+            <>
+              {data.PolicyNo}
+              <IconButton onClick={()=>history.push(`/policies/details/${data.PolicyNo}`)}><SearchIcon /></IconButton>
+            </>
+            
           } />
           <LabelValuePair label="Date Occ" value={formatDate(data.DateOcc)} />
           <LabelValuePair label="Status" value={<ClaimStatus status={data.Status} />} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Typography, Divider, Box } from '@material-ui/core'
-import { PageContainer, LabelValuePair } from '../../../components'
+import { PageContainer, LabelValuePair, SectionHeader, ClaimsTable } from '../../../components'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter, useParams } from 'react-router-dom'
 import { formatDate, formatMoney } from '../../../utils/formatting'
@@ -24,7 +24,7 @@ export const PolicyDetails = withRouter(({ history }) => {
       const resp = await getPolicy(policyNo)
       setData(resp.data)
     } catch (e) {
-      addErrorMessage('Error loading claim')
+      addErrorMessage('Error loading policy details')
     } finally {
       setIsLoading(false)
     }
@@ -49,8 +49,16 @@ export const PolicyDetails = withRouter(({ history }) => {
           </Grid>
 
           <br /><br />
-          <Typography variant="h6">Product Benefits</Typography>
-          <Divider style={{marginTop: 10, marginBottom: 30}} />
+          <SectionHeader 
+            title="Claim History"
+          />
+
+          <ClaimsTable data={data.MedicalClaims} />
+          <br /><br />
+          
+          <SectionHeader 
+            title="Product Benefits"
+          />
 
           <Box>
             <MUIDataTable

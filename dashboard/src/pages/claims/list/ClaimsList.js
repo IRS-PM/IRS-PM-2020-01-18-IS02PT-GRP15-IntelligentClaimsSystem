@@ -9,7 +9,7 @@ import { useToastMessageActions } from '../../../store/toast/toastHooks'
 import { withRouter } from 'react-router-dom'
 import { ClaimStatus } from '../../../components/ClaimStatus'
 import { formatDate, formatMoney } from '../../../utils/formatting'
-import { ClaimsDateRangeSelector } from '../../../components';
+import { ClaimsDateRangeSelector, ClaimsTable } from '../../../components';
 import { AutoClaimStatus } from '../../../components/AutoClaimStatus';
 
 const useStyles = makeStyles((theme) => ({
@@ -75,67 +75,7 @@ export const ClaimsList = withRouter(({ history }) => {
       <Box className={cssClasses.root}>
         {/* TABLE */}
         <Box className={cssClasses.tableContainer}>
-          <MUIDataTable
-            data={data}
-            columns={[{
-              name: 'ClaimNo',
-              label: 'Claim No',
-              options: {
-                customBodyRender: (value) => <Button color="primary" onClick={() => history.push(`/claims/details/${value}`)}>{value}</Button>,
-                sort: false
-              }
-            }, {
-              name: 'PolicyNo',
-              label: 'Policy No',
-              options: {
-                customBodyRender: (value) => <Button color="primary" onClick={() => history.push(`/policies/details/${value}`)}>{value}</Button>,
-                sort: false
-              }
-            }, {
-              name: 'Status',
-              label: 'Status',
-              options: {
-                customBodyRender: (value) => <ClaimStatus status={value} />,
-                sort: false
-              }
-            }, {
-              name: 'AutoClaim',
-              label: 'Auto Claim',
-              options: {
-                customBodyRender: (value) => <AutoClaimStatus autoClaimStatus={value} />
-              }
-            }, {
-              name: 'CreatdDate',
-              label: 'Submission Date',
-              options: {
-                customBodyRender: (value) => formatDate(value),
-                sort: false
-              }
-            }, {
-              name: 'RefundAmount',
-              label: 'Refund Amt',
-              options: {
-                customBodyRender: (value) => formatMoney(value),
-                sort: false
-              }
-            }, {
-              name: 'ClaimNo',
-              label: 'Actions',
-              options: {
-              customBodyRender: (value) => (<Button color="primary" variant="contained" onClick={()=>history.push(`/claims/details/${value}`)}>View Details</Button>)
-              }
-            }]}
-            options={{
-              selectableRows: 'none',
-              filter: false,
-              search: false,
-              print: false,
-              download: false,
-              viewColumns: false,
-              pagination: false,
-              responsive: 'scrollFullHeight'
-            }}
-          />
+          <ClaimsTable data={data} />
         </Box>
         {/* END TABLE */}
         <Box className={cssClasses.paginationContainer}>
