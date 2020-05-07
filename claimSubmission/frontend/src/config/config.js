@@ -5,5 +5,5 @@ export const dialogFlowSettings = {
 }
 
 export const httpApiSettings = {
-    host: window.API_HOST || 'http://127.0.0.1:5000'
+    host: window.API_HOST || 'http://' + window.location.hostname +':5000'
 }

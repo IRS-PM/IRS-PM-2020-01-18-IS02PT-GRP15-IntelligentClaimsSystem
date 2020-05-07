@@ -105,7 +105,7 @@ export function UploadFileDialog({
                         )
                         : (
                             <FileDropZone
-                                acceptedMimeTypes={['image/png','image/jpg','image/jpeg','image/gif','image/bmp','application/pdf']}
+                                acceptedMimeTypes={['image/png','image/jpg','image/jpeg','image/gif','image/bmp']}
                                 onFilesAdded={handleFileChange}
                                 onFilesRejected={handleFileRejected}
                                 blockOtherDrops={true}
@@ -115,7 +115,7 @@ export function UploadFileDialog({
                     }
                 </Box>
                 <br />
-                <Typography variant="caption">*Supported file formats: png, jpg, gif, bmp, and pdf</Typography>
+                <Typography variant="caption">*Supported file formats: png, jpg, gif, and bmp</Typography>
             </DialogContent>
             <DialogActions>
                 <Button 
