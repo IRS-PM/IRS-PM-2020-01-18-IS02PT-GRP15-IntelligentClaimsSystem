@@ -7,3 +7,7 @@ export const dialogFlowSettings = {
 export const httpApiSettings = {
     host: window.API_HOST || 'http://' + window.location.hostname +':5000'
 }
+
+export const claimRepositoryApiSettings = {
+    host: window.CLAIM_REPO_API_HOST || 'http://' + window.location.hostname +':8081'
+}
