@@ -162,6 +162,10 @@ def filesAnnotate(file):
 
 	(status,response) = post(url,payload)
 	if status == requests.codes.ok:
+		if response["responses"][0] == {}:
+			return {
+				"Text": "Unable to retrieve any information from the file"
+			}	
 		text = ''
 		for page in response["responses"][0]["responses"]:
 			text += page["fullTextAnnotation"]["text"] + "\n"
@@ -191,12 +195,16 @@ def imagesAnnotate(file):
 	})
 	(status,response) = post(url,payload)
 	if status == requests.codes.ok:
+		if response["responses"][0] == {}:
+			return {
+				"Text": "Unable to retrieve any information from the file"
+			}	
 		#return response["responses"][0]["textAnnotations"][0]["description"]
 		text = lsgapp.mergeNearByWords(response["responses"][0])
 		rcpt = receipt.Receipt(parser_config, text)
 		#print(rcpt.date)
 		return {
-			"Text": text,
+			"Text": billText(rcpt),
 			"Company": rcpt.company,
 			"InvoiceDate": rcpt.date,
 			"InvoiceNo": rcpt.billno,
@@ -206,3 +214,25 @@ def imagesAnnotate(file):
 		return {
 			"Text": "imageAnnotate error %s: %s" % (status, response)
 		}
+
+def billText(rcpt):
+	text = "Bill detail\n"
+	i = 0
+	if rcpt.company != None:
+		text = text + rcpt.company +"\n"
+		i = i + 1
+	if rcpt.date != None:
+		date = datetime.strptime(rcpt.date[0:10], '%Y-%m-%d').date()
+		text = text + "Date: %s\n" % date.strftime('%d-%m-%Y')
+		i = i + 1
+	if rcpt.billno != None:
+		text = text + "Ref: %s\n" % rcpt.billno
+		i = i + 1
+	if rcpt.company != None:
+		text = text + "Amount: %s\n" % rcpt.sum
+		i = i + 1
+	if i==0:
+		text = "Unable to retrieve bill information"
+	return text
+	
+

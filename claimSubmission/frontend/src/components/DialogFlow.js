@@ -2,9 +2,11 @@ import React from 'react'
 import { dialogFlowSettings } from '../config/config'
 import { store } from '../store/store'
 import { ACTION_TYPES } from '../store/actionTypes'
+import Axios from 'axios'
 
 export function DialogFlow ({
-    handleUploadTriggered = () => {}
+    handleUploadTriggered = () => {},
+    handleLoadFailed = () => {}
 }) {
 
     const {state, dispatch} = React.useContext(store)
@@ -14,6 +16,7 @@ export function DialogFlow ({
 
     // on mount
     React.useEffect(() => {
+
         if (!dfMessenger.current) {
             const dfEl = document.createElement('df-messenger')
             dfEl.setAttribute('intent', dialogFlowSettings.defaultIntent)
@@ -25,6 +28,7 @@ export function DialogFlow ({
 
         if (!scriptTagElement.current) {
             const scriptEl = document.createElement('script')
+            scriptEl.onerror = handleLoadFailed
             scriptEl.setAttribute('src', 'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1')
             scriptTagElement.current = scriptEl
         }
