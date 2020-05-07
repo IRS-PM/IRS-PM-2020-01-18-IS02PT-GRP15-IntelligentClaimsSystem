@@ -31,6 +31,7 @@ def handleEventReceived():
         print(sys.exc_info()[0])
         print("Error while processing event")
         return "Error processing event"
+
         
 
 def processClaims(claimlist):
