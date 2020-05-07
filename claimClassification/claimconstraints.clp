@@ -68,8 +68,8 @@
 (Policy(rider Y))
 (not(Rider(outstanding 0)))
 =>
-(assert(autoclaim no))
-(assert(reason outstanding_rider)))
+(assert(reason outstanding_rider))
+(assert(autoclaim no)))
 
 
 ;checking claimamount limit
@@ -77,31 +77,33 @@
 (Claims(claimtotal ?c))
 (test (> ?c 20000))
 =>
-(assert(autoclaim no))
-(assert(reason claim_amount_exceeds_autoclaim_limit)))
+(assert(reason claim_amount_exceeds_autoclaim_limit))
+(assert(autoclaim no)))
 
 
 ;checking policy validity
 (defrule policyvalidity
 (Policy(status ~1))
 =>
-(assert(autoclaim no))
-(assert(reason policy_not_inforce)))
+(assert(reason policy_not_inforce))
+(assert(autoclaim no)))
 
 
 ; doctor in blacklist
 (defrule dconstraint
      (Doctors(black_list Y))
 =>
-(assert(autoclaim no))
-(assert(reason doctor_in_blist)))
+(assert(reason doctor_in_blist))
+(assert(autoclaim no)))
 
 
 ;Policy auto allowed
 (defrule autoallowed
     (Policy(auto_allowed ~Y))
-=>(assert(autoclaim no))
-(assert(reason not_autoallowed)))
+=>
+(assert(reason not_autoallowed))
+(assert(autoclaim no)))
+
 
 ;determining rider benefit
 (defrule benefit
@@ -119,8 +121,10 @@
 (defrule diagnosisallowed
 	(Diagnosis(diagnosis_code ~None)
 	(autoreject Y))
-=>(assert(autoclaim no))
-(assert(reason diagnosiscode_not_allowed)))
+=>
+(assert(reason diagnosiscode_not_allowed))
+(assert(autoclaim no)))
+
 
 
 ;product limit check
@@ -128,8 +132,9 @@
 	(Claimproducts(pcode ?p)(amount ?a)(limit ?l))
 	(test (> ?a ?l))
 =>
-(assert(autoclaim no))
-(assert(reason amount_exceeds_limit)))
+(assert(reason amount_exceeds_limit))
+(assert(autoclaim no)))
+
 
 
 ; date of occurance check with policy expiry date
@@ -140,16 +145,19 @@
 	(if(eq ?pyy ?oyy)
 	  then(if(eq ?pmm ?omm)
 		then(if(> ?odd ?pdd)
-		     then(assert(autoclaim no))
-		         (assert(reason policy_expired)))
+		     then(assert(reason policy_expired))
+		          (assert(autoclaim no))
+		         )
 	        else(if(> ?omm ?pmm)
-		    then(assert(autoclaim no))
-		        (assert(reason policy_expired)))
+		    then(assert(reason policy_expired))
+		         (assert(autoclaim no))
+		        )
 		    )
-	       )
+	 )
 	  else(if(> ?oyy ?pyy)
-	       then(assert(autoclaim no))
-	           (assert(reason policy_expired))
+	       then(assert(reason policy_expired))
+	           (assert(autoclaim no))
+
 	 )
 )
 
@@ -158,8 +166,9 @@
 	(Policy(policyduration ?pd))
 	(test (< ?pd 12))
 =>
-(assert(autoclaim no))
-(assert(reason policy_new)))
+(assert(reason policy_new))
+(assert(autoclaim no)))
+
 
 
 ; policy balance less than claim amount
@@ -168,8 +177,9 @@
 	(Claims(claimtotal ?ca))
 	(test(< ?pb ?ca))
 =>
-(assert(autoclaim no))
-(assert(reason amount_exceeds_balance)))
+(assert(reason amount_exceeds_balance))
+(assert(autoclaim no)))
+
 
 
 
@@ -179,8 +189,9 @@
 	(Claims(claimtotal ?amt))
 	(test(> ?amt 6000))
 =>
-(assert(autoclaim no))
-(assert(reason amount_exceeds_for_hospital_type)))
+(assert(reason amount_exceeds_for_hospital_type))
+(assert(autoclaim no)))
+
 
 
 ; restructured hospital limit
@@ -189,8 +200,9 @@
 	(Claims(claimtotal ?amt))
 	(test(> ?amt 4000))
 =>
-(assert(autoclaim no))
-(assert(reason amount_exceeds_for_hospital_type)))
+(assert(reason amount_exceeds_for_hospital_type))
+(assert(autoclaim no)))
+
 
 
 ;Checking Insured's past
