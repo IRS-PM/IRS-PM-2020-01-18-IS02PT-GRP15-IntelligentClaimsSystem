@@ -38,10 +38,11 @@ export const PolicyDetails = withRouter(({ history }) => {
       {!!data &&
         <>
           <Grid container>
+            <LabelValuePair label="Insured Name" value={data.InsuredName} />
+            <LabelValuePair label="Insured Name" value={data.InsuredID} />
             <LabelValuePair label="Commencement Date" value={formatDate(data.CommencementDate)} />
             <LabelValuePair label="Effective Date" value={formatDate(data.EffectiveDate)} />
             <LabelValuePair label="Expiry Date" value={formatDate(data.ExpiryDate)} />
-            <LabelValuePair label="Insured Name" value={data.InsuredName} />
             <LabelValuePair label="Premium Amount" value={formatMoney(data.PremiumAmount)} />
             <LabelValuePair label="Rider Premium Amount" value={formatMoney(data.RiderPremiumAmount)} />
             <LabelValuePair label="Product Code" value={data.ProductPlan.ProductCode} />
