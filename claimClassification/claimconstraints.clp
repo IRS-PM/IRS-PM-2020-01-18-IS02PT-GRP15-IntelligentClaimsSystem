@@ -75,7 +75,7 @@
 ;checking claimamount limit
 (defrule claimamount
 (Claims(claimtotal ?c))
-(test (> ?c 7000))
+(test (> ?c 20000))
 =>
 (assert(autoclaim no))
 (assert(reason claim_amount_exceeds_autoclaim_limit)))
@@ -86,7 +86,7 @@
 (Policy(status ~1))
 =>
 (assert(autoclaim no))
-(assert(reason policy_not _inforce)))
+(assert(reason policy_not_inforce)))
 
 
 ; doctor in blacklist
