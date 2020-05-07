@@ -9,6 +9,7 @@ import MUIDataTable from "mui-datatables"
 import { Button } from "@material-ui/core"
 import { withRouter } from "react-router-dom"
 import { getClaims } from '../../../httpActions/claimsApi'
+import { AutoClaimStatus } from '../../../components/AutoClaimStatus'
 
 export const RecentClaims = withRouter(({history}) => {
 
@@ -52,14 +53,20 @@ export const RecentClaims = withRouter(({history}) => {
                 options: {
                   customBodyRender: (value) => <Button color="primary" onClick={() => history.push(`/policies/details/${value}`)}>{value}</Button>
                 }
-              }, {
+              },  {
                 name: 'Status',
                 label: 'Status',
                 options: {
                   customBodyRender: (value) => <ClaimStatus status={value} />
                 }
               }, {
-                name: 'DateOcc',
+                name: 'AutoClaim',
+                label: 'Auto Claim',
+                options: {
+                  customBodyRender: (value) => <AutoClaimStatus autoClaimStatus={value} />
+                }
+              }, {
+                name: 'CreatedDate',
                 label: 'Submission Date',
                 options: {
                   customBodyRender: (value) => formatDate(value)

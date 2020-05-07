@@ -35,7 +35,7 @@ export const AppHeader = () => {
     <AppBar position="absolute" className={`${cssClasses.root} ${navIsOpen && cssClasses.rootNavOpen}`}>
       <Toolbar>
         <IconButton onClick={toggleNavOpen} edge="start"><SvgIcon htmlColor="#ffffff"><MenuIcon /></SvgIcon></IconButton>
-        <Typography variant="h6" className={cssClasses.title}>Intelligent Claims Management System</Typography>
+        <Typography variant="h6" className={cssClasses.title}>Intelligent Claims System</Typography>
       </Toolbar>
     </AppBar>
   )

@@ -9,6 +9,7 @@ import { formatDate, formatMoney } from '../../../utils/formatting'
 import { getClaim } from '../../../httpActions/claimsApi'
 import MUIDataTable from 'mui-datatables'
 import { PoolID } from '../../../components/PoolID'
+import { AutoClaimStatus } from '../../../components/AutoClaimStatus'
 
 export const ClaimDetails = withRouter(({ history }) => {
 
@@ -49,7 +50,7 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="Bill Document" value={!!data.AttachUrl? <Box onClick={()=>window.open(data.AttachUrl)}>View Document</Box> : '-'} />
           <LabelValuePair label="Rider" value={data.Rider} />
           <LabelValuePair label="Refund Amount" value={formatMoney(data.RefundAmount)} />
-          <LabelValuePair label="Auto Claim" value={data.AutoClaim? 'Y' : 'N'} />
+          <LabelValuePair label="Auto Claim" value={<AutoClaimStatus autoClaimStatus={data.AutoClaim} />} />
           <LabelValuePair label="Classification Reason" value={data.ClassificationReason} />
           <LabelValuePair label="Remark" value={data.ClaimRemark} />
           <LabelValuePair label="CoPay" value={formatMoney(data.CopayAmount)} />

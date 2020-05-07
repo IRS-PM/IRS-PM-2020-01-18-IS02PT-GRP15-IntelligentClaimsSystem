@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 import { ClaimStatus } from '../../../components/ClaimStatus'
 import { formatDate, formatMoney } from '../../../utils/formatting'
 import { ClaimsDateRangeSelector } from '../../../components';
+import { AutoClaimStatus } from '../../../components/AutoClaimStatus';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,7 +99,13 @@ export const ClaimsList = withRouter(({ history }) => {
                 sort: false
               }
             }, {
-              name: 'DateOcc',
+              name: 'AutoClaim',
+              label: 'Auto Claim',
+              options: {
+                customBodyRender: (value) => <AutoClaimStatus autoClaimStatus={value} />
+              }
+            }, {
+              name: 'CreatdDate',
               label: 'Submission Date',
               options: {
                 customBodyRender: (value) => formatDate(value),
