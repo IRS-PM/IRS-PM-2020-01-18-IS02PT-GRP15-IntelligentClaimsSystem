@@ -337,6 +337,72 @@ router.post('/assign/:claimNo/to/:staffID', async (req, res) => {
 })
 
 
+router.post('/assignstaff', async (req, res) => {
+  try {
+    const { claimAssignment = null } = req.body
+    if (!Array.isArray(claimAssignment)) {
+      res.status(400)
+      return res.send('claimAssignment needs to be an array')
+    }
+
+    const allResult = await Promise.all(claimAssignment.map(async (assignment) => {
+      const { claimNo, staffID, assignedForDate } = assignment
+      const claim = await MedicalClaim.findByPk(claimNo, {
+        include: modelIncludes
+      })
+
+      if (!claim) {
+        res.status(400)
+        return res.send('Invalid claim')
+      }
+
+      const staff = await Staff.findByPk(staffID)
+
+      if (!staff) {
+        res.status(400)
+        return res.send('Invalid staff')
+      }
+
+      // existing assignment
+      const existingAssignment = await ClaimStaff.findOne({
+        where: {
+          ClaimNo: claim.ClaimNo
+        }
+      })
+
+      if (existingAssignment) {
+        res.status(400)
+        return res.send('Claim already assigned')
+      }
+
+      // insert claim staff
+      const claimStaff = new ClaimStaff({
+        StaffID: staff.ID,
+        ClaimNo: claim.ClaimNo,
+        PolicyNo: claim.PolicyNo,
+        AssignedForDate: assignedForDate
+      })
+
+      await claimStaff.save()
+
+      // update claim status
+      claim.Status = 1
+      await claim.save()
+      await claim.reload()
+
+      return claimStaff
+    }))
+
+    return res.json(allResult)
+
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+
 router.post('/bulk-insert', async (req, res) => {
   let { numToInsert=0 } = req.body
 
