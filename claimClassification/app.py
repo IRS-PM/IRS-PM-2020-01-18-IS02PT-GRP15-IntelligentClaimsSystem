@@ -214,9 +214,9 @@ def getstatuslist(data):
     pending = 0
     rejected = 0
     for record in range(totalnum):
-        if poldata["data"][record]["HealthPolicy"]["Status"] is 1:
+        if poldata["data"][record]["Status"] is 1:
             pending += 1
-        elif poldata["data"][record]["HealthPolicy"]["Status"] is 4:
+        elif poldata["data"][record]["Status"] is 4:
             rejected += 1
 
     if pending >= 1 | rejected >= 1:
