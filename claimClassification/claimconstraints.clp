@@ -72,6 +72,15 @@
 (assert(reason outstanding_rider)))
 
 
+;checking claimamount limit
+(defrule claimamount
+(Claims(claimtotal ?c))
+(test (> ?c 7000))
+=>
+(assert(autoclaim no))
+(assert(reason claim_amount_exceeds_autoclaim_limit)))
+
+
 ;checking policy validity
 (defrule policyvalidity
 (Policy(status ~1))
