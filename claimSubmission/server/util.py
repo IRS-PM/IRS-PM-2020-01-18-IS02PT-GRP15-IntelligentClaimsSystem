@@ -162,6 +162,10 @@ def filesAnnotate(file):
 
 	(status,response) = post(url,payload)
 	if status == requests.codes.ok:
+		if response["responses"][0] == {}:
+			return {
+				"Text": "Unable to retrieve any information from the file"
+			}	
 		text = ''
 		for page in response["responses"][0]["responses"]:
 			text += page["fullTextAnnotation"]["text"] + "\n"
@@ -191,6 +195,10 @@ def imagesAnnotate(file):
 	})
 	(status,response) = post(url,payload)
 	if status == requests.codes.ok:
+		if response["responses"][0] == {}:
+			return {
+				"Text": "Unable to retrieve any information from the file"
+			}	
 		#return response["responses"][0]["textAnnotations"][0]["description"]
 		text = lsgapp.mergeNearByWords(response["responses"][0])
 		rcpt = receipt.Receipt(parser_config, text)
