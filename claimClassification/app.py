@@ -32,7 +32,7 @@ def handleEventReceived():
         print("Error while processing event")
         return "Error processing event"
 
-        
+
 
 def processClaims(claimlist):
     print("Processing ", claimlist)
@@ -121,6 +121,7 @@ def getPolicyDetails(data):
         duration = str(getduration(data["HealthPolicy"]["CommencementDateFormatted"]))
         balance = str(data["HealthPolicy"]["PolicyYearBalance"])
         auto = data["HealthPolicy"]['AllowAutoClaim']
+        pstatus = data["HealthPolicy"]["Status"]
         r_string = ""
         if balance is None:
             balance = "0"
@@ -130,7 +131,7 @@ def getPolicyDetails(data):
             r_string = "(Rider(start_date " + r_starts + ")(outstanding " + routs + "))"
         elif rider == "N":
             r_string = ""
-        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(policyduration " + duration + ")(policy_balance " + balance + ")(auto_allowed " + auto + "))"
+        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + balance + ")(auto_allowed " + auto + "))"
         return new_string, r_string
     except:
         print("Policy records are not proper")
