@@ -66,16 +66,13 @@ export const RecentClaims = withRouter(({history}) => {
                   customBodyRender: (value) => <AutoClaimStatus autoClaimStatus={value} />
                 }
               }, {
+                name: 'ClassificationReason',
+                label: 'Classification Reason'
+              }, {
                 name: 'CreatedDate',
                 label: 'Submission Date',
                 options: {
                   customBodyRender: (value) => formatDate(value)
-                }
-              }, {
-                name: 'RefundAmount',
-                label: 'Refund Amt',
-                options: {
-                  customBodyRender: (value) => formatMoney(value)
                 }
               }]}
               options={{

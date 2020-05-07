@@ -44,7 +44,9 @@ export const PolicyDetails = withRouter(({ history }) => {
             <LabelValuePair label="Effective Date" value={formatDate(data.EffectiveDate)} />
             <LabelValuePair label="Expiry Date" value={formatDate(data.ExpiryDate)} />
             <LabelValuePair label="Premium Amount" value={formatMoney(data.PremiumAmount)} />
+            <LabelValuePair label="Outstanding Premium" value={formatMoney(data.OutstandingPremium)} />
             <LabelValuePair label="Rider Premium Amount" value={formatMoney(data.RiderPremiumAmount)} />
+            <LabelValuePair label="Outstanding Rider Premium" value={formatMoney(data.RiderOutstandingPremium)} />
             <LabelValuePair label="Product Code" value={data.ProductPlan.ProductCode} />
             <LabelValuePair label="Description" value={data.ProductPlan.Description} />
           </Grid>

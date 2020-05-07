@@ -39,6 +39,9 @@ export const ClaimsTable = withRouter(({ data, history }) => {
             customBodyRender: (value) => <AutoClaimStatus autoClaimStatus={value} />
             }
         }, {
+            name: 'ClassificationReason',
+            label: 'Classification Reason'
+        }, {
             name: 'CreatdDate',
             label: 'Submission Date',
             options: {
