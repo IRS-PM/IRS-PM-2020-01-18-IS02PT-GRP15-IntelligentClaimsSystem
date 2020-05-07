@@ -17,24 +17,26 @@ def home():
 # POST /distribute
 @app.route('/distribute', methods=['GET'])
 def distribute():
-
+  claim_assignment = []
   staffs = pd.DataFrame.from_records([x for x in getStaffs()])
   claims = pd.DataFrame.from_records([x for x in getClaims()])
+  # return {'staffs': staffs.to_dict(orient='record')}
   num_staffs = staffs.shape[0]
   # staff_avail = np.array(getStaffAvailability())
   num_claims = claims.shape[0]
+  print("num_claims = ", num_claims)
 
   b = staffs.iloc[:, 0:4]
   d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
   s = pd.concat([b,d],axis=1,sort=False)
   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
-  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
+  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='date')
   # print(s)
-  start_date = s["Date"].iloc[0]
+  start_date = s["date"].iloc[0]
 
   staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
   staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
-
+  
   openslots = staff_avail["openslots"].sum()
   c = 0
   next_date = start_date
@@ -85,17 +87,24 @@ def distribute():
     print('Number of constraints =', solver.NumConstraints())
 
     sol = solver.Solve()
-    print("status : ", sol == pywraplp.Solver.OPTIMAL)
+    
     print('Total cost = ', solver.Objective().Value())
     print()
     for i in range(num_staffs):
       for j in range(n_claims):
         if x[i, j].solution_value() > 0:
-          print('Staff %d assigned to claim %d.  Cost = %d' % (
-                i,
-                j,
-                cost[i][j]))
-
+          h = {
+            "claimNo": claims.iloc[j+c]["ClaimNo"], 
+            "staffId": staffs.iloc[i]["ID"], 
+            "assignedForDate": next_date 
+          }
+          print(h)
+          claim_assignment.append(h)
+          # print('Staff %d assigned to claim %d.  Cost = %d' % (
+          #       i,
+          #       j,
+          #       cost[i][j]))
+    assignClaimToStaff(claim_assignment)
     c = c+n_claims
     print("c = ", c)
     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
@@ -104,7 +113,8 @@ def distribute():
     staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
     openslots = staff_avail["openslots"].sum()
     # print("openslots = ", openslots)
-    n_claims = min(openslots, num_claims-n_claims)
+    
+    n_claims = min(openslots, num_claims-c if c+openslots>num_claims else c+openslots)
 
   return json.dumps({'staffs': "staffs"})
 
