@@ -53,6 +53,9 @@ def main():
 	if intent_name == "SubmitClaimIntent":
 		param = req["queryResult"]["parameters"]
 		resp_text = submitClaimIntentHandler(param)
+	if intent_name == "DemoDataIntent":
+		param = req["queryResult"]["parameters"]
+		resp_text = demoDataIntentHandler(param)
 	elif intent_name == "CheckInsuredIntent":
 		param = req["queryResult"]["parameters"]
 		(resp_text, context_param) = checkInsuredIntentHandler(param)
