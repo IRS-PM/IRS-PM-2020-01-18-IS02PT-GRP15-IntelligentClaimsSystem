@@ -10,6 +10,7 @@
 (deftemplate Policy
 	(multislot policy_exp (type NUMBER))
 	(slot rider (type SYMBOL)(allowed-symbols N Y))
+	(slot status (type NUMBER))
 	(slot policyduration)
 	(slot policy_balance (type NUMBER))
 	(slot auto_allowed (type SYMBOL)(allowed-symbols Y N))
@@ -62,12 +63,21 @@
 	 )
 )
 
+;checking rider outstanding
 (defrule rider
 (Policy(rider Y))
 (not(Rider(outstanding 0)))
 =>
 (assert(autoclaim no))
 (assert(reason outstanding_rider)))
+
+
+;checking policy validity
+(defrule policyvalidity
+(Policy(status ~1))
+=>
+(assert(autoclaim no))
+(assert(reason policy_not _inforce)))
 
 
 ; doctor in blacklist
@@ -102,13 +112,6 @@
 	(autoreject Y))
 =>(assert(autoclaim no))
 (assert(reason diagnosiscode_not_allowed)))
-
-
-;diagnosiscode not available for hospitalization claims
-;(defrule codeconstraint
-;	(Claims(billcategory ?bc &IN|DY))
-;	(Diagnosis(diagnosis_code None))
-;=>(assert(autoclaim no)))
 
 
 ;product limit check
