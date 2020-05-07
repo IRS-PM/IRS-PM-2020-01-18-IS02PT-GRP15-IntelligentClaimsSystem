@@ -1,4 +1,3 @@
 __pycache__
 static/uploads/*
 static/uploads/.gitkeep
-private_key.json
