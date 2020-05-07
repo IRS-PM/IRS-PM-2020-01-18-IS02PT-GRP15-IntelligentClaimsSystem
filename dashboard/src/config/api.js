@@ -1,1 +1,1 @@
-export const apiHost = window.API_HOST || 'http://127.0.0.1:8081'
+export const apiHost = window.API_HOST || 'http://' + window.location.hostname + ':8081'
