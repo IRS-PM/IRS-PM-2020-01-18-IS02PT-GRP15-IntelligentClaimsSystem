@@ -22,6 +22,8 @@ companies:
      - raffleshospital
   Mount Elizabeth:
      - mount elizabeth
+  Mount Alvernia:
+     - alvernia
   SBCC:
      - sbcc baby
   Dr Widjaja Luman:
@@ -32,6 +34,7 @@ billno:
   - tax invoice number
   - tax invoice no
   - bill document no
+  - bill number
   - bill no
   - invoice number
   - invoice no

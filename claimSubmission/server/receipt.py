@@ -88,7 +88,7 @@ class Receipt(object):
             ratio = SequenceMatcher(None, line, keyword).ratio()
             if next_line:
                 return line
-            elif ratio >= 0.99:
+            elif ratio >= 0.9:
                 next_line = True
                 continue
             elif ratio <= 0.01:
@@ -105,11 +105,7 @@ class Receipt(object):
             matches = get_close_matches(keyword, words, 1, accuracy)
             if matches:
                 #get the text after matched text
-                token=line.replace(':','').split(matches[0])
-                if len(token)>1:
-                    return token[1].split()[0]
-                else:
-                    return line
+                return line
 
     def fuzzy_find_next(self, keyword, accuracy=0.6):
         """
@@ -155,10 +151,12 @@ class Receipt(object):
                 # validate date using the dateutil library (https://dateutil.readthedocs.io/)
                 date_str = m.group(1)
                 try:
-                    dateutil.parser.parse(date_str)
-                    return date_str
+                    date_str = date_str.replace('.','-').replace('/','-')
+                    return dateutil.parser.parse(date_str, dayfirst=True).isoformat()
+                    #return date_str
                 except ValueError as err:
                     print("Error parsing %s: %s",date_str, err)
+                    return None
 
 
     def parse_company(self):
@@ -187,6 +185,8 @@ class Receipt(object):
         for sum_key in self.config.sum_keys:
             sum_line = self.fuzzy_find(sum_key, 0.9)
             if sum_line:
+
+                sum_line = sum_line.replace(",", "")
                 sum_float = re.search(self.config.sum_format, sum_line)
                 if sum_float:
                     return sum_float.group(0)
@@ -196,9 +196,7 @@ class Receipt(object):
             else:
                 sum_line = self.fuzzy_find_next(sum_key, 0.9)
             if sum_line:
-                # Replace all commas with a dot to make
-                # finding and parsing the sum easier
-                # sum_line = sum_line.replace(",", ".")
+                sum_line = sum_line.replace(",", "")
                 # Parse the sum
                 sum_float = re.search(self.config.sum_format, sum_line)
                 if sum_float:
