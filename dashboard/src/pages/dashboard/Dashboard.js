@@ -1,10 +1,13 @@
 import React from 'react'
-import { makeStyles, Box, Typography, Divider, Grid } from '@material-ui/core'
+import { makeStyles, Box, Typography, Divider, Grid, IconButton, Tooltip } from '@material-ui/core'
 import { ClaimStatusDistribution } from './claimWidgets/ClaimStatusDistribution'
 import { AutoClaimDistribution } from './claimWidgets/AutoClaimDistribution'
 import { RecentClaims } from './claimWidgets/RecentClaims'
 import { JobDistribution } from './staffWidgets/JobDistribution'
 import { SectionHeader, ClaimsDateRangeSelector } from '../../components'
+import { Refresh } from '@material-ui/icons'
+import { useDateRangeActions } from '../../store/dateRange/dateRangeActionHooks'
+import moment from '../../../../claimRepository/node_modules/moment/moment'
 
 const useStyles = makeStyles((theme) => ({
   widgets: {
@@ -27,14 +30,24 @@ const useStyles = makeStyles((theme) => ({
 
 export const Dashboard = () => {
 
+  const { setDateRange, dateRangeFrom, dateRangeTo } = useDateRangeActions()
   const cssClasses = useStyles({})
+
+  const handleReload = () => {
+    setDateRange(moment(dateRangeFrom).toDate(), moment(dateRangeTo).toDate())
+  }
 
   return (
     <Box>
       {/* CLAIMS */}
       <SectionHeader 
         title="Claims"
-        actions={<ClaimsDateRangeSelector />}
+        actions={
+          <>
+            <Tooltip title="Refresh data"><IconButton onClick={handleReload}><Refresh /></IconButton></Tooltip>
+            <ClaimsDateRangeSelector />
+          </>
+        }
       />
       <Grid container>
         <Grid item sm={12} md={6} lg={3}>
