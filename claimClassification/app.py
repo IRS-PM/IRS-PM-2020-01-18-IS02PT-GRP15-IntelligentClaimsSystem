@@ -119,7 +119,7 @@ def getPolicyDetails(data):
         exp_date = data["HealthPolicy"]["ExpiryDateFormatted"]
         rider = data["HealthPolicy"]["Rider"]
         duration = str(getduration(data["HealthPolicy"]["CommencementDateFormatted"]))
-        balance = str(data["HealthPolicy"]["PolicyYearBalance"])
+        balance = (data["HealthPolicy"]["PolicyYearBalance"])
         auto = data["HealthPolicy"]['AllowAutoClaim']
         pstatus = str(data["HealthPolicy"]["Status"])
         r_string = ""
