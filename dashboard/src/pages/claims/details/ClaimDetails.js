@@ -54,7 +54,7 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="Status" value={<ClaimStatus status={data.Status} />} />
           <LabelValuePair label="Bill Document" value={!!data.AttachUrl? <Box onClick={()=>window.open(data.AttachUrl)}>View Document</Box> : '-'} />
           <LabelValuePair label="Rider" value={data.Rider} />
-          <LabelValuePair label="Refund Amount" value={formatMoney(data.RefundAmount)} />
+          <LabelValuePair label="Total Exp" value={formatMoney(data.TotalExp)} />
           <LabelValuePair label="Auto Claim" value={<AutoClaimStatus autoClaimStatus={data.AutoClaim} />} />
           <LabelValuePair label="Classification Reason" value={data.ClassificationReason} />
           <LabelValuePair label="Remark" value={data.ClaimRemark} />

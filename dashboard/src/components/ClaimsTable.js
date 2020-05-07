@@ -49,8 +49,8 @@ export const ClaimsTable = withRouter(({ data, history }) => {
             sort: false
             }
         }, {
-            name: 'RefundAmount',
-            label: 'Refund Amt',
+            name: 'TotalExp',
+            label: 'Total Exp',
             options: {
             customBodyRender: (value) => formatMoney(value),
             sort: false
