@@ -124,14 +124,14 @@ def getPolicyDetails(data):
         pstatus = data["HealthPolicy"]["Status"]
         r_string = ""
         if balance is None:
-            balance = "0"
+            balance = 0
         if rider == "Y":
             routs = str(data["HealthPolicy"]["RiderOutstandingPremium"])
             r_starts = data["HealthPolicy"]["RiderCommencementDateFormatted"]
             r_string = "(Rider(start_date " + r_starts + ")(outstanding " + routs + "))"
         elif rider == "N":
             r_string = ""
-        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + balance + ")(auto_allowed " + auto + "))"
+        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
         return new_string, r_string
     except:
         print("Policy records are not proper")
