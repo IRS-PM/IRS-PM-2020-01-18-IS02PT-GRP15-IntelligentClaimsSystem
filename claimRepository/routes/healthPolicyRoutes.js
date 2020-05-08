@@ -1,4 +1,5 @@
 const express = require('express')
+const sequelize = require('sequelize')
 const { HealthPolicy, ProductPlan, PolicyBenefit, MedicalClaim } = require('../models')
 const router = express.Router()
 
@@ -10,7 +11,7 @@ const modelIncludeList = [{
   include: PolicyBenefit
 }, {
   model: MedicalClaim,
-  attributes: ['ClaimNo', 'PolicyNo', 'Status', 'AutoClaim', 'CreatedDate', 'RefundAmount', 'ClassificationReason']
+  attributes: ['ClaimNo', 'PolicyNo', 'Status', 'AutoClaim', 'CreatedDate', 'TotalExp', 'ClassificationReason']
 }]
 
 router.get('/', async (req, res) => {
@@ -26,6 +27,31 @@ router.get('/', async (req, res) => {
       offset: offset,
       limit: limit,
       data: policies
+    })
+  } catch (e) {
+    console.error(e)
+    res.status(500)
+    return res.send('An unexpected error occurred')
+  }  
+})
+
+router.get('/sampleids', async (req, res) => {
+  const { offset=0, limit=50 } = req.query
+  try {
+    const ids = await HealthPolicy.findAll({
+      offset: parseInt(offset),
+      limit: parseInt(limit),
+      attributes: ['InsuredID'],
+      order: [
+        [sequelize.literal('rand()')]
+      ]
+    }).map(policy => policy.InsuredID)
+
+    return res.json({
+      total: await HealthPolicy.count(),
+      offset: offset,
+      limit: limit,
+      data: ids
     })
   } catch (e) {
     console.error(e)

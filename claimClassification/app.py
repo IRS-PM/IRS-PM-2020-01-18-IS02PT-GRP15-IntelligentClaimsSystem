@@ -6,16 +6,24 @@ from classifier import *
 from util import *
 from config.config import HOST, PORT, CLAIM_REPOSITORY_HOST
 import sys
+import traceback
 
 app = Flask(__name__)
 api = Api(app)
 urlhead = CLAIM_REPOSITORY_HOST # "http://192.168.99.100:8081"
 
-
+# For testing
+@app.route('/classifyclaim', methods=['GET'])
+def classifyclaim():
+    claimNum = request.args.get('claimno')
+    print("Manually classifying %s" % claimNum)
+    sys.stdout.flush()
+    processResult = processClaims([claimNum])
+    return jsonify(processResult)
 
 @app.route('/handle-event', methods=['POST'])
 def handleEventReceived():
-    print("RECEIVED EVENT IN CLASSIFIER")
+    print("RECEIVED EVENT IN CLASSIFIER", file=sys.stdout)
     claimIds = []
     try:
         dataPayload = json.loads(request.data.decode(encoding="utf-8"))
@@ -26,10 +34,12 @@ def handleEventReceived():
             print(data)
             claimIds = data["claimIds"]
             processResult = processClaims(map(str, claimIds))
+            sys.stdout.flush()
             return jsonify(processResult)
     except:
-        print(sys.exc_info()[0])
+        traceback.print_exc()
         print("Error while processing event")
+        sys.stdout.flush()
         return "Error processing event"
 
 
@@ -39,6 +49,7 @@ def processClaims(claimlist):
     claim_results = []
     for claim_num in claimlist:
         new_fact = getall(claim_num)
+
         if new_fact == "Status 0":
             print(claim_num+" is not a newly submitted claim")
             continue
@@ -69,6 +80,7 @@ def processClaims(claimlist):
 
 
 def getall(claim_num):
+    print("Getting claim %s" % claim_num)
     facts = []
     try:
         urlbody = '/medicalclaim/' + claim_num
@@ -81,27 +93,43 @@ def getall(claim_num):
             return status_response
         else:
             claim_string = getClaimdata(claimsdata)
-            facts.append(claim_string)
+            if claim_string is not '':
+                facts.append(claim_string)
+
             policy_string = getPolicyDetails(claimsdata)
-            facts.append(policy_string[0])
+            if policy_string is not '':
+                facts.append(policy_string[0])
+            
             doctor_string = getDoctordetails(claimsdata)
-            facts.append(doctor_string)
+            if doctor_string is not '':
+                facts.append(doctor_string)
+
             diagnosis_string = getDiagnosis(claimsdata)
-            facts.append(diagnosis_string)
+            if diagnosis_string is not '':
+                facts.append(diagnosis_string)
+
             insured_string = getInsuredDetails(claimsdata)
-            facts.append(insured_string)
+            if insured_string is not '':
+                facts.append(insured_string)
+            
             items_list = getItemDetails(claimsdata)
             for line in items_list:
-                facts.append(line)
+                if line is not "":
+                    facts.append(line)
+
             hospital_string = getHospitalDetails(claimsdata)
             if policy_string[1] != "":
                 facts.append(policy_string[1])
             if hospital_string != "":
                 facts.append(hospital_string)
+            
+            print("Facts gathered:")
+            print(facts)
             runFacts(facts)
             new_fact = getnewFacts()
             return new_fact
     except JSONDecodeError:
+        traceback.print_exc()
         print("Invalid data")
 
 
@@ -134,6 +162,7 @@ def getPolicyDetails(data):
         new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
         return new_string, r_string
     except:
+        traceback.print_exc()
         print("Policy records are not proper")
 
 def getHospitalDetails(data):
@@ -148,13 +177,13 @@ def getHospitalDetails(data):
 def getDoctordetails(data):
     id = data["Specialist"]
     new_string = ""
-    if id == "":
+    if ("MedicalPanel" not in data) or (data["MedicalPanel"] is None):
         new_string = "(Doctors(black_list N))"
     else:
         blist = data["MedicalPanel"]["BlacklistReasonID"]
         if blist is None:
             new_string = "(Doctors(black_list N))"
-        elif blist is 1:
+        else:
             new_string = "(Doctors(black_list Y))"
     return new_string
 
@@ -162,7 +191,7 @@ def getDoctordetails(data):
 def getDiagnosis(data):
     d_code = data["DiagnosisCode"]
     auto_reject = "N"
-    if d_code == "":
+    if d_code == "" or d_code == None:
         d_code = "None"
     else:
         try:
@@ -170,6 +199,7 @@ def getDiagnosis(data):
             d_data = requests.get(urlhead + urlbody).json()
             auto_reject = d_data["AutoReject"]
         except JSONDecodeError as error:
+            traceback.print_exc()
             print(error)
     new_string = "(Diagnosis(diagnosis_code " + d_code + ")(autoreject " + auto_reject + "))"
     return new_string
@@ -187,6 +217,7 @@ def getInsuredDetails(data):
 
     except JSONDecodeError as error:
         print(error)
+        traceback.print_exc()
         total_claims = "0"
         autonum = "0"
     new_string = "(Insured(outstanding " + outs + ")(claimsnum_total " + total_claims + ")(autonum " + autonum + ")(pre_illness " + preillness + "))"
