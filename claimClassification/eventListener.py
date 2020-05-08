@@ -5,13 +5,20 @@ import requests
 import sys
 
 async def on_message(message: IncomingMessage):
+    sys.stdout.write("message received")
+    sys.stdout.flush()
     try:
-        print("sending to http://127.0.0.1:%s/handle-event" % (PORT))
+        sys.stdout.write("sending to http://127.0.0.1:%s/handle-event\n" % (PORT))
+        sys.stdout.flush()
         requests.post("http://127.0.0.1:%s/handle-event" % (PORT), json = { 'event': message.routing_key, 'body': message.body.decode(encoding="utf-8") })
+        sys.stdout.write("sent. acknowledging message.\n")
+        sys.stdout.flush()
         await message.ack()
     except:
-        print("Unexpected error:", sys.exc_info()[0])
-        print("Sending to http server failed")
+        sys.stdout.write("Unexpected error:\n", sys.exc_info()[0])
+        sys.stdout.flush()
+        sys.stdout.write("Sending to http server failed\n")
+        sys.stdout.flush()
 
 async def main(loop):
     # Perform connection
@@ -20,15 +27,18 @@ async def main(loop):
         try:
             connection = await connect(EVENT_DISPATCHER_HOST, loop=loop)
             connected = True
+            sys.stdout.write("AMPQ connected\n")
+            sys.stdout.flush()
         except ConnectionError:
-            print("---------------")
-            print("Error connecting to ampq server")
-            print("retrying in 5 secs...")
+            sys.stdout.write("---------------\n")
+            sys.stdout.write("Error connecting to ampq server\n")
+            sys.stdout.write("retrying in 5 secs...\n")
+            sys.stdout.flush()
             await asyncio.sleep(5)
         except:
-            print("---------------")
-            print("Unexpected error:", sys.exc_info()[0])
-            print("retrying in 5 secs...")
+            sys.stdout.write("---------------\n")
+            sys.stdout.write("Unexpected error:", sys.exc_info()[0])
+            sys.stdout.write("\nretrying in 5 secs...\n")
             await asyncio.sleep(5)
     
     
@@ -36,7 +46,8 @@ async def main(loop):
     channel = await connection.channel()
     # Declaring queue
     queue = await channel.declare_queue("NEW_CLAIM_SUBMITTED", durable=True)
-    print(" [*] Waiting for messages. To exit press CTRL+C")
+    sys.stdout.write("Ready for events\n")
+    sys.stdout.flush()
     # Start listening the queue with name 'hello'
     await queue.consume(on_message)
 
