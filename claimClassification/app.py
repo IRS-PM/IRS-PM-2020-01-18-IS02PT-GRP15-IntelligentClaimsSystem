@@ -109,8 +109,10 @@ def getall(claim_num):
                 facts.append(diagnosis_string)
 
             insured_string = getInsuredDetails(claimsdata)
-            if insured_string is not '':
-                facts.append(insured_string)
+            if insured_string[0] is not '':
+                facts.append(insured_string[0])
+            if insured_string[1] is not '':
+                facts.append(insured_string[1])
             
             items_list = getItemDetails(claimsdata)
             for line in items_list:
@@ -213,15 +215,22 @@ def getInsuredDetails(data):
     try:
         urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
         poldata = requests.get(urlhead + urlbody).json()
-        total_claims = str(poldata["total"])
-
+        total_claims = poldata["total"]
+        pending = 0
+        rejected = 0
+        for record in range(total_claims):
+            if poldata["data"][record]["Status"] is 1:
+                pending += 1
+            elif poldata["data"][record]["Status"] is 4:
+                rejected += 1
+        st_string = "(Status(pending "+str(pending)+")(rejected "+str(rejected)+"))"
     except JSONDecodeError as error:
         print(error)
         traceback.print_exc()
-        total_claims = "0"
-        autonum = "0"
-    new_string = "(Insured(outstanding " + outs + ")(claimsnum_total " + total_claims + ")(autonum " + autonum + ")(pre_illness " + preillness + "))"
-    return new_string
+        total_claims = 0
+        autonum = 0
+    new_string = "(Insured(outstanding " + outs + ")(claimsnum_total " + str(total_claims) + ")(autonum " + autonum + ")(pre_illness " + preillness + "))"
+    return new_string, st_string
 
 
 def getItemDetails(data):
@@ -239,24 +248,24 @@ def getItemDetails(data):
     return itemlist
 
 
-def getstatuslist(data):
-    policy = data["PolicyNo"]
-    urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
-    poldata = requests.get(urlhead + urlbody).json()
-    totalnum = poldata["total"]
-    pending = 0
-    rejected = 0
-    for record in range(totalnum):
-        if poldata["data"][record]["Status"] is 1:
-            pending += 1
-        elif poldata["data"][record]["Status"] is 4:
-            rejected += 1
-
-    if pending >= 1 | rejected >= 1:
-        new_string = {"autoclaim": "not allowed", "claimnumber": None, "reason": "Pending or rejected claims", "record": "updated"}
-    else:
-        new_string = ""
-    return new_string
+# def getstatuslist(data):
+#     policy = data["PolicyNo"]
+#     urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
+#     poldata = requests.get(urlhead + urlbody).json()
+#     totalnum = poldata["total"]
+#     pending = 0
+#     rejected = 0
+#     for record in range(totalnum):
+#         if poldata["data"][record]["Status"] is 1:
+#             pending += 1
+#         elif poldata["data"][record]["Status"] is 4:
+#             rejected += 1
+#     new_string =
+#     if pending >= 1 | rejected >= 1:
+#         new_string = {"autoclaim": "not allowed", "claimnumber": None, "reason": "Pending or rejected claims", "record": "updated"}
+#     else:
+#         new_string = ""
+#     return new_string
 
 
 # api.add_resource(Information, "/")
