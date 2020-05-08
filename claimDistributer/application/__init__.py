@@ -95,8 +95,8 @@ def distribute():
       for j in range(n_claims):
         if x[i, j].solution_value() > 0:
           h = {
-            "claimNo": claims.iloc[j+c]["ClaimNo"], 
-            "staffId": staffs.iloc[i]["ID"], 
+            "claimNo": int(claims.iloc[j+c]["ClaimNo"]), 
+            "staffId": int(staffs.iloc[i]["ID"]), 
             "assignedForDate": next_date 
           }
           print(h)
