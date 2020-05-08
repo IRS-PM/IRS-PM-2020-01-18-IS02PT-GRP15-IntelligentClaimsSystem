@@ -148,7 +148,6 @@ def getPolicyDetails(data):
         duration = str(getduration(data["HealthPolicy"]["CommencementDateFormatted"]))
         balance = (data["HealthPolicy"]["PolicyYearBalance"])
         auto = data["HealthPolicy"]['AllowAutoClaim']
-        pstatus = str(data["HealthPolicy"]["Status"])
         r_string = ""
         if balance is None:
             balance = 0
@@ -158,7 +157,7 @@ def getPolicyDetails(data):
             r_string = "(Rider(start_date " + r_starts + ")(outstanding " + routs + "))"
         elif rider == "N":
             r_string = ""
-        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
+        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
         return new_string, r_string
     except:
         traceback.print_exc()
@@ -209,6 +208,7 @@ def getInsuredDetails(data):
     outs = str(data["HealthPolicy"]["OutstandingPremium"])
     preillness = data["HealthPolicy"]["PXIllness"]
     autonum = str(data["HealthPolicy"]["CurrentYearAutoClaimCount"])
+    st_string = ""
     try:
         urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
         poldata = requests.get(urlhead + urlbody).json()

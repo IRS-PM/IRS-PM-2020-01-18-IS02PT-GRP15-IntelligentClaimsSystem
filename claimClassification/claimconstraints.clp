@@ -95,14 +95,6 @@
 (assert(autoclaim no)))
 
 
-;checking policy validity
-(defrule policyvalidity
-(Policy(status ~1))
-=>
-(assert(reason policy_not_inforce))
-(assert(autoclaim no)))
-
-
 ; doctor in blacklist
 (defrule dconstraint
      (Doctors(black_list Y))
