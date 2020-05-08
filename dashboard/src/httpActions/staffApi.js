@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { apiHost } from '../config/api'
+import { apiHost, distributerApiHost } from '../config/api'
 import moment from 'moment'
 
 export function getStaffList(limit=100, offset=0) {    
@@ -30,4 +30,8 @@ export function updateLeave(staffId, leaveId, startDateTime, endDateTime) {
 
 export function deleteLeave(staffId, leaveId) {    
   return axios.delete(`${apiHost}/staff/${staffId}/leave/${leaveId}`)
+}
+
+export function distributeClaims() {    
+  return axios.get(`${distributerApiHost}/distribute`)
 }

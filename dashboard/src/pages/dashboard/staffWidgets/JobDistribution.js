@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import { makeStyles, Box, Tooltip, Button } from '@material-ui/core'
 import { DashboardWidget } from '../DashboardWidget'
 import { useToastMessageActions } from '../../../store/toast/toastHooks'
-import { getStaffAvailability } from '../../../httpActions/staffApi'
+import { getStaffAvailability, distributeClaims } from '../../../httpActions/staffApi'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import { withRouter } from 'react-router-dom'
@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme)=>({
 
 export const JobDistribution = withRouter(({history}) => {
 
-  const { addErrorMessage } = useToastMessageActions()
+  const { addErrorMessage, addSuccessMessage } = useToastMessageActions()
   const cssClasses = useStyles({})
   const [isLoading, setIsLoading] = React.useState(false)
   const [date, setDate] = React.useState(new Date())
@@ -166,12 +166,6 @@ export const JobDistribution = withRouter(({history}) => {
           }
         })
 
-        // index activity by time
-        // const activities = Array(WORKING_HOUR_TO - WORKING_HOUR_FROM).fill(0).map(val, index => {
-        //   const hour = WORKING_HOUR_TO
-
-        // })
-
         return {
           Name: staff.Name,
           ID: staff.ID,
@@ -216,15 +210,32 @@ export const JobDistribution = withRouter(({history}) => {
     }
   }
 
+  const handleDistributeClaimsClick = async () => {
+    try {
+      setIsLoading(true)
+      await distributeClaims()
+      await reloadData()
+      addSuccessMessage("Claims distributed")
+    } catch (e) {
+      addErrorMessage("Error occurred while distributing claims. Please try again later.")
+    } finally {
+      setIsLoading(false)
+    }
+    
+  }
+
   return (
     <DashboardWidget 
       title="Staff Load" 
       isLoading={isLoading} 
       action={(
-        <DatePicker 
-          date={date}
-          onChange={(date) => setDate(date)}
-        />
+        <Box display="flex" flexDirection="row">
+          <Box marginRight="8px"><Button variant="contained" onClick={handleDistributeClaimsClick}>Distribute New Claims</Button></Box>
+          <DatePicker 
+            date={date}
+            onChange={(date) => setDate(date)}
+          />
+        </Box>
       )}
     >
       <div className={cssClasses.timelineContainer}>

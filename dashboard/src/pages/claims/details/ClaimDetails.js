@@ -60,6 +60,7 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="Remark" value={data.ClaimRemark} />
           <LabelValuePair label="CoPay" value={formatMoney(data.CopayAmount)} />
           <LabelValuePair label="Pool ID" value={(!!data.PoolID)? <PoolID poolID={data.PoolID} /> : '-'} />
+          <LabelValuePair label="Specialist" value={(!!data.Specialist)? data.Specialist : '-'} />
           
         </Grid>
         <br /><br />
