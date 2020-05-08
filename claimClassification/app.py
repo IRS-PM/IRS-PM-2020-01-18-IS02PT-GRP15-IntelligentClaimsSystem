@@ -88,9 +88,6 @@ def getall(claim_num):
         status = claimsdata["Status"]
         if status is not 0:
             return "Status 0"
-        status_response = getstatuslist(claimsdata)
-        if 'autoclaim' in status_response:
-            return status_response
         else:
             claim_string = getClaimdata(claimsdata)
             if claim_string is not '':
