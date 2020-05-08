@@ -20,6 +20,10 @@
 	(slot type (type SYMBOL)(allowed-symbols C V S G))
 )
 
+(deftemplate Status
+    (slot pending (type NUMBER))
+    (slot rejected (type NUMBER))
+)
 
 (deftemplate Diagnosis
 	(slot diagnosis_code)
@@ -62,6 +66,16 @@
 	       then(assert(rider no)))
 	 )
 )
+
+;checking past claims status
+(defrule status
+(Status(pending ?p)(rejected ?r))
+(test (>= ?p 1))
+(test (>= ?r 1))
+=>
+(assert(reason Pending_or_Rejected_claims))
+(assert(autoclaim no)))
+
 
 ;checking rider outstanding
 (defrule rider
