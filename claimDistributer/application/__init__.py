@@ -105,7 +105,7 @@ def distribute():
           #       i,
           #       j,
           #       cost[i][j]))
-    assignClaimToStaff(claim_assignment)
+    
     c = c+n_claims
     print("c = ", c)
     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
@@ -117,7 +117,8 @@ def distribute():
     
     n_claims = min(openslots, num_claims-c if c+openslots>num_claims else c+openslots)
 
-  return json.dumps({'staffs': "staffs"})
+  res_status = assignClaimToStaff(claim_assignment)
+  return json.dumps({'success': res_status})
 
 
 # -------------------------------------------------------
