@@ -1,5 +1,6 @@
 const express = require('express')
 const sequelize = require('sequelize')
+const { db } = require('../db/mysql')
 const { MedicalClaim, HealthPolicy, ClaimStaff, Staff, ClaimItem, ProductPlan, PolicyBenefit, MedicalPanel, DiagnosisCode, Hospital } = require('../models')
 const { NEW_CLAIM_SUBMITTED } = require('../eventDispatcher/events')
 const { dispatchEvent } = require('../eventDispatcher/amqp')
@@ -345,55 +346,63 @@ router.post('/assignstaff', async (req, res) => {
       return res.send('claimAssignment needs to be an array')
     }
 
-    const allResult = await Promise.all(claimAssignment.map(async (assignment) => {
-      const { claimNo, staffID, assignedForDate } = assignment
-      const claim = await MedicalClaim.findByPk(claimNo, {
-        include: modelIncludes
-      })
+    const transaction = await db.transaction()
+    
+    try {
 
-      if (!claim) {
-        res.status(400)
-        return res.send('Invalid claim')
-      }
-
-      const staff = await Staff.findByPk(staffID)
-
-      if (!staff) {
-        res.status(400)
-        return res.send('Invalid staff')
-      }
-
-      // existing assignment
-      const existingAssignment = await ClaimStaff.findOne({
-        where: {
-          ClaimNo: claim.ClaimNo
+      const allResult = await Promise.all(claimAssignment.map(async (assignment) => {
+        const { claimNo, staffId: staffID, assignedForDate } = assignment
+        const claim = await MedicalClaim.findByPk(claimNo, {
+          include: modelIncludes
+        })
+  
+        if (!claim) {
+          throw new Error('Invalid claim')
         }
-      })
+  
+        const staff = await Staff.findByPk(staffID)
+  
+        if (!staff) {
+          throw new Error('Invalid staff')
+        }
+  
+        // existing assignment
+        const existingAssignment = await ClaimStaff.findOne({
+          where: {
+            ClaimNo: claim.ClaimNo
+          }
+        })
+  
+        if (existingAssignment) {
+          throw new Error(`Claim (claimNo: ${claimNo}) already assigned`)
+        }
+  
+        // insert claim staff
+        const claimStaff = new ClaimStaff({
+          StaffID: staff.ID,
+          ClaimNo: claim.ClaimNo,
+          PolicyNo: claim.PolicyNo,
+          AssignedForDate: assignedForDate
+        })
+  
+        await claimStaff.save()
+  
+        // update claim status
+        claim.Status = 1
+        await claim.save()
+        await claim.reload()
+  
+        return claimStaff
+      }))
+     
+      await transaction.commit()
+      return res.json(allResult)
+    } catch (e) {
+      await transaction.rollback()
+      res.status(400)
+      return res.send(e.toString())
+    }
 
-      if (existingAssignment) {
-        res.status(400)
-        return res.send('Claim already assigned')
-      }
-
-      // insert claim staff
-      const claimStaff = new ClaimStaff({
-        StaffID: staff.ID,
-        ClaimNo: claim.ClaimNo,
-        PolicyNo: claim.PolicyNo,
-        AssignedForDate: assignedForDate
-      })
-
-      await claimStaff.save()
-
-      // update claim status
-      claim.Status = 1
-      await claim.save()
-      await claim.reload()
-
-      return claimStaff
-    }))
-
-    return res.json(allResult)
 
   } catch (e) {
     console.error(e)

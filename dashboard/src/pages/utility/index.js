@@ -12,7 +12,7 @@ export const UtilityPage = () => {
 
   const updateClaimCount = (evt) => {
     let count = parseInt(!!evt.target.value? evt.target.value : 1)
-    count = Math.max(Math.min(count, 500), 1)
+    count = Math.max(Math.min(count, 300), 1)
     setClaimCount(count)
   }
 
