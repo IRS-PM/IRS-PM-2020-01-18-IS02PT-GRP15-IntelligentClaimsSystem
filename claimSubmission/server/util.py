@@ -11,10 +11,11 @@ from random import sample
 
 parser_config = parse.read_config(os.path.join(os.getcwd(), "parser.config.yml"))
 
-def post(url, payload=None):
+def post(url, payload=None, verbose=True):
 	size = '%s' % len(payload)
 	print("POST '%s' size '%s'", url, size)
-	print("Payload: %s", payload)
+	if (verbose):
+		print("Payload: %s", payload)
 	resp = requests.post(url, data=payload, headers={'content-type':'application/json'})
 	if (resp != None or resp != '') and resp.status_code == requests.codes.ok:
 		return (resp.status_code, resp.json())
@@ -160,7 +161,7 @@ def filesAnnotate(file):
 		}]
 	})
 
-	(status,response) = post(url,payload)
+	(status,response) = post(url,payload, verbose=False)
 	if status == requests.codes.ok:
 		if response["responses"][0] == {}:
 			return {
@@ -193,7 +194,7 @@ def imagesAnnotate(file):
 			"imageContext" : {"languageHints": ["en-t-i0-handwrit"]}
 		}]
 	})
-	(status,response) = post(url,payload)
+	(status,response) = post(url,payload, verbose=False)
 	if status == requests.codes.ok:
 		if response["responses"][0] == {}:
 			return {
