@@ -6,9 +6,10 @@ import json
 from ortools.linear_solver import pywraplp
 import datetime
 from config import HOST, PORT
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/')
 def home():
