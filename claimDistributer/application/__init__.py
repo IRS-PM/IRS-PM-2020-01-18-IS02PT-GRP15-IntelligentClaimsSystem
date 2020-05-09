@@ -31,7 +31,7 @@ def distribute():
   d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
   s = pd.concat([b,d],axis=1,sort=False)
   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
-  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='date')
+  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
   # print(s)
   start_date = s["date"].iloc[0]
 
@@ -95,8 +95,8 @@ def distribute():
       for j in range(n_claims):
         if x[i, j].solution_value() > 0:
           h = {
-            "claimNo": claims.iloc[j+c]["ClaimNo"], 
-            "staffId": staffs.iloc[i]["ID"], 
+            "claimNo": int(claims.iloc[j+c]["ClaimNo"]), 
+            "staffId": int(staffs.iloc[i]["ID"]), 
             "assignedForDate": next_date 
           }
           print(h)
@@ -105,7 +105,7 @@ def distribute():
           #       i,
           #       j,
           #       cost[i][j]))
-    assignClaimToStaff(claim_assignment)
+    
     c = c+n_claims
     print("c = ", c)
     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
@@ -117,7 +117,8 @@ def distribute():
     
     n_claims = min(openslots, num_claims-c if c+openslots>num_claims else c+openslots)
 
-  return json.dumps({'staffs': "staffs"})
+  res_status = assignClaimToStaff(claim_assignment)
+  return json.dumps({'success': res_status})
 
 
 # -------------------------------------------------------

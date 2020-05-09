@@ -183,24 +183,23 @@ class Receipt(object):
         """
 
         for sum_key in self.config.sum_keys:
-            sum_line = self.fuzzy_find(sum_key, 0.9)
+            sum_line = self.fuzzy_find(sum_key, 0.8)
             if sum_line:
-
+                #print("sum_line: %s", sum_line)
                 sum_line = sum_line.replace(",", "")
-                sum_float = re.search(self.config.sum_format, sum_line)
+                sum_float = re.findall(self.config.sum_format, sum_line)
                 if sum_float:
-                    return sum_float.group(0)
-                else:
-                    continue
+                    return sum_float[-1]
             #2nd option to find next line
             else:
-                sum_line = self.fuzzy_find_next(sum_key, 0.9)
+                sum_line = self.fuzzy_find_next(sum_key, 0.8)
             if sum_line:
+                #print("sum_line: %s", sum_line)
                 sum_line = sum_line.replace(",", "")
                 # Parse the sum
-                sum_float = re.search(self.config.sum_format, sum_line)
+                sum_float = re.findall(self.config.sum_format, sum_line)
                 if sum_float:
-                    return sum_float.group(0)
+                    return sum_float[-1]
 
     def parse_billno(self):
         """

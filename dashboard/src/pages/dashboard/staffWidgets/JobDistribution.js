@@ -15,6 +15,7 @@ const WORKING_HOUR_FROM = 9
 const WORKING_HOUR_TO = 18
 const HOUR_TICKS_HEIGHT = 20
 const NAME_ROW_HEIGHT = 30
+const LUNCH_HOUR = 12
 
 const useStyles = makeStyles((theme)=>({
   timelineContainer: {
@@ -132,6 +133,11 @@ export const JobDistribution = withRouter(({history}) => {
 
         // populate leave
         const activities = {}
+        activities[LUNCH_HOUR.toString()] = {
+          type: 'lunch',
+          label: 'Lunch Break'
+        }
+
         staff.TargettedDate.Leave.forEach(leave => {
           // find intersection of work day with
           const leaveRange = moment.range(leave.StartDateTime, leave.EndDateTime)
@@ -187,6 +193,8 @@ export const JobDistribution = withRouter(({history}) => {
     const { type = '', label = '', poolId = '', url='/', fill } = activity
 
     switch (type) {
+      case 'lunch':
+        // deliberate fall through
       case 'leave':
         return (
           <Tooltip title={label}>

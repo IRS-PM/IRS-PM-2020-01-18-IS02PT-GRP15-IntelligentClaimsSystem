@@ -52,7 +52,14 @@ export const ClaimDetails = withRouter(({ history }) => {
           } />
           <LabelValuePair label="Date Occ" value={formatDate(data.DateOcc)} />
           <LabelValuePair label="Status" value={<ClaimStatus status={data.Status} />} />
-          <LabelValuePair label="Bill Document" value={!!data.AttachUrl? <Box onClick={()=>window.open(data.AttachUrl)}>View Document</Box> : '-'} />
+          <LabelValuePair label="Bill Document" value={
+            !!data.AttachUrl
+              ? <>
+                View Document
+                <IconButton onClick={()=>window.open(data.AttachUrl)}><SearchIcon /></IconButton>
+              </>
+              : '-'
+            } />
           <LabelValuePair label="Rider" value={data.Rider} />
           <LabelValuePair label="Total Exp" value={formatMoney(data.TotalExp)} />
           <LabelValuePair label="Auto Claim" value={<AutoClaimStatus autoClaimStatus={data.AutoClaim} />} />
