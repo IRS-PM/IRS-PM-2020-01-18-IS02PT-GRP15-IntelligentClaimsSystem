@@ -138,7 +138,7 @@ def getClaimdata(data):
         total = str(data["TotalExp"])
         billcat = data["BillCategory"]
         print(json.dumps(data))
-        if data["MainClaimNo"] is None or "MainClaimNo" not in data:
+        if data["MainClaimNo"] == None or "MainClaimNo" not in data:
             main_claim = 0
         else:
             main_claim = data["MainClaimNo"]
