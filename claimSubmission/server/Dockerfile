@@ -13,6 +13,7 @@ RUN pip install -r /app/requirements.txt
 
 # Copy server contents into the container at /app
 COPY ./ /app
+RUN chmod +x /app/start.sh
 
 # run
 CMD ./start.sh
