@@ -31,7 +31,7 @@ def distribute():
   d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
   s = pd.concat([b,d],axis=1,sort=False)
   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
-  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='date')
+  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
   # print(s)
   start_date = s["date"].iloc[0]
 
