@@ -1,6 +1,9 @@
 (deftemplate Claims
 	(slot claimtotal (type NUMBER))
 	(multislot occurance_date (type NUMBER))
+	(slot billcategory (type SYMBOL)(allowed-symbols IN PP OU DY))
+	(slot mainclaim)
+	(slot duration)
 )
 
 (deftemplate Doctors
@@ -76,6 +79,21 @@
 (assert(reason Pending_or_Rejected_claims))
 (assert(autoclaim no)))
 
+; checking mainclaim for PP claims
+(defrule mainclaimcheck
+(Claims(billcategory PP)(mainclaim ?m))
+(test (= ?m 0))
+=>
+(assert(reason no_parentclaim_found_for_PPclaim))
+(assert(autoclaim no)))
+
+;checking duration for PP claims
+(defrule claimduration
+(Claims(billcategory PP)(mainclaim ~0)(duration ?md))
+(test (> ?md 180))
+=>
+(assert(reason PPclaim_submitted_after_180days))
+(assert(autoclaim no)))
 
 ;checking rider outstanding
 (defrule rider

@@ -136,7 +136,20 @@ def getClaimdata(data):
     try:
         dateofO = data["DateOccFormatted"]
         total = str(data["TotalExp"])
-        new_string = "(Claims(claimtotal " + total + ")(occurance_date " + dateofO + "))"
+        billcat = data["BillCategory"]
+        main_claim = data["MainClaimNo"]
+        if main_claim is None or main_claim == "":
+            main_claim = 0
+        else:
+            try:
+                urlbody = '/medicalclaim/' + main_claim
+                maindata = requests.get(urlhead + urlbody).json()
+                maindateofO =maindata["DateOccFormatted"]
+                datediff = getdifference(dateofO, maindateofO)
+            except JSONDecodeError:
+                traceback.print_exc()
+                print("Invalid data")
+        new_string = "(Claims(claimtotal " + total + ")(occurance_date " + dateofO + ")(billcategory "+billcat+")(mainclaim "+str(main_claim)+")(duration "+str(datediff)+"))"
         return new_string
     except:
         print("Medicalclaims records not proper")
@@ -189,7 +202,7 @@ def getDoctordetails(data):
 def getDiagnosis(data):
     d_code = data["DiagnosisCode"]
     auto_reject = "N"
-    if d_code == "" or d_code == None:
+    if d_code == "" or d_code is None:
         d_code = "None"
     else:
         try:
@@ -245,27 +258,6 @@ def getItemDetails(data):
     return itemlist
 
 
-# def getstatuslist(data):
-#     policy = data["PolicyNo"]
-#     urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
-#     poldata = requests.get(urlhead + urlbody).json()
-#     totalnum = poldata["total"]
-#     pending = 0
-#     rejected = 0
-#     for record in range(totalnum):
-#         if poldata["data"][record]["Status"] is 1:
-#             pending += 1
-#         elif poldata["data"][record]["Status"] is 4:
-#             rejected += 1
-#     new_string =
-#     if pending >= 1 | rejected >= 1:
-#         new_string = {"autoclaim": "not allowed", "claimnumber": None, "reason": "Pending or rejected claims", "record": "updated"}
-#     else:
-#         new_string = ""
-#     return new_string
-
-
-# api.add_resource(Information, "/")
 
 if __name__ == "__main__":
     app.run(debug=True, host=HOST, port=PORT)
