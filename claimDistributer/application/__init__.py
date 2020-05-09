@@ -33,7 +33,7 @@ def distribute():
   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
   s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
   # print(s)
-  start_date = s["date"].iloc[0]
+  start_date = s["Date"].iloc[0]
 
   staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
   staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
