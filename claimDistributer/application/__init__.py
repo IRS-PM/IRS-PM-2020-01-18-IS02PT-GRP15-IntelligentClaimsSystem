@@ -23,23 +23,30 @@ def distribute():
   claims = pd.DataFrame.from_records([x for x in getClaims()])
   # return {'staffs': staffs.to_dict(orient='record')}
   num_staffs = staffs.shape[0]
-  # staff_avail = np.array(getStaffAvailability())
   num_claims = claims.shape[0]
   print("num_claims = ", num_claims)
 
   b = staffs.iloc[:, 0:4]
   d = pd.DataFrame.from_records([x for x in staffs["LastAssigned"]])
   s = pd.concat([b,d],axis=1,sort=False)
+  # return {'staffs': staffs.to_dict(orient='record')}
   s["openslots"] = 8-s["AssignedHours"]-s["AbsentHours"]
-  s = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
+  s1 = s[s.AssignedHours+s.AbsentHours != 8].sort_values(by='Date')
   # print(s)
-  start_date = s["Date"].iloc[0]
-
+  start_date = s1["Date"].iloc[0] if not s1.empty else s["Date"].iloc[0]
+  
   staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
   staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
   
   openslots = staff_avail["openslots"].sum()
   c = 0
+  # if openslot = 0, then go to next date
+  while openslots==0:
+    start_date = (datetime.datetime.strptime(start_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(start_date)])
+    staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
+    openslots = staff_avail["openslots"].sum()
+
   next_date = start_date
 
   # solver = pywraplp.Solver('SolveAssignmentProblemMIP', pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING)
@@ -107,9 +114,9 @@ def distribute():
           #       cost[i][j]))
     
     c = c+n_claims
-    print("c = ", c)
+    # print("c = ", c)
     next_date = (datetime.datetime.strptime(next_date, '%Y-%m-%d') + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-    print("next_date = ", next_date)
+    # print("next_date = ", next_date)
     staff_avail = pd.DataFrame.from_records([x for x in getStaffAvailability(next_date)])
     staff_avail["openslots"] = 8-staff_avail["AssignedHours"]-staff_avail["AbsentHours"]
     openslots = staff_avail["openslots"].sum()
