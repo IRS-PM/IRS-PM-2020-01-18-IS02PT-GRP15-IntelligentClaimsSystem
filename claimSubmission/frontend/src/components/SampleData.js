@@ -45,7 +45,7 @@ export const SampleData = () => {
     }
 
     if (isLoading) {
-        return <CircularProgress />
+        return <div style={{margin:'10px auto 10px auto'}}><CircularProgress /></div>
     }
 
     return (

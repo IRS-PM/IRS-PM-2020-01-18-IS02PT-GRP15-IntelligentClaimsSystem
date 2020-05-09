@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAAA,UACE,wDAAsC,CACtC,qBAAqB,CACrB,2BAA2B,CAC3B,2BACF","file":"main.bd46c14f.chunk.css","sourcesContent":["html, body {\n  background-image: url('./horizon.jpg');\n  background-size:cover;\n  background-repeat:no-repeat;\n  background-position: 50% 50%;\n}"]}
