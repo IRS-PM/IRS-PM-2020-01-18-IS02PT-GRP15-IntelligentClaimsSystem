@@ -50,6 +50,16 @@ export const ClaimDetails = withRouter(({ history }) => {
             </>
             
           } />
+          <LabelValuePair label="Main Claim No" value={
+            !!data.MainClaimNo
+              ? (
+                <>
+                  {data.MainClaimNo}
+                  <IconButton onClick={()=>history.push(`/claims/details/${data.MainClaimNo}`)}><SearchIcon /></IconButton>
+                </>
+              )
+              : '-'
+          } />
           <LabelValuePair label="Date Occ" value={formatDate(data.DateOcc)} />
           <LabelValuePair label="Status" value={<ClaimStatus status={data.Status} />} />
           <LabelValuePair label="Bill Document" value={
@@ -66,7 +76,6 @@ export const ClaimDetails = withRouter(({ history }) => {
           <LabelValuePair label="Classification Reason" value={data.ClassificationReason} />
           <LabelValuePair label="Remark" value={data.ClaimRemark} />
           <LabelValuePair label="CoPay" value={formatMoney(data.CopayAmount)} />
-          <LabelValuePair label="Pool ID" value={(!!data.PoolID)? <PoolID poolID={data.PoolID} /> : '-'} />
           <LabelValuePair label="Specialist" value={(!!data.Specialist)? data.Specialist : '-'} />
           
         </Grid>

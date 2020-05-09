@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme)=>({
   },
   scheduleContainer: {
     paddingLeft: theme.spacing(3),
-    flexGrow: 1
+    flexGrow: 1,
+    maxWidth: `calc(100vw - 330px)`
   },
   hourTicks: {
     height: HOUR_TICKS_HEIGHT,
@@ -163,7 +164,7 @@ export const JobDistribution = withRouter(({history}) => {
               activities[i.toString()] = {
                 type: 'job',
                 poolId: claim.MedicalClaim.PoolID,
-                label: `Pool: ${claim.MedicalClaim.PoolID}, Claim No: ${claim.ClaimNo}`,
+                label: `Claim No: ${claim.ClaimNo}, Policy No: ${claim.PolicyNo}`,
                 url: `/claims/details/${claim.ClaimNo}`,
                 fill: get(poolIDs, `${claim.MedicalClaim.PoolID}.color`, '#000')
               }

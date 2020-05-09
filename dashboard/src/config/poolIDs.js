@@ -3,12 +3,12 @@ export default {
     color: '#115293'
   },
   2: {
-    color: '#9a0036'
+    color: '#115293'
   },
   3: {
-    color: '#d32f2f'
+    color: '#115293'
   },
   4: {
-    color: '#f57c00'
+    color: '#115293'
   }
 }

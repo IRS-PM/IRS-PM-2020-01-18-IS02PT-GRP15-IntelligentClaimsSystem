@@ -136,7 +136,21 @@ def getClaimdata(data):
     try:
         dateofO = data["DateOccFormatted"]
         total = str(data["TotalExp"])
-        new_string = "(Claims(claimtotal " + total + ")(occurance_date " + dateofO + "))"
+        billcat = data["BillCategory"]
+        if json.dumps(data["MainClaimNo"]) == "null":
+            main_claim = 0
+            datediff = 0
+        else:
+            main_claim = data["MainClaimNo"]
+            try:
+                urlbody = '/medicalclaim/' + str(main_claim)
+                maindata = requests.get(urlhead + urlbody).json()
+                maindateofO =maindata["DateOccFormatted"]
+                datediff = getdifference(dateofO, maindateofO)
+            except JSONDecodeError:
+                traceback.print_exc()
+                print("Invalid data")
+        new_string = "(Claims(claimtotal " + total + ")(occurance_date " + dateofO + ")(billcategory "+billcat+")(mainclaim "+str(main_claim)+")(duration "+str(datediff)+"))"
         return new_string
     except:
         print("Medicalclaims records not proper")
@@ -148,7 +162,6 @@ def getPolicyDetails(data):
         duration = str(getduration(data["HealthPolicy"]["CommencementDateFormatted"]))
         balance = (data["HealthPolicy"]["PolicyYearBalance"])
         auto = data["HealthPolicy"]['AllowAutoClaim']
-        pstatus = str(data["HealthPolicy"]["Status"])
         r_string = ""
         if balance is None:
             balance = 0
@@ -158,7 +171,7 @@ def getPolicyDetails(data):
             r_string = "(Rider(start_date " + r_starts + ")(outstanding " + routs + "))"
         elif rider == "N":
             r_string = ""
-        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(status "+pstatus+")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
+        new_string = "(Policy(policy_exp " + exp_date + ")(rider " + rider + ")(policyduration " + duration + ")(policy_balance " + str(balance) + ")(auto_allowed " + auto + "))"
         return new_string, r_string
     except:
         traceback.print_exc()
@@ -190,7 +203,7 @@ def getDoctordetails(data):
 def getDiagnosis(data):
     d_code = data["DiagnosisCode"]
     auto_reject = "N"
-    if d_code == "" or d_code == None:
+    if d_code == "" or d_code is None:
         d_code = "None"
     else:
         try:
@@ -209,6 +222,7 @@ def getInsuredDetails(data):
     outs = str(data["HealthPolicy"]["OutstandingPremium"])
     preillness = data["HealthPolicy"]["PXIllness"]
     autonum = str(data["HealthPolicy"]["CurrentYearAutoClaimCount"])
+    st_string = ""
     try:
         urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
         poldata = requests.get(urlhead + urlbody).json()
@@ -245,27 +259,6 @@ def getItemDetails(data):
     return itemlist
 
 
-# def getstatuslist(data):
-#     policy = data["PolicyNo"]
-#     urlbody = f"/medicalclaim/policyno/" + policy + "?offset=0&limit=100"
-#     poldata = requests.get(urlhead + urlbody).json()
-#     totalnum = poldata["total"]
-#     pending = 0
-#     rejected = 0
-#     for record in range(totalnum):
-#         if poldata["data"][record]["Status"] is 1:
-#             pending += 1
-#         elif poldata["data"][record]["Status"] is 4:
-#             rejected += 1
-#     new_string =
-#     if pending >= 1 | rejected >= 1:
-#         new_string = {"autoclaim": "not allowed", "claimnumber": None, "reason": "Pending or rejected claims", "record": "updated"}
-#     else:
-#         new_string = ""
-#     return new_string
-
-
-# api.add_resource(Information, "/")
 
 if __name__ == "__main__":
     app.run(debug=True, host=HOST, port=PORT)

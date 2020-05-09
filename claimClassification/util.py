@@ -14,3 +14,9 @@ def getduration(startdate):
 
 def getClaimtotalnum(data):
     return len(data)
+
+def getdifference(date1, date2):
+    newdate = datetime.strptime(date1, '%d %m %y')
+    maindate = datetime.strptime(date2, '%d %m %y')
+    diff = newdate - maindate
+    return diff.days
