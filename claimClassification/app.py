@@ -137,7 +137,8 @@ def getClaimdata(data):
         dateofO = data["DateOccFormatted"]
         total = str(data["TotalExp"])
         billcat = data["BillCategory"]
-        if json.dumps(data["MainClaimNo"]) is None:
+        main_claim = json.dumps(data["MainClaimNo"])
+        if main_claim == "null":
             main_claim = 0
         else:
             main_claim = data["MainClaimNo"]
