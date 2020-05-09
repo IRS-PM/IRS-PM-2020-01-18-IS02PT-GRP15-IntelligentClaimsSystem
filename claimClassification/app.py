@@ -143,7 +143,7 @@ def getClaimdata(data):
         else:
             main_claim = data["MainClaimNo"]
             try:
-                urlbody = '/medicalclaim/' + main_claim
+                urlbody = '/medicalclaim/' + str(main_claim)
                 maindata = requests.get(urlhead + urlbody).json()
                 maindateofO =maindata["DateOccFormatted"]
                 datediff = getdifference(dateofO, maindateofO)
