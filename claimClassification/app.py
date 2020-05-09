@@ -139,7 +139,7 @@ def getClaimdata(data):
         billcat = data["BillCategory"]
         if json.dumps(data["MainClaimNo"]) == "null":
             main_claim = 0
-            print("test")
+            datediff = 0
         else:
             main_claim = data["MainClaimNo"]
             try:
