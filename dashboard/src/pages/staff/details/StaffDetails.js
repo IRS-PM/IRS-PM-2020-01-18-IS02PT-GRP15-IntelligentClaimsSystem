@@ -78,8 +78,6 @@ export const StaffDetails = withRouter(({ history }) => {
           <Grid container>
             <LabelValuePair label="ID" value={data.ID} />
             <LabelValuePair label="Name" value={data.Name} />
-            <LabelValuePair label="Pool1" value={<PoolID poolID={data.Pool1}/>} />
-            <LabelValuePair label="Pool2" value={<PoolID poolID={data.Pool2}/>} />
           </Grid>
           <br /><br />
           <SectionHeader 

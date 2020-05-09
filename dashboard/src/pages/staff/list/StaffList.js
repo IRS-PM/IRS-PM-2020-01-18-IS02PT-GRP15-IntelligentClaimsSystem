@@ -81,12 +81,6 @@ export const StaffList = withRouter(({ history }) => {
               customBodyRender: (value, tableMeta) => (<Button color="primary" onClick={()=>history.push(`/staff/details/${data[tableMeta.rowIndex].ID}`)}>{value}</Button>)
               }
             }, {
-              name: 'Pool1',
-              label: 'Pool1'
-            }, {
-              name: 'Pool2',
-              label: 'Pool2'
-            }, {
               name: 'ID',
               label: 'Actions',
               options: {
