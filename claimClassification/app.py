@@ -139,6 +139,7 @@ def getClaimdata(data):
         billcat = data["BillCategory"]
         if json.dumps(data["MainClaimNo"]) == "null":
             main_claim = 0
+            print("test")
         else:
             main_claim = data["MainClaimNo"]
             try:
