@@ -435,6 +435,23 @@ router.post('/bulk-insert', async (req, res) => {
     const randHospital = allHospitals[Math.round(Math.random() * (allHospitals.length - 1))]
     const randAmount = Math.round((50 + Math.random() * 15000) * 100) / 100
     const randBillCategory = ['IN','PP','OU','DY'][Math.round(Math.random() * 3)]
+    let mainClaimNo = null
+
+    // get main claim no
+    if (randBillCategory === 'PP') {
+      const mainClaim = await MedicalClaim.findOne({
+        where: {
+          PolicyNo: randPolicy.PolicyNo
+        },
+        order: [
+          ['DateOcc', 'DESC']
+        ]
+      })
+
+      mainClaimNo = mainClaim? mainClaim.ClaimNo : null
+      
+    }
+
     const randHRN = 'H' + Array(8).fill(0).reduce((acc)=> acc + Math.round(Math.random() * 9).toString(), '')
     const randPolicyProduct = await ProductPlan.findOne({ where: { ProductCode: randPolicy.ProductCode } })
     const randBenefit = await PolicyBenefit.findOne({
@@ -449,7 +466,7 @@ router.post('/bulk-insert', async (req, res) => {
     const now = new Date()
 
     const claim = new MedicalClaim({
-      MainClaimNo: null,
+      MainClaimNo: mainClaimNo,
       ClaimType: 1,
       PolicyNo: randPolicy.PolicyNo,
       DateOcc: moment().subtract(Math.round(Math.random() * 90), 'days'),
