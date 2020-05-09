@@ -137,10 +137,10 @@ def getClaimdata(data):
         dateofO = data["DateOccFormatted"]
         total = str(data["TotalExp"])
         billcat = data["BillCategory"]
-        main_claim = data["MainClaimNo"]
-        if main_claim is None or main_claim == "":
+        if data["MainClaimNo"] is not None:
             main_claim = 0
         else:
+            main_claim = data["MainClaimNo"]
             try:
                 urlbody = '/medicalclaim/' + main_claim
                 maindata = requests.get(urlhead + urlbody).json()
