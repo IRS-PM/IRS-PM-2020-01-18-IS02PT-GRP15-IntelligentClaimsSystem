@@ -46,7 +46,7 @@ def getStaffs():
     def lastAssigned(s):
       if s['LastAssigned'] == {}:
         s['LastAssigned'] = {
-          'date': datetime.today().strftime('%Y-%m-%d'),
+          'Date': datetime.today().strftime('%Y-%m-%d'),
           'AssignedHours': 0,
           'AbsentHours': 0
         }
