@@ -141,7 +141,6 @@ def getClaimdata(data):
             main_claim = 0
         else:
             main_claim = data["MainClaimNo"]
-            print(main_claim)
             try:
                 urlbody = '/medicalclaim/' + main_claim
                 maindata = requests.get(urlhead + urlbody).json()
