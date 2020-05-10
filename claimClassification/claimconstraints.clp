@@ -130,14 +130,14 @@
 
 
 ;determining rider benefit
-(defrule benefit
-    (declare (salience 20))
-    (Policy(rider Y))
-    (not(rider no))
-    ?old <- (Claims(claimtotal ?t))
-    (test (> ?t 1500))
-=>
-(modify ?old (claimtotal (- ?t 1500))))
+;(defrule benefit
+;    (declare (salience 20))
+;    (Policy(rider Y))
+;    (not(rider no))
+;    ?old <- (Claims(claimtotal ?t))
+;    (test (> ?t 1500))
+;=>
+;(modify ?old (claimtotal (- ?t 1500))))
 
 
 
