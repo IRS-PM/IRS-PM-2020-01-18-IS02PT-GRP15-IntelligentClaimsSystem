@@ -62,6 +62,7 @@ export const ClaimDetails = withRouter(({ history }) => {
           } />
           <LabelValuePair label="Date Occ" value={formatDate(data.DateOcc)} />
           <LabelValuePair label="Status" value={<ClaimStatus status={data.Status} />} />
+          <LabelValuePair label="Bill Category" value={data.BillCategory} />
           <LabelValuePair label="Bill Document" value={
             !!data.AttachUrl
               ? <>
