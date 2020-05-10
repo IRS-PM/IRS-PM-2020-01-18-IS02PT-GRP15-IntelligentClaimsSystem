@@ -19,7 +19,7 @@ export const DatePicker = ({date, onChange}) => {
   return (
     <>
       <Button variant="contained" color="info" ref={buttonRef} onClick={()=>setIsOpen(!isOpen)}>
-        {moment(date).format('LL')}}
+        {moment(date).format('LL')}
       </Button>
       <Popover 
         open={isOpen} 
