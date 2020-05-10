@@ -24,7 +24,7 @@ Using intelligent reasoning system principles, this project aims to build a know
 
 # VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 
-[<img src="SystemCode/staticResources/cover_image.jpg" />](/Video/projectVideo.mp4)
+[<img src="SystemCode/staticResources/cover_image.jpg" />](https://vimeo.com/416885357)
 
 # USER / INSTALLATION GUIDE
 
