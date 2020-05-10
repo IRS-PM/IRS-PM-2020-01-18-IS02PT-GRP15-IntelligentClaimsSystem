@@ -1,18 +1,28 @@
 import asyncio
-from aio_pika import connect, IncomingMessage
+from aio_pika import connect, IncomingMessage, connect_robust
 from config.config import *
 import requests
 import sys
 
+async def notifyClassifier(event, body):
+    sys.stdout.write("sending to http://127.0.0.1:%s/handle-event\n" % (PORT))
+    sys.stdout.flush()
+    requests.post("http://127.0.0.1:%s/handle-event" % (PORT), json = { 'event': event, 'body': body.decode(encoding="utf-8") })
+    sys.stdout.write("Notification completed\n")
+
+
 async def on_message(message: IncomingMessage):
-    sys.stdout.write("message received")
+    sys.stdout.write("message received\n")
     sys.stdout.flush()
     try:
-        await message.ack()
-        sys.stdout.write("sending to http://127.0.0.1:%s/handle-event\n" % (PORT))
+        sys.stdout.write("acknowledging message.\n")
         sys.stdout.flush()
-        requests.post("http://127.0.0.1:%s/handle-event" % (PORT), json = { 'event': message.routing_key, 'body': message.body.decode(encoding="utf-8") })
-        sys.stdout.write("sent. acknowledging message.\n")
+        await message.ack()
+        sys.stdout.write("notifying classifier.\n")
+        await notifyClassifier(message.routing_key, message.body)
+        # loop = asyncio.get_event_loop()
+        # loop.create_task(notifyClassifier(message.routing_key, message.body))
+        sys.stdout.write("Waiting for next event.\n")
         sys.stdout.flush()
     except:
         sys.stdout.write("Unexpected error:\n")
@@ -26,7 +36,7 @@ async def main(loop):
     connected = False
     while not connected:
         try:
-            connection = await connect(EVENT_DISPATCHER_HOST, loop=loop)
+            connection = await connect_robust(EVENT_DISPATCHER_HOST, loop=loop)
             connected = True
             sys.stdout.write("AMPQ connected\n")
             sys.stdout.flush()

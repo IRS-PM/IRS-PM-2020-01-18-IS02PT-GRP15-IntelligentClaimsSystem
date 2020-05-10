@@ -112,6 +112,26 @@ router.get('/autoclaimdistribution', async (req, res) => {
   }  
 })
 
+router.get('/pendingclassification', async(req, res) => {
+
+  const whereClause = {
+    Status: 0,
+    AutoClaim: null
+  }
+
+  const claims = await MedicalClaim.findAll({
+    where: whereClause,
+    attributes: ['ClaimNo']
+  })
+
+  return res.json({
+    total: await MedicalClaim.count({
+      where: whereClause
+    }),
+    data: claims
+  })
+})
+
 router.get('/pendingassignment', async(req, res) => {
 
   const whereClause = {
