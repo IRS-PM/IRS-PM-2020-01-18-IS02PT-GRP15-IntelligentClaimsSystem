@@ -28,9 +28,9 @@ Using intelligent reasoning system principles, this project aims to build a know
 
 # USER / INSTALLATION GUIDE
 
-Refer to the installation guide [here]("UserGuide/01%20-%20Installation%20Guide.pdf")
+Refer to the installation guide [here](/UserGuide/01%20-%20Installation%20Guide.pdf)
 
-Refer to the user guide [here]("UserGuide/02%20-%20User%20Guide.pdf")
+Refer to the user guide [here](/UserGuide/02%20-%20User%20Guide.pdf)
 
 # PROJECT REPORT
 
