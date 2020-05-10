@@ -52,23 +52,7 @@
 	(slot outstanding (type NUMBER))
 )
 
-(defrule riderconstraints
-    (declare (salience 30))
-	(Claims(occurance_date ?odd ?omm ?oyy))
-	(Rider(start_date ?rdd ?rmm ?ryy))
-=>
-	(if(eq ?ryy ?oyy)
-	  then(if(eq ?rmm ?omm)
-		then(if(> ?rdd ?odd)
-		     then(assert(rider no)))
-	        else(if(> ?rmm ?omm)
-		    then(assert(rider no))
-		    )
-	       )
-	  else(if(> ?ryy ?oyy)
-	       then(assert(rider no)))
-	 )
-)
+
 
 ;checking past claims status
 (defrule status
@@ -128,16 +112,6 @@
 (assert(reason not_autoallowed))
 (assert(autoclaim no)))
 
-
-;determining rider benefit
-;(defrule benefit
-;    (declare (salience 20))
-;    (Policy(rider Y))
-;    (not(rider no))
-;    ?old <- (Claims(claimtotal ?t))
-;    (test (> ?t 1500))
-;=>
-;(modify ?old (claimtotal (- ?t 1500))))
 
 
 
