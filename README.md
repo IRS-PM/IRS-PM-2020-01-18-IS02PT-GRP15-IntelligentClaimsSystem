@@ -17,8 +17,8 @@ Using intelligent reasoning system principles, this project aims to build a know
 
 | Official Full Name  | Student ID  | Work Items |
 | :------------ |:---------------:| :-----|
-| Bhavya Rema Devi | A1234567A | Data preprocessing, Knowledge Representation, Classifier implementation with clips programming, testing, documentation |
-| Elisa Tjhin | A1234567B | Chatbot, data model, knowledge/business rule, testing, documentation |
+| Bhavya Rema Devi | A0213538H | Data preprocessing, Knowledge Representation, Classifier implementation with clips programming, testing, documentation |
+| Elisa Tjhin | A0213518L | Chatbot, data model, knowledge/business rule, testing, documentation |
 | Francis Low Kok Ann | A0213550U | System architecture, systems integration, overall Docker setup, supporting systems (Object Repository, Administrative Dashboard, Chatbot Frontend), testing, documentation |
 | Sindhuja Kumaran | A0213537J | Database modelling, Search Optimization, testing, documentation |
 
