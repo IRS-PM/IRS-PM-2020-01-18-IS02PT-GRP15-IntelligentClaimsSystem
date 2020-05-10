@@ -1,0 +1,74 @@
+---
+# Where the receipts are stored
+# Receipts should be simple text files
+receipts_path: "receipts"
+
+# Company names roughly ordered by likelyhood.
+companies:
+  Singapore General Hospital:
+     - singapore gen
+  Sengkang General Hospital:
+     - sengkang gen 
+  Jurong Health:
+     - jurong health
+  KK Hospital:
+     - kk women
+  NUH:
+     - nuh
+     - national university
+  Changi General Hospital:
+     - changi gen
+  Raffles Hospital:
+     - raffleshospital
+  Mount Elizabeth:
+     - mount elizabeth
+  Mount Alvernia:
+     - alvernia
+  SBCC:
+     - sbcc baby
+  Dr Widjaja Luman:
+     - w.luman digestive
+
+
+billno:
+  - tax invoice number
+  - tax invoice no
+  - bill document no
+  - bill number
+  - bill no
+  - invoice number
+  - invoice no
+  - receipt no
+  - bill ref
+  - invoice ref
+  - case no
+
+billdate:
+   - bill date
+   - invoice date
+   - doc date
+   - document date
+   - visit date
+   - date
+
+# Sum keys roughly ordered by likelyhood.
+sum_keys:
+  - net amount payable
+  - total amount payable
+  - total charges
+  - total payable
+  - amount payable
+  - sum total
+  - total bill
+  - total amount
+  - total fees
+  - grand total
+  - sum
+  - total
+  
+sum_format: '[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?'
+
+# Matches dates like 19.08.15 and 19. 08. 2015
+date_format: '^.*?((0[1-9]|[12][0-9]|3[01])[- /.]\s?(0[1-9]|1[012]|[a-zA-Z]{3})[- /.](19|20)\d\d)\s?'
+
+ref_format: '[\w\-\d]*\d{2,}[\w\-\d]*'

@@ -1,0 +1,6 @@
+html, body {
+  background-image: url('./horizon.jpg');
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position: 50% 50%;
+}
