@@ -7,10 +7,55 @@ from util import *
 from config.config import HOST, PORT, CLAIM_REPOSITORY_HOST
 import sys
 import traceback
+import time
 
 app = Flask(__name__)
 api = Api(app)
 urlhead = CLAIM_REPOSITORY_HOST # "http://192.168.99.100:8081"
+
+isInitialised = False
+
+def classifyNewClaimsOnInit():
+    global isInitialised
+    if isInitialised:
+        return
+
+    isInitialised = True
+    print("###################")
+    response = None
+    maxTries = 3
+    tryCount = 0
+    while response == None and tryCount < maxTries:
+        try:
+            tryCount += 1
+            print("Getting claims to be classified (try %s)..." % tryCount)
+            sys.stdout.flush()
+            response = requests.get(urlhead + "/medicalclaim/pendingclassification").json()
+        except:
+            print("Error getting claims for classification. Could not connect to repository.")
+            if tryCount < maxTries:
+                print("Retrying in 5 seconds...")
+                time.sleep(5)
+            else:
+                print("Max tries exceeded. Giving up.")
+            sys.stdout.flush()
+    
+    if response == None:
+        return
+
+    print("Retrieved claims to be classified")
+    claimIds = []
+    for claim in response["data"]:
+        claimIds.append(str(claim["ClaimNo"]))
+        
+    print(claimIds)
+    sys.stdout.flush()
+    processResult = processClaims(claimIds)
+
+# health check
+@app.route('/healthcheck', methods=['GET'])
+def healthcheck():
+    return "ok"
 
 # For testing
 @app.route('/classifyclaim', methods=['GET'])
@@ -259,6 +304,7 @@ def getItemDetails(data):
     return itemlist
 
 
+classifyNewClaimsOnInit()
 
 if __name__ == "__main__":
     app.run(debug=True, host=HOST, port=PORT)

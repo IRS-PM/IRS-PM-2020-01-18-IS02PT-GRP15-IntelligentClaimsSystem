@@ -96,6 +96,13 @@ services:
       EVENT_DISPATCHER_HOST: amqp://eventdispatcher
       HOST: 0.0.0.0
       PORT: 9999
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9999/healthcheck"]
+      interval: 20s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
 
   # CLAIM DISTRIBUTER SERVICE
   claimdistributer:
