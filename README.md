@@ -24,13 +24,13 @@ Using intelligent reasoning system principles, this project aims to build a know
 
 # VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 
-<img src="SystemCode/staticResources/cover_image.jpg" />(/Video/projectVideo.mp4)
+[<img src="SystemCode/staticResources/cover_image.jpg" />](/Video/projectVideo.mp4)
 
 # USER / INSTALLATION GUIDE
 
-Refer to the installation guide in ("https://github.com/francislow82/mtech_irs_team15/blob/master/UserGuide/01%20-%20Installation%20Guide.pdf")
+Refer to the installation guide [here]("UserGuide/01%20-%20Installation%20Guide.pdf")
 
-Refer to the user guide in ("https://github.com/francislow82/mtech_irs_team15/blob/master/UserGuide/02%20-%20User%20Guide.pdf")
+Refer to the user guide [here]("UserGuide/02%20-%20User%20Guide.pdf")
 
 # PROJECT REPORT
 
