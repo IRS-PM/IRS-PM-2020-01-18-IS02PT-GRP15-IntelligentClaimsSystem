@@ -42,13 +42,19 @@ def getStaffs():
     url = "%s/staff" % (CLAIM_REPOSITORY_HOST)
     (status,response) = get(url)
     data = response["data"]
-
+    
     def lastAssigned(s):
       if s['LastAssigned'] == {}:
         s['LastAssigned'] = {
           'Date': datetime.today().strftime('%Y-%m-%d'),
           'AssignedHours': 0,
           'AbsentHours': 0
+        }
+      else:
+        s['LastAssigned'] = {
+          'Date': s["LastAssigned"]["Date"],
+          'AssignedHours': s["LastAssigned"]["AssignedHours"],
+          'AbsentHours': min(s["LastAssigned"]["AbsentHours"], 8)
         }
       return s
     
@@ -65,9 +71,9 @@ def getStaffAvailability(date):
         'staffID': sa["ID"],
         'pool1': sa["Pool1"],
         'pool2': sa["Pool2"],
-        'date': sa["TargettedDate"]["Date"],
+        'Date': sa["TargettedDate"]["Date"],
         'AssignedHours': sa["TargettedDate"]["AssignedHours"],
-        'AbsentHours': sa["TargettedDate"]["AbsentHours"]
+        'AbsentHours': min(sa["TargettedDate"]["AbsentHours"], 8)
       }
 
     staff_avail = map(staffAvail, data)
